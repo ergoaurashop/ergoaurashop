@@ -111,23 +111,25 @@ export const GET_COLLECTION_BY_HANDLE = `
 
 export const GET_ALL_COLLECTIONS = `
   query getAllCollections {
-    collections(first: 250) {
+    collections(first: 100) {
       edges {
         node {
           id
           handle
           title
-          description
-          image {
-            url
-            altText
-            width
-            height
+          image { url altText }
+          products(first: 10) {
+            edges {
+              node {
+                ...ProductFragment
+              }
+            }
           }
         }
       }
     }
   }
+  ${PRODUCT_FRAGMENT}
 `;
 
 export const PREDICTIVE_SEARCH = `
@@ -257,6 +259,15 @@ export const UPDATE_CART = `
       cart {
         ...CartFragment
       }
+    }
+  }
+  ${CART_FRAGMENT}
+`;
+
+export const GET_CART = `
+  query getCart($cartId: ID!) {
+    cart(id: $cartId) {
+      ...CartFragment
     }
   }
   ${CART_FRAGMENT}

@@ -19,4 +19,35 @@ body {
   background-color: var(--color-ergo-white);
   color: var(--color-ergo-text);
   font-family: var(--font-inter);
+  /* padding bottom for mobile nav on small screens */
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+  body {
+    padding-bottom: 0;
+  }
+}
+
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-marquee {
+  animation: marquee 15s linear infinite;
+  display: inline-block;
+}
+
+/* Hide scrollbar for Category Slider but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
 }

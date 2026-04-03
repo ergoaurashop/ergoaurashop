@@ -61,7 +61,14 @@ export interface Product {
   vendor: string;
   productType: string;
   createdAt: string;
-  metafields: ProductMetafields;
+  material?: { value: string };
+  dimensions?: { value: string };
+  warranty?: { value: string };
+  origin?: { value: string };
+  assembly?: { value: string };
+  highlights?: { value: string };
+  video_url?: { value: string };
+  ad_hook?: { value: string };
 }
 
 export interface Collection {
@@ -77,16 +84,32 @@ export interface Collection {
   };
 }
 
+/** Partial product shape returned inside cart line merchandise */
+export interface CartLineProduct {
+  id: string;
+  title: string;
+  handle: string;
+  images: {
+    edges: {
+      node: ShopifyImage;
+    }[];
+  };
+}
+
 export interface CartLine {
   id: string;
   quantity: number;
+  cost: {
+    totalAmount: Money;
+  };
   merchandise: {
     id: string;
     title: string;
-    product: Product;
     price: Money;
+    product: CartLineProduct;
   };
 }
+
 
 export interface CartCost {
   totalAmount: Money;
