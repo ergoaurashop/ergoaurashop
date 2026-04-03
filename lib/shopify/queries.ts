@@ -272,3 +272,72 @@ export const GET_CART = `
   }
   ${CART_FRAGMENT}
 `;
+export const GET_HOMEPAGE_METAOBJECTS = `
+  query getHomepageMetaobjects {
+    heroSlides: metaobjects(type: "hero_slide", first: 10) {
+      edges {
+        node {
+          id
+          handle
+          fields {
+            key
+            value
+            reference {
+              ... on MediaImage {
+                image { url altText width height }
+              }
+              ... on GenericFile {
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+    promoVideo: metaobjects(type: "promo_video", first: 10) {
+      edges {
+        node {
+          id
+          handle
+          fields {
+            key
+            value
+            reference {
+              ... on Video {
+                sources { url mimeType format }
+                previewImage { url }
+              }
+              ... on MediaImage {
+                image { url altText width height }
+              }
+              ... on GenericFile {
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+    promoImage: metaobjects(type: "promo_image", first: 10) {
+      edges {
+        node {
+          id
+          handle
+          fields {
+            key
+            value
+            reference {
+              ... on MediaImage {
+                image { url altText width height }
+              }
+              ... on GenericFile {
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+

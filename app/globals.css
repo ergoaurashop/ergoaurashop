@@ -43,11 +43,12 @@ body {
   display: inline-block;
 }
 
-/* Hide scrollbar for Category Slider but keep functionality */
-.scrollbar-hide {
+/* Hide scrollbar but keep functionality */
+.no-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
-.scrollbar-hide::-webkit-scrollbar {
+.no-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari and Opera */
 }
+
