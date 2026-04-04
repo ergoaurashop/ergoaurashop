@@ -148,20 +148,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
    * which must be prefixed with the store domain to avoid 404s on the frontend.
    */
   // ✅ REPLACE your existing processCart with this:
-const processCart = (cart: Cart | null): Cart | null => {
-  if (!cart) return null
-  
-  const domain = 'hqdyqf-9e.myshopify.com' // hardcoded = always works
-  
-  // Fix checkout URL
-  if (cart.checkoutUrl) {
-    if (!cart.checkoutUrl.startsWith('http')) {
-      cart.checkoutUrl = `https://${domain}${cart.checkoutUrl}`
+  function processCart(cart: Cart | null): Cart | null {
+    if (!cart) return null;
+    
+    const domain = "hqdyqf-9e.myshopify.com";
+    
+    if (cart.checkoutUrl && !cart.checkoutUrl.startsWith("http")) {
+      cart.checkoutUrl = `https://${domain}${cart.checkoutUrl}`;
     }
+    
+    return cart;
   }
-  
-  return cart
-}
 
   /** Persists a cart to state + localStorage */
   function setCart(cart: Cart) {

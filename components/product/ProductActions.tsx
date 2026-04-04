@@ -75,12 +75,12 @@ export function ProductActions({ product }: ProductActionsProps) {
     setIsAdding(false);
     
     if (updatedCart && updatedCart.checkoutUrl) {
-  const url = updatedCart.checkoutUrl
-  const absolute = url.startsWith('http')
-    ? url
-    : `https://hqdyqf-9e.myshopify.com${url}`
-  window.location.assign(absolute)
-}
+      const url = updatedCart.checkoutUrl;
+      const absolute = url.startsWith("http")
+        ? url
+        : `https://hqdyqf-9e.myshopify.com${url}`;
+      window.location.assign(absolute);
+    }
   };
 
   return (
