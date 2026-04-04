@@ -62,7 +62,7 @@ export function CartItem({ line }: { line: CartLine }) {
             {product.title}
           </Link>
           <span className="text-sm font-bold text-ergo-navy shrink-0">
-            {formatPrice(line.cost.totalAmount)}
+            {line.cost?.totalAmount ? formatPrice(line.cost.totalAmount) : "$0.00"}
           </span>
         </div>
         

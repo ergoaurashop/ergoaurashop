@@ -32,7 +32,9 @@ export function CartDrawer() {
 
   if (!mounted) return null;
 
-  const subtotal = cart ? parseFloat(cart.cost.subtotalAmount.amount) : 0;
+  const subtotal = cart?.cost?.subtotalAmount?.amount 
+    ? parseFloat(cart.cost.subtotalAmount.amount) 
+    : 0;
   const isFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
   const amountToFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
   const progressPercentage = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
@@ -141,7 +143,7 @@ export function CartDrawer() {
             <div className="flex justify-between items-center mb-1 drop-shadow-sm">
               <span className="text-gray-500 text-sm font-medium">Subtotal</span>
               <span className="font-bold text-ergo-text text-xl">
-                {formatPrice(cart.cost.subtotalAmount)}
+                {cart.cost?.subtotalAmount ? formatPrice(cart.cost.subtotalAmount) : "$0.00"}
               </span>
             </div>
             
@@ -149,18 +151,23 @@ export function CartDrawer() {
               Taxes and shipping calculated at checkout.
             </p>
 
-            <Link
-              href={cart.checkoutUrl}
-              className="w-full flex items-center justify-center gap-2 bg-ergo-green hover:bg-[#2e6537] text-white rounded-xl py-[14px] font-bold text-[15px] shadow-sm transition-transform active:scale-[0.98]"
-              onClick={() => {
-                // Checkout link is external (to Shopify), so we just let the native browser navigation happen
-              }}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                <path fillRule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clipRule="evenodd" />
-              </svg>
-              Secure Checkout
-            </Link>
+            // ❌ DELETE THIS
+href={cart.checkoutUrl || "#"}
+
+// ✅ REPLACE the entire button/link with this:
+<button
+  onClick={() => {
+    const url = cart?.checkoutUrl
+    if (!url) return
+    const absolute = url.startsWith('http')
+      ? url
+      : `https://hqdyqf-9e.myshopify.com${url}`
+    window.location.assign(absolute)
+  }}
+  className="w-full bg-black text-white py-4 rounded-lg font-medium hover:bg-gray-900 transition-colors"
+>
+  Secure Checkout
+</button>
           </div>
         )}
 

@@ -160,12 +160,23 @@ export default function CartPage() {
               </div>
             </div>
 
-            <a 
-              href={cart.checkoutUrl}
-              className="w-full bg-ergo-navy text-white flex items-center justify-center py-4 rounded-full font-black text-sm uppercase tracking-widest hover:bg-ergo-navy-deep transition-all shadow-md hover:shadow-lg active:scale-95"
-            >
-              Checkout Securely
-            </a>
+           // ❌ DELETE THIS
+href={cart.checkoutUrl}
+
+// ✅ REPLACE the entire button/link with this:
+<button
+  onClick={() => {
+    const url = cart?.checkoutUrl
+    if (!url) return
+    const absolute = url.startsWith('http')
+      ? url
+      : `https://hqdyqf-9e.myshopify.com${url}`
+    window.location.assign(absolute)
+  }}
+  className="w-full bg-black text-white py-4 rounded-lg font-medium hover:bg-gray-900 transition-colors"
+>
+  Secure Checkout
+</button>
             
             <div className="mt-6 flex justify-center items-center gap-2 text-[10px] font-bold text-ergo-muted uppercase tracking-widest">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 text-ergo-green">

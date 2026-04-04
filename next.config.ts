@@ -15,33 +15,15 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "ae01.alicdn.com",
-        pathname: "/**",
+        hostname: "*.alicdn.com",
       },
       {
         protocol: "https",
-        hostname: "ae02.alicdn.com",
-        pathname: "/**",
+        hostname: "*.judgeme.com",
       },
       {
         protocol: "https",
-        hostname: "ae03.alicdn.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "ae04.alicdn.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "judgeme-public-images.s3.amazonaws.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "pictures.judgeme.com",
-        pathname: "/**",
+        hostname: "*.amazonaws.com",
       },
       // Wildcard pattern for total coverage of https sources
       {

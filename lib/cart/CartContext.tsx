@@ -147,13 +147,21 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
    * Shopify Storefront API sometimes returns relative URLs (e.g. /cart/c/...)
    * which must be prefixed with the store domain to avoid 404s on the frontend.
    */
-  function processCart(cart: Cart): Cart {
-    if (cart.checkoutUrl.startsWith("/")) {
-      const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
-      cart.checkoutUrl = `https://${domain}${cart.checkoutUrl}`;
+  // ✅ REPLACE your existing processCart with this:
+const processCart = (cart: Cart | null): Cart | null => {
+  if (!cart) return null
+  
+  const domain = 'hqdyqf-9e.myshopify.com' // hardcoded = always works
+  
+  // Fix checkout URL
+  if (cart.checkoutUrl) {
+    if (!cart.checkoutUrl.startsWith('http')) {
+      cart.checkoutUrl = `https://${domain}${cart.checkoutUrl}`
     }
-    return cart;
   }
+  
+  return cart
+}
 
   /** Persists a cart to state + localStorage */
   function setCart(cart: Cart) {
@@ -176,8 +184,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: "SET_ERROR", payload: null });
 
     // Apply optimistic state immediately
-    if (optimisticCart !== undefined) {
-      dispatch({ type: "SET_CART", payload: optimisticCart });
+    if (optimisticCart !== undefined && optimisticCart !== null) {
+      const processedOptimistic = processCart(optimisticCart);
+      dispatch({ type: "SET_CART", payload: processedOptimistic });
+    } else if (optimisticCart === null) {
+      dispatch({ type: "SET_CART", payload: null });
     }
 
     try {
@@ -220,6 +231,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           ? {
               ...state.cart,
               totalQuantity: state.cart.totalQuantity + quantity,
+              // Keep existing cost if available to prevent "undefined" errors
+              cost: state.cart.cost || {
+                totalAmount: { amount: "0", currencyCode: "USD" },
+                subtotalAmount: { amount: "0", currencyCode: "USD" },
+                totalTaxAmount: { amount: "0", currencyCode: "USD" },
+              }
             }
           : null;
 
