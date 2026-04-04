@@ -77,8 +77,8 @@ export interface CartContextValue {
   isLoading: boolean;
   error: string | null;
   totalQuantity: number;
-  /** Add a variant to the cart. Opens the drawer on success. */
-  addItem: (variantId: string, quantity?: number) => Promise<void>;
+  /** Add a variant to the cart. Opens the drawer on success by default. Returns the updated Cart. */
+  addItem: (variantId: string, quantity?: number, openDrawerOnSuccess?: boolean) => Promise<Cart | void>;
   /** Remove a cart line by its line ID. */
   removeItem: (lineId: string) => Promise<void>;
   /** Update the quantity of a cart line. Pass 0 to remove. */
@@ -157,7 +157,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   async function runCartAction(
     action: () => Promise<Cart>,
     optimisticCart?: Cart | null
-  ): Promise<void> {
+  ): Promise<Cart | void> {
     dispatch({ type: "SET_LOADING", payload: true });
     dispatch({ type: "SET_ERROR", payload: null });
 
@@ -169,6 +169,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     try {
       const cart = await action();
       if (isMounted.current) setCart(cart);
+      return cart;
     } catch (err) {
       console.error("Cart Action Error:", err);
       if (isMounted.current) {
@@ -195,8 +196,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   // ─── Public Actions ───────────────────────────────────────────────────────
 
   const addItem = useCallback(
-    async (variantId: string, quantity = 1): Promise<void> => {
+    async (variantId: string, quantity = 1, openDrawerOnSuccess = true): Promise<Cart | void> => {
       const cartId = getStoredCartId();
+      let newCart: Cart | void;
 
       if (cartId) {
         // Optimistic: bump totalQuantity immediately
@@ -207,18 +209,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             }
           : null;
 
-        await runCartAction(
+        newCart = await runCartAction(
           () => addToCart(cartId, variantId, quantity),
           optimistic
         );
       } else {
         // No cart yet — create one
-        await runCartAction(() => createCart(variantId, quantity));
+        newCart = await runCartAction(() => createCart(variantId, quantity));
       }
 
-      if (isMounted.current) {
+      if (isMounted.current && openDrawerOnSuccess) {
         dispatch({ type: "SET_OPEN", payload: true });
       }
+
+      return newCart;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state.cart]

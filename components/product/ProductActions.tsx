@@ -70,10 +70,15 @@ export function ProductActions({ product }: ProductActionsProps) {
   const handleBuyNow = async () => {
     if (!matchedVariant || !isAvailable) return;
     setIsAdding(true);
-    await addItem(matchedVariant.id, quantity);
+    // Pass false to addItem to prevent the cart drawer from opening
+    const updatedCart = await addItem(matchedVariant.id, quantity, false);
     setIsAdding(false);
-    openCart();
-    // In a real flow with checkout redirect, you'd typically extract checkoutUrl from cart and window.location.href = checkoutUrl
+    
+    if (updatedCart && updatedCart.checkoutUrl) {
+      window.location.href = updatedCart.checkoutUrl;
+    } else {
+      openCart(); // Fallback if no checkout URL
+    }
   };
 
   return (
