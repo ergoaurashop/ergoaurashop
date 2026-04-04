@@ -163,8 +163,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   /** Persists a cart to state + localStorage */
   function setCart(cart: Cart) {
     const processedCart = processCart(cart);
-    localStorage.setItem(CART_ID_KEY, processedCart.id);
-    dispatch({ type: "SET_CART", payload: processedCart });
+    if (processedCart) {
+      localStorage.setItem(CART_ID_KEY, processedCart.id);
+      dispatch({ type: "SET_CART", payload: processedCart });
+    }
   }
 
   /**
