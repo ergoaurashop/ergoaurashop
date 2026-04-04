@@ -6,10 +6,13 @@ import { NextResponse } from "next/server";
  * Initiates the Shopify New Customer Account OAuth flow.
  * Redirects the user to the Shopify-hosted login page.
  */
-export async function GET() {
+export async function GET(request: Request) {
   const shopId = process.env.SHOPIFY_SHOP_ID?.trim();
   const clientId = process.env.SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID?.trim();
-  const redirectUri = "https://ergoaurashop.com/api/auth/callback";
+  
+  // Use the request origin to stay on the same domain (e.g. Vercel preview vs Production)
+  const { origin } = new URL(request.url);
+  const redirectUri = `${origin}/api/auth/callback`;
 
   if (!shopId || !clientId) {
     return NextResponse.json({ error: "Shopify OIDC configuration missing" }, { status: 500 });

@@ -242,6 +242,10 @@ export const CREATE_CART = `
       cart {
         ...CartFragment
       }
+      userErrors {
+        field
+        message
+      }
     }
   }
   ${CART_FRAGMENT}
@@ -252,6 +256,10 @@ export const ADD_TO_CART = `
     cartLinesAdd(cartId: $cartId, lines: $lines) {
       cart {
         ...CartFragment
+      }
+      userErrors {
+        field
+        message
       }
     }
   }
@@ -264,6 +272,10 @@ export const REMOVE_FROM_CART = `
       cart {
         ...CartFragment
       }
+      userErrors {
+        field
+        message
+      }
     }
   }
   ${CART_FRAGMENT}
@@ -274,6 +286,10 @@ export const UPDATE_CART = `
     cartLinesUpdate(cartId: $cartId, lines: $lines) {
       cart {
         ...CartFragment
+      }
+      userErrors {
+        field
+        message
       }
     }
   }

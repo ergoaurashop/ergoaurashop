@@ -12,13 +12,16 @@ export async function GET(request: NextRequest) {
   const state = searchParams.get("state");
   const error = searchParams.get("error");
 
+  const origin = request.nextUrl.origin;
+  const siteUrl = origin || process.env.NEXT_PUBLIC_SITE_URL;
+
   if (error) {
     console.error("Shopify OAuth Error:", error);
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_SITE_URL}/?error=auth_failed`);
+    return NextResponse.redirect(`${siteUrl}/?error=auth_failed`);
   }
 
   if (!code || !state) {
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_SITE_URL}/?error=missing_params`);
+    return NextResponse.redirect(`${siteUrl}/?error=missing_params`);
   }
 
   // 1. Verify CSRF state and get code verifier
@@ -28,7 +31,7 @@ export async function GET(request: NextRequest) {
 
   if (!storedState || state !== storedState || !codeVerifier) {
     console.error("Auth mismatch or missing verifier");
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_SITE_URL}/?error=invalid_session`);
+    return NextResponse.redirect(`${siteUrl}/?error=invalid_session`);
   }
 
   try {
@@ -42,37 +45,35 @@ export async function GET(request: NextRequest) {
     cookieStore.delete("shopify_code_verifier");
 
     // 4. Set persistent secure session cookies
-    // Access Token (HttpOnly, Secure)
+    const cookieOptions = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax" as const,
+      domain: origin.includes("ergoaurashop.com") ? ".ergoaurashop.com" : undefined,
+    };
+
+    // Access Token
     cookieStore.set("shopify_accessToken", access_token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "lax",
+      ...cookieOptions,
       maxAge: expires_in,
-      domain: ".ergoaurashop.com", // Share session across subdomains
     });
 
-    // Refresh Token (Longer lived, for persistent login)
+    // Refresh Token
     cookieStore.set("shopify_refreshToken", refresh_token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "lax",
+      ...cookieOptions,
       maxAge: 30 * 24 * 60 * 60, // 30 days
-      domain: ".ergoaurashop.com",
     });
 
-    // ID Token (Can be exposed if needed, but we'll stick to HttpOnly)
+    // ID Token
     cookieStore.set("shopify_idToken", id_token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "lax",
+      ...cookieOptions,
       maxAge: 30 * 24 * 60 * 60,
-      domain: ".ergoaurashop.com",
     });
 
     // 5. Success! Redirect to homepage
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_SITE_URL}/`);
+    return NextResponse.redirect(`${siteUrl}/`);
   } catch (err) {
     console.error("Callback processing failed:", err);
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_SITE_URL}/?error=token_exchange_failed`);
+    return NextResponse.redirect(`${siteUrl}/?error=token_exchange_failed`);
   }
 }
