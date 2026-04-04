@@ -12,6 +12,7 @@ import { getAllCollections, getRecentProducts, getShopInfo } from "@/lib/shopify
 import { Shop } from "@/lib/shopify/types";
 import IntegrationsWrapper from "@/components/integrations/IntegrationsWrapper";
 import Script from "next/script";
+import { CustomerProvider } from "@/components/providers/CustomerProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -80,15 +81,17 @@ export default async function RootLayout({
             });
           `}
         </Script>
-        <CartProvider>
-          <Header shop={shop as Shop} />
-          <CategorySlider collections={collections} />
-          <main className="flex-grow">{children}</main>
-          <Footer shop={shop as Shop} />
-          <CartDrawer />
-          <MobileNav />
-          <IntegrationsWrapper recentProducts={recentProducts as any} />
-        </CartProvider>
+        <CustomerProvider>
+          <CartProvider>
+            <Header shop={shop as Shop} />
+            <CategorySlider collections={collections} />
+            <main className="flex-grow">{children}</main>
+            <Footer shop={shop as Shop} />
+            <CartDrawer />
+            <MobileNav />
+            <IntegrationsWrapper recentProducts={recentProducts as any} />
+          </CartProvider>
+        </CustomerProvider>
       </body>
     </html>
   );

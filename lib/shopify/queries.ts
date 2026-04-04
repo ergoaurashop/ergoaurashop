@@ -502,3 +502,15 @@ export const GET_COLLECTION_PAGE = `
   }
   ${PRODUCT_FRAGMENT}
 `;
+export const GET_CUSTOMER_QUERY = `
+  query getCustomer {
+    customer {
+      id
+      firstName
+      lastName
+      emailAddress {
+        emailAddress
+      }
+    }
+  }
+`;

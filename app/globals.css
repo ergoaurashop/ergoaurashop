@@ -141,12 +141,54 @@ body {
     color: #fff;
   }
 
+  /* ─── QUICK ADD BUTTON ─────────────────────────────── */
+  .product-card__add-btn {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    width: 44px;
+    height: 44px;
+    background: var(--color-ergo-navy-deep);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    z-index: 30;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+  }
+
+  @media (min-width: 1024px) {
+    .product-card__add-btn {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    .product-card:hover .product-card__add-btn {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .product-card__add-btn:hover {
+    background: var(--color-ergo-orange);
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 6px 16px rgba(244, 132, 95, 0.4);
+  }
+
+  .product-card__add-btn:active {
+    transform: scale(0.9);
+  }
+
   /* ─── INFO BLOCK ────────────────────────────────────── */
   .product-card__info {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    padding: 10px 12px 14px;
+    padding: 10px 48px 14px 12px; /* Extra right padding for quick add btn */
     flex: 1;
   }
   .product-card__vendor {

@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
 import Link from "next/link";
 import { HeroSlide } from "@/lib/shopify/metaobjects";
-import { CarouselArrows } from "./CarouselArrows";
 
 interface HeroSliderProps {
   slides: HeroSlide[];
@@ -19,26 +18,11 @@ export function HeroSlider({ slides }: HeroSliderProps) {
     Autoplay({ delay: 2000, stopOnInteraction: false, stopOnMouseEnter: true }),
   ]);
 
-  const [canPrev, setCanPrev] = React.useState(false);
-  const [canNext, setCanNext] = React.useState(false);
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setCanPrev(emblaApi.canScrollPrev());
-    setCanNext(emblaApi.canScrollNext());
-  }, [emblaApi]);
-
   useEffect(() => {
     if (emblaApi) {
       emblaApi.reInit();
     }
   }, [emblaApi, slides]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    onSelect();
-    emblaApi.on("select", onSelect);
-  }, [emblaApi, onSelect]);
 
   if (slides.length === 0) return (
     <div className="w-full h-full bg-ergo-navy flex items-center justify-center text-white/20 font-bold tracking-widest leading-none bg-gradient-to-br from-ergo-navy-deep to-ergo-navy">
@@ -73,15 +57,6 @@ export function HeroSlider({ slides }: HeroSliderProps) {
           </div>
         ))}
       </div>
-
-      {slides.length > 1 && (
-        <CarouselArrows
-          onPrev={() => emblaApi?.scrollPrev()}
-          onNext={() => emblaApi?.scrollNext()}
-          canPrev={canPrev}
-          canNext={canNext}
-        />
-      )}
     </div>
   );
 }

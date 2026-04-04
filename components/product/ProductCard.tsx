@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Product } from "@/lib/shopify/types";
+import { useCart } from "@/lib/cart/useCart";
+import { MouseEvent } from "react";
 
 // components/product/ProductCard.tsx
 
@@ -21,16 +25,29 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const price      = product.priceRange?.minVariantPrice?.amount || "0";
-  const compareAt  = product.compareAtPriceRange?.minVariantPrice?.amount;
-  const currency   = product.priceRange?.minVariantPrice?.currencyCode || "USD";
-  const discount   = calcDiscount(compareAt, price);
-  const extraBadge = product.extraBadge?.value;
-  const promoLabel = product.promoLabel?.value;
+  const { addItem } = useCart();
+  
+  const price       = product.priceRange?.minVariantPrice?.amount || "0";
+  const compareAt   = product.compareAtPriceRange?.minVariantPrice?.amount;
+  const currency    = product.priceRange?.minVariantPrice?.currencyCode || "USD";
+  const discount    = calcDiscount(compareAt, price);
+  const extraBadge  = product.extraBadge?.value;
+  const promoLabel  = product.promoLabel?.value;
   const featuredImg = product.featuredImage || product.images?.edges[0]?.node;
 
+  // Get the first available variant ID dynamically
+  const variantId = product.variants?.edges?.[0]?.node?.id;
+
+  const handleAddToCart = async (e: MouseEvent) => {
+    e.preventDefault(); // Stop Link navigation
+    e.stopPropagation(); // Stop event bubbling
+    if (variantId) {
+      await addItem(variantId, 1);
+    }
+  };
+
   return (
-    <Link href={`/products/${product.handle}`} className="product-card">
+    <Link href={`/products/${product.handle}`} className="product-card group/card relative">
 
       {/* IMAGE */}
       <div className="product-card__img-wrap">
@@ -57,6 +74,24 @@ export function ProductCard({ product }: ProductCardProps) {
           </span>
         )}
       </div>
+
+      {/* QUICK ADD BUTTON — Prominent bottom-right quick action */}
+      <button
+        onClick={handleAddToCart}
+        className="product-card__add-btn"
+        aria-label="Add to cart"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={3}
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+      </button>
 
       {/* INFO */}
       <div className="product-card__info">

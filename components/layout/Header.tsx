@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useCart } from "@/lib/cart/useCart";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Shop } from "@/lib/shopify/types";
+import { useCustomer } from "@/components/providers/CustomerProvider";
 
 interface HeaderProps {
   shop: Shop;
@@ -14,6 +15,7 @@ interface HeaderProps {
 export function Header({ shop }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const { totalQuantity, openCart } = useCart();
+  const { customer, isAuthenticated, login, logout } = useCustomer();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -147,26 +149,57 @@ export function Header({ shop }: HeaderProps) {
             </Link>
 
             {/* Account / Login */}
-            <Link
-              href="/account/login"
-              className="text-ergo-text hover:text-ergo-navy transition-colors font-semibold flex items-center gap-1.5"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
+            {isAuthenticated ? (
+              <div className="flex items-center gap-4">
+                <Link
+                  href="/account"
+                  className="text-ergo-text hover:text-ergo-navy transition-colors font-semibold flex items-center gap-1.5"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                    />
+                  </svg>
+                  <span className="text-sm hidden lg:inline">Hi, {customer?.firstName}</span>
+                </Link>
+                <button
+                  onClick={logout}
+                  className="text-xs text-ergo-muted hover:text-ergo-orange transition-colors hidden lg:block"
+                >
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={login}
+                className="text-ergo-text hover:text-ergo-navy transition-colors font-semibold flex items-center gap-1.5"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                />
-              </svg>
-              <span className="text-sm hidden lg:inline">Sign In</span>
-            </Link>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                  />
+                </svg>
+                <span className="text-sm hidden lg:inline">Sign In</span>
+              </button>
+            )}
 
             {/* Cart */}
             <button
