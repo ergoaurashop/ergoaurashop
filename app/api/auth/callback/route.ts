@@ -48,6 +48,7 @@ export async function GET(request: NextRequest) {
       secure: true,
       sameSite: "lax",
       maxAge: expires_in,
+      domain: ".ergoaurashop.com", // Share session across subdomains
     });
 
     // Refresh Token (Longer lived, for persistent login)
@@ -56,6 +57,7 @@ export async function GET(request: NextRequest) {
       secure: true,
       sameSite: "lax",
       maxAge: 30 * 24 * 60 * 60, // 30 days
+      domain: ".ergoaurashop.com",
     });
 
     // ID Token (Can be exposed if needed, but we'll stick to HttpOnly)
@@ -64,6 +66,7 @@ export async function GET(request: NextRequest) {
       secure: true,
       sameSite: "lax",
       maxAge: 30 * 24 * 60 * 60,
+      domain: ".ergoaurashop.com",
     });
 
     // 5. Success! Redirect to homepage

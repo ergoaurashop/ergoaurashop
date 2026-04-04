@@ -15,7 +15,7 @@ interface HeaderProps {
 export function Header({ shop }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const { totalQuantity, openCart } = useCart();
-  const { customer, isAuthenticated, login, logout } = useCustomer();
+  const { customer, isAuthenticated, login, logout, isLoading: isAuthLoading } = useCustomer();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -149,7 +149,9 @@ export function Header({ shop }: HeaderProps) {
             </Link>
 
             {/* Account / Login */}
-            {isAuthenticated ? (
+            {isAuthLoading ? (
+              <div className="w-8 h-8 rounded-full bg-gray-100 animate-pulse" />
+            ) : isAuthenticated ? (
               <div className="flex items-center gap-4">
                 <Link
                   href="/account"

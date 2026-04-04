@@ -170,6 +170,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const cart = await action();
       if (isMounted.current) setCart(cart);
     } catch (err) {
+      console.error("Cart Action Error:", err);
       if (isMounted.current) {
         const message =
           err instanceof Error ? err.message : "Something went wrong";
