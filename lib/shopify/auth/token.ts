@@ -14,11 +14,11 @@ interface ShopifyTokenResponse {
 
 export async function exchangeCodeForToken(
   code: string,
-  codeVerifier: string
+  codeVerifier: string,
+  redirectUri: string
 ): Promise<ShopifyTokenResponse> {
-  const shopId = process.env.SHOPIFY_SHOP_ID;
-  const clientId = process.env.SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID;
-  const redirectUri = `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`;
+  const shopId = process.env.SHOPIFY_SHOP_ID?.trim();
+  const clientId = process.env.SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID?.trim();
 
   if (!shopId || !clientId) {
     throw new Error("Missing Shopify Shop ID or Client ID");
