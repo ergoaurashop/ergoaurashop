@@ -82,7 +82,7 @@ export function Footer({ shop }: FooterProps) {
             <h3 className="font-bold text-ergo-text text-base">Quick Links</h3>
             <ul className="flex flex-col gap-3 text-sm text-gray-500">
               <li>
-                <Link href="/collections/deals" className="hover:text-ergo-orange transition-colors">
+                <Link href="/deals" className="hover:text-ergo-orange transition-colors">
                   Today&apos;s Deals
                 </Link>
               </li>

@@ -87,6 +87,11 @@ export interface Product {
   };
 }
 
+export interface PageInfo {
+  hasNextPage: boolean;
+  endCursor: string | null;
+}
+
 export interface Collection {
   id: string;
   handle: string;
@@ -94,6 +99,7 @@ export interface Collection {
   description: string;
   image?: ShopifyImage;
   products: {
+    pageInfo: PageInfo;
     edges: {
       node: Product;
     }[];

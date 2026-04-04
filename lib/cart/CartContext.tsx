@@ -117,7 +117,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       .then((cart) => {
         if (!isMounted.current) return;
         if (cart) {
-          dispatch({ type: "SET_CART", payload: cart });
+          setCart(cart);
         } else {
           // Cart expired on Shopify — clear stale ID
           localStorage.removeItem(CART_ID_KEY);
@@ -142,10 +142,24 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     return localStorage.getItem(CART_ID_KEY);
   }
 
+  /** 
+   * Ensures the checkoutUrl is absolute. 
+   * Shopify Storefront API sometimes returns relative URLs (e.g. /cart/c/...)
+   * which must be prefixed with the store domain to avoid 404s on the frontend.
+   */
+  function processCart(cart: Cart): Cart {
+    if (cart.checkoutUrl.startsWith("/")) {
+      const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
+      cart.checkoutUrl = `https://${domain}${cart.checkoutUrl}`;
+    }
+    return cart;
+  }
+
   /** Persists a cart to state + localStorage */
   function setCart(cart: Cart) {
-    localStorage.setItem(CART_ID_KEY, cart.id);
-    dispatch({ type: "SET_CART", payload: cart });
+    const processedCart = processCart(cart);
+    localStorage.setItem(CART_ID_KEY, processedCart.id);
+    dispatch({ type: "SET_CART", payload: processedCart });
   }
 
   /**

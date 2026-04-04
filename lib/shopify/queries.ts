@@ -215,6 +215,9 @@ const CART_FRAGMENT = `
         node {
           id
           quantity
+          cost {
+            totalAmount { amount currencyCode }
+          }
           merchandise {
             ... on ProductVariant {
               id

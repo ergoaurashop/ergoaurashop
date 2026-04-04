@@ -53,7 +53,7 @@ const navItems: NavItem[] = [
   },
   {
     name: "Deals",
-    href: "/collections/deals",
+    href: "/deals",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
