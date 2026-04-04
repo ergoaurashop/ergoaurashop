@@ -33,7 +33,9 @@ export async function GET(request: NextRequest) {
 
   try {
     // 2. Exchange code for access tokens
-    const { access_token, refresh_token, id_token, expires_in } = await exchangeCodeForToken(code, codeVerifier);
+    const origin = request.nextUrl.origin;
+    const redirectUri = `${origin}/api/auth/callback`;
+    const { access_token, refresh_token, id_token, expires_in } = await exchangeCodeForToken(code, codeVerifier, redirectUri);
 
     // 3. Clear temporary PKCE cookies
     cookieStore.delete("shopify_auth_state");
