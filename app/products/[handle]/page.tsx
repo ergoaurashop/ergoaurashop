@@ -222,6 +222,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
                 title: "Complete Your Setup",
                 handle: "all",
                 products: {
+                  pageInfo: { hasNextPage: false, endCursor: null },
                   edges: relatedProducts.map(p => ({ node: p }))
                 }
               }}

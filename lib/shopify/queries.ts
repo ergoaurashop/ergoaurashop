@@ -135,6 +135,10 @@ export const GET_ALL_COLLECTIONS = `
           title
           image { url altText }
           products(first: 10) {
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
             edges {
               node {
                 ...ProductFragment
