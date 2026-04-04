@@ -7,9 +7,9 @@ import { NextResponse } from "next/server";
  * Redirects the user to the Shopify-hosted login page.
  */
 export async function GET() {
-  const shopId = process.env.SHOPIFY_SHOP_ID;
-  const clientId = process.env.SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID;
-  const redirectUri = `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`;
+  const shopId = process.env.SHOPIFY_SHOP_ID?.trim();
+  const clientId = process.env.SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID?.trim();
+  const redirectUri = "https://ergoaurashop.com/api/auth/callback";
 
   if (!shopId || !clientId) {
     return NextResponse.json({ error: "Shopify OIDC configuration missing" }, { status: 500 });
