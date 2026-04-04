@@ -17,17 +17,13 @@ export function ExtraOffers({ products }: ExtraOffersProps) {
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
-          {products.slice(0, 4).map((product) => (
-            <div key={product.id} className="relative group">
+        <ul className="product-grid">
+          {products.map((product) => (
+            <li key={product.id}>
               <ProductCard product={product} />
-              {/* Extra large badge */}
-              <div className="absolute top-2 left-2 bg-black text-white font-black px-3 py-1 rounded-md z-10 shadow-md">
-                EXTRA
-              </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

@@ -78,7 +78,7 @@ const navItems: NavItem[] = [
   },
   {
     name: "Cart",
-    href: "/cart", // We'll manage open state separately
+    href: "#cart",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"

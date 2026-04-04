@@ -1,8 +1,9 @@
 import Link from "next/link";
+import type { Collection } from "@/lib/shopify/types";
 import { ProductCard } from "@/components/product/ProductCard";
 
 interface ProductShelfProps {
-  collection: any;
+  collection: Partial<Collection> & { title: string; handle: string; products: { edges: { node: import("@/lib/shopify/types").Product }[] } };
 }
 
 export function ProductShelf({ collection }: ProductShelfProps) {
@@ -25,13 +26,13 @@ export function ProductShelf({ collection }: ProductShelfProps) {
         </Link>
       </div>
 
-      <div className="flex overflow-x-auto no-scrollbar gap-2 md:gap-4 pb-4 snap-x snap-mandatory">
+      <ul className="product-grid">
         {products.map((product: any) => (
-          <div key={product.id} className="min-w-[85vw] w-[85vw] md:min-w-[240px] md:w-[240px] snap-start mb-2 relative">
+          <li key={product.id}>
             <ProductCard product={product} />
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }

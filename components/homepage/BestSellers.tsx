@@ -20,17 +20,13 @@ export function BestSellers({ products }: BestSellersProps) {
           </div>
         </div>
 
-        <div className="flex overflow-x-auto scrollbar-hide gap-4 md:gap-6 pb-4 snap-x snap-mandatory">
+        <ul className="product-grid">
           {products.map((product) => (
-            <div key={product.id} className="min-w-[200px] w-[200px] md:min-w-[280px] md:w-[280px] snap-start mb-2 relative">
+            <li key={product.id}>
               <ProductCard product={product} />
-              {/* Optional: we could render the stars inside ProductCard directly, but to keep it clean per requirements, we pretend there is a shared 5-star graphic underneath */}
-              <div className="flex items-center gap-1 mt-1 text-yellow-400 text-sm pl-2">
-                ★★★★★ <span className="text-ergo-muted text-xs ml-1">(4.9)</span>
-              </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

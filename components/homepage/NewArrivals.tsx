@@ -17,13 +17,13 @@ export function NewArrivals({ products }: NewArrivalsProps) {
           </h2>
         </div>
 
-        <div className="flex overflow-x-auto scrollbar-hide gap-4 md:gap-6 pb-4 snap-x snap-mandatory">
+        <ul className="product-grid">
           {products.map((product) => (
-            <div key={product.id} className="min-w-[200px] w-[200px] md:min-w-[280px] md:w-[280px] snap-start mb-2">
+            <li key={product.id}>
               <ProductCard product={product} />
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

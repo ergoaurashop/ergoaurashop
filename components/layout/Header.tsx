@@ -5,8 +5,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/lib/cart/useCart";
 import { SearchBar } from "@/components/ui/SearchBar";
+import { Shop } from "@/lib/shopify/types";
 
-export function Header() {
+interface HeaderProps {
+  shop: Shop;
+}
+
+export function Header({ shop }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const { totalQuantity, openCart } = useCart();
 
@@ -27,7 +32,7 @@ export function Header() {
       {/* Announcement Bar */}
       <div className="w-full bg-ergo-navy-deep text-white text-xs font-semibold overflow-hidden">
         <div className="flex md:justify-center px-4 py-2 whitespace-nowrap animate-marquee md:animate-none">
-          🚚 Free delivery on more items* | Shop best viral products
+          {shop?.brand?.slogan ? `🚚 ${shop.brand.slogan}` : "🚚 Free delivery on more items* | Shop best viral products"}
         </div>
       </div>
 
@@ -38,14 +43,20 @@ export function Header() {
           {/* Row 1: Logo + Cart */}
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center" prefetch={false}>
-              <Image
-                src="/logo.svg"
-                alt="ErgoAura"
-                width={150}
-                height={37.5}
-                className="w-[120px] object-contain flex-shrink-0"
-                priority
-              />
+              {shop?.brand?.logo?.image?.url ? (
+                <Image
+                  src={shop.brand.logo.image.url}
+                  alt={shop.name}
+                  width={150}
+                  height={37.5}
+                  className="w-[120px] object-contain flex-shrink-0"
+                  priority
+                />
+              ) : (
+                <span className="text-xl font-black text-ergo-navy-deep leading-none">
+                  {shop?.name || "ErgoAura"}
+                </span>
+              )}
             </Link>
 
             <button
@@ -87,14 +98,20 @@ export function Header() {
             className="flex items-center flex-shrink-0"
             prefetch={false}
           >
-            <Image
-              src="/logo.svg"
-              alt="ErgoAura"
-              width={150}
-              height={37.5}
-              className="w-[150px] object-contain flex-shrink-0"
-              priority
-            />
+            {shop?.brand?.logo?.image?.url ? (
+              <Image
+                src={shop.brand.logo.image.url}
+                alt={shop.name}
+                width={150}
+                height={37.5}
+                className="w-[150px] object-contain flex-shrink-0"
+                priority
+              />
+            ) : (
+              <span className="text-2xl font-black text-ergo-navy-deep leading-none">
+                {shop?.name || "ErgoAura"}
+              </span>
+            )}
           </Link>
 
           {/* Search Bar - vast majority of flex space */}

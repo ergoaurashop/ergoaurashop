@@ -1,8 +1,42 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import { Shop } from "@/lib/shopify/types";
 
-export function Footer() {
+interface FooterProps {
+  shop: Shop;
+}
+
+export function Footer({ shop }: FooterProps) {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setStatus("loading");
+    setErrorMessage("");
+
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!res.ok) throw new Error("Failed to subscribe");
+      
+      setStatus("success");
+      setEmail("");
+    } catch {
+      setStatus("error");
+      setErrorMessage("Something went wrong. Please try again.");
+    }
+  };
+
   return (
     <footer className="bg-gray-50 border-t border-ergo-border pt-14 pb-12 mt-12">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -12,14 +46,14 @@ export function Footer() {
           <div className="flex flex-col gap-4">
             <Link href="/" className="flex items-center gap-1">
               <span className="text-2xl font-black tracking-tight text-ergo-navy-deep">
-                Ergo
+                {shop?.name?.split(" ")[0] || "Ergo"}
               </span>
               <span className="text-2xl font-black tracking-tight text-ergo-green">
-                Aura
+                {shop?.name?.split(" ")[1] || "Aura"}
               </span>
             </Link>
             <p className="text-sm text-gray-500 leading-relaxed max-w-sm">
-              UAE&apos;s premium destination for viral, high-quality dropshipping products. Designed to upgrade your home, health, and daily life.
+              {shop?.brand?.shortDescription || shop?.description || "UAE's premium destination for viral, high-quality products. Designed to upgrade your home, health, and daily life."}
             </p>
             <div className="flex items-center gap-4 mt-2">
               <a href="#" className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-ergo-navy hover:border-ergo-navy transition-all shadow-sm">
@@ -81,27 +115,41 @@ export function Footer() {
             <p className="text-sm text-gray-500 mb-2">
               Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.
             </p>
-            <form className="flex flex-col sm:flex-row gap-2" onSubmit={(e) => { e.preventDefault(); }}>
+            <form onSubmit={handleSubscribe} className="relative flex items-center group">
               <input 
                 type="email" 
-                placeholder="Enter your email" 
+                placeholder="Enter your email address" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={status === "loading" || status === "success"}
                 required
-                className="w-full flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-ergo-navy focus:ring-1 focus:ring-ergo-navy text-sm shadow-sm"
+                className={`w-full bg-white border ${status === 'error' ? 'border-red-500' : 'border-gray-200'} rounded-full py-4 pl-6 pr-32 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-ergo-navy transition-colors duration-300 disabled:opacity-50`}
               />
               <button 
                 type="submit" 
-                className="w-full sm:w-auto px-6 py-3 bg-ergo-navy hover:bg-ergo-navy-deep text-white font-bold rounded-xl text-sm transition-colors shadow-sm whitespace-nowrap"
+                disabled={status === "loading" || status === "success"}
+                className={`absolute right-2 px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest transition-all duration-300 disabled:cursor-not-allowed ${
+                  status === "success" 
+                    ? "bg-green-600 text-white" 
+                    : "bg-ergo-navy text-white hover:bg-ergo-navy-deep"
+                }`}
               >
-                Subscribe
+                {status === "loading" ? "..." : status === "success" ? "Joined" : "Subscribe"}
               </button>
             </form>
+            {status === "success" && (
+              <p className="text-green-600 text-xs font-bold mt-3 uppercase tracking-widest">Welcome to the inner circle.</p>
+            )}
+            {status === "error" && (
+              <p className="text-red-500 text-xs font-bold mt-3">{errorMessage}</p>
+            )}
           </div>
           
         </div>
 
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-ergo-border text-xs text-gray-400">
-          <p>© {new Date().getFullYear()} ErgoAura LLC. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {shop?.name || "ErgoAura"} LLC. All rights reserved.</p>
           <div className="flex gap-4">
             <Link href="/pages/privacy" className="hover:text-ergo-text transition-colors">Privacy Policy</Link>
             <Link href="/pages/terms" className="hover:text-ergo-text transition-colors">Terms of Service</Link>

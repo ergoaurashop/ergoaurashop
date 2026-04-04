@@ -59,8 +59,15 @@ export interface Product {
   } | null;
   tags: string[];
   vendor: string;
+  availableForSale: boolean;
   productType: string;
   createdAt: string;
+  featuredImage?: {
+    url: string;
+    altText: string | null;
+  };
+  extraBadge?: { value: string };
+  promoLabel?: { value: string };
   material?: { value: string };
   dimensions?: { value: string };
   warranty?: { value: string };
@@ -69,6 +76,15 @@ export interface Product {
   highlights?: { value: string };
   video_url?: { value: string };
   ad_hook?: { value: string };
+  reviews?: { value: string };
+  collections?: {
+    edges: {
+      node: {
+        handle: string;
+        title: string;
+      };
+    }[];
+  };
 }
 
 export interface Collection {
@@ -137,4 +153,16 @@ export interface ShopifyFetchOptions {
 export interface ShopifyResponse<T> {
   data: T;
   errors?: { message: string }[];
+}
+
+export interface Shop {
+  name: string;
+  description: string;
+  brand?: {
+    logo?: {
+      image?: ShopifyImage;
+    };
+    slogan?: string;
+    shortDescription?: string;
+  };
 }

@@ -7,8 +7,13 @@ const PRODUCT_FRAGMENT = `
     descriptionHtml
     tags
     vendor
+    availableForSale
     productType
     createdAt
+    featuredImage {
+      url(transform: { maxWidth: 400, maxHeight: 400 })
+      altText
+    }
     images(first: 10) {
       edges {
         node {
@@ -60,6 +65,8 @@ const PRODUCT_FRAGMENT = `
         currencyCode
       }
     }
+    extraBadge: metafield(namespace: "custom", key: "extra_badge") { value }
+    promoLabel: metafield(namespace: "custom", key: "promo_label") { value }
     material: metafield(namespace: "custom", key: "material") { value }
     dimensions: metafield(namespace: "custom", key: "dimensions") { value }
     warranty: metafield(namespace: "custom", key: "warranty") { value }
@@ -68,6 +75,15 @@ const PRODUCT_FRAGMENT = `
     highlights: metafield(namespace: "custom", key: "highlights") { value }
     video_url: metafield(namespace: "custom", key: "video_url") { value }
     ad_hook: metafield(namespace: "custom", key: "ad_hook") { value }
+    reviews: metafield(namespace: "custom", key: "reviews") { value }
+    collections(first: 5) {
+      edges {
+        node {
+          handle
+          title
+        }
+      }
+    }
   }
 `;
 
@@ -341,3 +357,148 @@ export const GET_HOMEPAGE_METAOBJECTS = `
   }
 `;
 
+export const GET_RECENT_PRODUCTS = `
+  query getRecentProducts {
+    products(first: 10, sortKey: CREATED_AT, reverse: true) {
+      edges {
+        node {
+          id
+          handle
+          title
+          featuredImage {
+            url
+            altText
+            width
+            height
+          }
+          priceRange {
+            minVariantPrice {
+              amount
+              currencyCode
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+export const GET_ALL_PRODUCT_HANDLES = `
+  query getAllProductHandles {
+    products(first: 250) {
+      edges {
+        node {
+          handle
+          updatedAt
+        }
+      }
+    }
+  }
+`;
+
+export const GET_SHOP_INFO = `
+  query getShopInfo {
+    shop {
+      name
+      description
+      brand {
+        logo {
+          image {
+            url
+            altText
+            width
+            height
+          }
+        }
+        slogan
+        shortDescription
+      }
+    }
+  }
+`;
+
+export const GET_SHOPIFY_PAGE = `
+  query getShopifyPage($handle: String!) {
+    page(handle: $handle) {
+      id
+      title
+      handle
+      body
+      bodySummary
+      seo {
+        title
+        description
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const GET_ALL_PAGES = `
+  query getAllPages {
+    pages(first: 100) {
+      edges {
+        node {
+          handle
+          title
+          updatedAt
+        }
+      }
+    }
+  }
+`;
+
+export const GET_SEARCH_RESULTS = `
+  query getSearchResults($query: String!, $cursor: String, $sortKey: SearchSortKeys, $reverse: Boolean) {
+    search(
+      query: $query
+      first: 24
+      after: $cursor
+      sortKey: $sortKey
+      reverse: $reverse
+      types: PRODUCT
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          ... on Product {
+            ...ProductFragment
+          }
+        }
+      }
+    }
+  }
+  ${PRODUCT_FRAGMENT}
+`;
+
+export const GET_COLLECTION_PAGE = `
+  query getCollectionPage($handle: String!, $cursor: String, $sortKey: ProductCollectionSortKeys, $reverse: Boolean) {
+    collection(handle: $handle) {
+      id
+      handle
+      title
+      description
+      image {
+        url
+        altText
+        width
+        height
+      }
+      products(first: 24, after: $cursor, sortKey: $sortKey, reverse: $reverse) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        edges {
+          node {
+            ...ProductFragment
+          }
+        }
+      }
+    }
+  }
+  ${PRODUCT_FRAGMENT}
+`;

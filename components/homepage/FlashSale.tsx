@@ -78,12 +78,14 @@ export function FlashSale({ products }: FlashSaleProps) {
           </div>
         </div>
 
-        {/* Products Grid (2 columns on mobile, matching requirements) */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+        {/* Products Grid (matching requirements) */}
+        <ul className="product-grid">
           {products.slice(0, 4).map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <li key={product.id}>
+              <ProductCard product={product} />
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

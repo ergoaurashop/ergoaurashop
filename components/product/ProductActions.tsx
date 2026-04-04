@@ -153,21 +153,63 @@ export function ProductActions({ product }: ProductActionsProps) {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col gap-3 mt-2">
+        <div className="flex flex-col gap-4 mt-2">
           <button
             onClick={handleAddToCart}
             disabled={!isAvailable || isAdding}
-            className="w-full h-14 bg-ergo-navy text-white rounded-xl font-bold text-lg hover:bg-ergo-navy-deep transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center shadow-md shadow-ergo-navy/20"
+            className={`
+              w-full h-14 bg-ergo-navy text-white rounded-full font-black text-lg 
+              hover:bg-ergo-navy-deep transition-all duration-300 disabled:opacity-50 
+              disabled:cursor-not-allowed flex justify-center items-center shadow-lg 
+              shadow-ergo-navy/20 active:scale-[0.98]
+            `}
           >
-            {isAdding ? <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : "ADD TO CART"}
+            {isAdding ? (
+              <div className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin" />
+            ) : (
+              "ADD TO CART"
+            )}
           </button>
           <button
             onClick={handleBuyNow}
             disabled={!isAvailable || isAdding}
-            className="w-full h-14 border-2 border-ergo-navy text-ergo-navy bg-white rounded-xl font-bold text-lg hover:bg-ergo-surface transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
+            className={`
+              w-full h-14 border-2 border-ergo-navy text-ergo-navy bg-white 
+              rounded-full font-black text-lg hover:bg-ergo-surface transition-all 
+              duration-300 disabled:opacity-50 disabled:cursor-not-allowed 
+              flex justify-center items-center active:scale-[0.98]
+            `}
           >
             BUY IT NOW
           </button>
+
+          {/* Trust Badge Stack */}
+          <div className="grid grid-cols-3 gap-2 mt-4 pt-6 border-t border-ergo-border">
+            <div className="flex flex-col items-center gap-1.5 text-center">
+              <div className="w-10 h-10 rounded-full bg-ergo-surface flex items-center justify-center text-ergo-green">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.129-1.125V11.25c0-.442-.256-.837-.639-1.03l-3.338-1.711a.75.75 0 00-.51-.061l-1.047.252a1.125 1.125 0 00-.814.733l-1.203 3.61a.75.75 0 00.321.842l2.128 1.419c.14.094.226.251.226.419v1.611c0 .621.504 1.125 1.125 1.125h1.125z" />
+                </svg>
+              </div>
+              <span className="text-[10px] font-black uppercase text-ergo-navy-deep leading-tight">Free<br/>Shipping</span>
+            </div>
+            <div className="flex flex-col items-center gap-1.5 text-center border-x border-ergo-border">
+              <div className="w-10 h-10 rounded-full bg-ergo-surface flex items-center justify-center text-ergo-green">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.724 10.339 8.75 11.758 5.026-1.42 8.75-6.166 8.75-11.758 0-1.282-.25-2.525-.702-3.66z" />
+                </svg>
+              </div>
+              <span className="text-[10px] font-black uppercase text-ergo-navy-deep leading-tight">2-Year<br/>Warranty</span>
+            </div>
+            <div className="flex flex-col items-center gap-1.5 text-center">
+              <div className="w-10 h-10 rounded-full bg-ergo-surface flex items-center justify-center text-ergo-green">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                </svg>
+              </div>
+              <span className="text-[10px] font-black uppercase text-ergo-navy-deep leading-tight">30-Day<br/>Trial</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

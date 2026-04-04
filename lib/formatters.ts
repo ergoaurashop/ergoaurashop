@@ -6,17 +6,22 @@ import type { Money } from "@/lib/shopify/types";
  */
 export function formatPrice(money: Money | string | number): string {
   let amount = 0;
+  let currencyCode = "AED";
+
   if (typeof money === "object" && money !== null && "amount" in money) {
     amount = parseFloat(money.amount);
+    if ("currencyCode" in money) {
+      currencyCode = money.currencyCode as string;
+    }
   } else if (typeof money === "string") {
     amount = parseFloat(money);
   } else if (typeof money === "number") {
     amount = money;
   }
 
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat("en-AE", {
     style: "currency",
-    currency: "USD",
+    currency: currencyCode,
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amount);

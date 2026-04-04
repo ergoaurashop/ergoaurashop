@@ -20,14 +20,14 @@ export function ProductGrid({ products = [] }: ProductGridProps) {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-5 w-full">
+    <ul className="product-grid w-full">
       {products.map((product, idx) => (
-        <ProductCard 
-          key={product.id} 
-          product={product} 
-          priority={idx < 4} 
-        />
+        <li key={product.id}>
+          <ProductCard 
+            product={product} 
+          />
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
