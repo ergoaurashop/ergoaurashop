@@ -152,14 +152,15 @@ export function CartDrawer() {
             </p>
 
             <button
-              onClick={() => {
-  const url = cart?.checkoutUrl;
-  if (!url) return;
-  const checkoutUrl = url.replace(
-    /^(https?:\/\/[^\/]*|)/,
-    "https://hqdyqf-9e.myshopify.com"
-  );
-  window.location.assign(checkoutUrl);
+  onClick={() => {
+  const url = cart?.checkoutUrl
+  if (!url) return
+  const cartPath = url.includes('/cart/')
+    ? url.substring(url.indexOf('/cart/'))
+    : url
+  const checkoutUrl = `https://hqdyqf-9e.myshopify.com${cartPath}`
+  console.log('Drawer checkout:', checkoutUrl) // ← debug log
+  window.location.assign(checkoutUrl)
 }}
               className="w-full flex items-center justify-center gap-2 bg-ergo-green hover:bg-[#2e6537] text-white rounded-xl py-[14px] font-bold text-[15px] shadow-sm transition-transform active:scale-[0.98]"
             >

@@ -70,20 +70,21 @@ const [isBuying, setIsBuying] = useState(false);
 
   // ✅ REPLACE WITH — always forces correct domain
 const handleBuyNow = async () => {
-  if (!matchedVariant || !isAvailable) return;
-  setIsBuying(true);
-  const updatedCart = await addItem(matchedVariant.id, quantity, false);
-  setIsBuying(false);
+  if (!matchedVariant || !isAvailable) return
+  setIsBuying(true)
+  const updatedCart = await addItem(matchedVariant.id, quantity, false)
+  setIsBuying(false)
 
-  if (updatedCart && updatedCart.checkoutUrl) {
-    // Force correct Shopify domain regardless of what was returned
-    const checkoutUrl = updatedCart.checkoutUrl.replace(
-      /^(https?:\/\/[^\/]*|)/,
-      "https://hqdyqf-9e.myshopify.com"
-    );
-    window.location.assign(checkoutUrl);
+  if (updatedCart?.checkoutUrl) {
+    const url = updatedCart.checkoutUrl
+    const cartPath = url.includes('/cart/')
+      ? url.substring(url.indexOf('/cart/'))
+      : url
+    const checkoutUrl = `https://hqdyqf-9e.myshopify.com${cartPath}`
+    console.log('Redirecting to:', checkoutUrl) // ← debug log
+    window.location.assign(checkoutUrl)
   }
-};
+}
 
   return (
     <div className="flex flex-col mt-4">
