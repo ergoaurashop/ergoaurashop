@@ -1,6 +1,23 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: '/cart/c/:path*',
+        destination: 'https://hqdyqf-9e.myshopify.com/cart/c/:path*',
+      },
+      {
+        source: '/checkouts/:path*',
+        destination: 'https://hqdyqf-9e.myshopify.com/checkouts/:path*',
+      },
+      {
+        source: '/cart/:path*',
+        destination: 'https://hqdyqf-9e.myshopify.com/cart/:path*',
+      },
+    ];
+  },
+
   images: {
     remotePatterns: [
       {
@@ -25,7 +42,6 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "*.amazonaws.com",
       },
-      // Wildcard pattern for total coverage of https sources
       {
         protocol: "https",
         hostname: "**",

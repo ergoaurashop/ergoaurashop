@@ -148,16 +148,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
    * which must be prefixed with the store domain to avoid 404s on the frontend.
    */
   // ✅ REPLACE your existing processCart with this:
+// ✅ Simple version — let Shopify return its URL
+// Next.js proxy will handle the routing
 function processCart(cart: Cart | null): Cart | null {
   if (!cart) return null
-  if (cart.checkoutUrl) {
-    const url = cart.checkoutUrl
-    const cartPath = url.includes('/cart/')
-      ? url.substring(url.indexOf('/cart/'))
-      : url
-    cart.checkoutUrl = `https://hqdyqf-9e.myshopify.com${cartPath}`
-  }
-  return cart
+  return cart  // no URL manipulation needed
 }
 
   /** Persists a cart to state + localStorage */

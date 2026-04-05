@@ -69,20 +69,18 @@ const [isBuying, setIsBuying] = useState(false);
   };
 
   // ✅ REPLACE WITH — always forces correct domain
+// ✅ Simple — just use checkoutUrl directly
 const handleBuyNow = async () => {
   if (!matchedVariant || !isAvailable) return
   setIsBuying(true)
-  const updatedCart = await addItem(matchedVariant.id, quantity, false)
+  const updatedCart = await addItem(
+    matchedVariant.id, quantity, false
+  )
   setIsBuying(false)
 
   if (updatedCart?.checkoutUrl) {
-    const url = updatedCart.checkoutUrl
-    const cartPath = url.includes('/cart/')
-      ? url.substring(url.indexOf('/cart/'))
-      : url
-    const checkoutUrl = `https://hqdyqf-9e.myshopify.com${cartPath}`
-    console.log('Redirecting to:', checkoutUrl) // ← debug log
-    window.location.assign(checkoutUrl)
+    // No manipulation — proxy handles it
+    window.location.assign(updatedCart.checkoutUrl)
   }
 }
 
