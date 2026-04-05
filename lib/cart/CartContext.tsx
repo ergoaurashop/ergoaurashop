@@ -153,17 +153,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 function processCart(cart: Cart | null): Cart | null {
   if (!cart) return null
   if (cart.checkoutUrl) {
-    try {
-      // Parse the URL and rebuild with myshopify domain
-      const parsed = new URL(cart.checkoutUrl)
-      // Replace whatever domain Shopify returned with myshopify
-      cart.checkoutUrl =
-        `https://hqdyqf-9e.myshopify.com` +
-        parsed.pathname +
-        parsed.search
-    } catch {
-      // If URL parsing fails, use as-is
-    }
+    cart.checkoutUrl = cart.checkoutUrl
+      .replace(
+        'hqdyqf-9e.myshopify.com',
+        process.env.NEXT_PUBLIC_CHECKOUT_DOMAIN || 
+        'checkout.ergoaurashop.com'
+      )
   }
   return cart
 }

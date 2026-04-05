@@ -78,11 +78,14 @@ const handleBuyNow = async () => {
   )
   setIsBuying(false)
 
-  // TEMPORARY DEBUG — shows exact URL Shopify returns
-  alert(`
-    checkoutUrl: ${updatedCart?.checkoutUrl}
-    cartId: ${updatedCart?.id}
-  `)
+  if (updatedCart?.checkoutUrl) {
+    // Replace myshopify domain with branded checkout domain
+    const checkoutUrl = updatedCart.checkoutUrl.replace(
+      'hqdyqf-9e.myshopify.com',
+      'checkout.ergoaurashop.com'
+    )
+    window.location.assign(checkoutUrl)
+  }
 }
 
   return (
