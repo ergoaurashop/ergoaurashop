@@ -161,14 +161,18 @@ export default function CartPage() {
             </div>
 
             <button
-              onClick={() => {
-  const url = cart?.checkoutUrl
-  if (!url) return
-  const cartPath = url.includes('/cart/')
-    ? url.substring(url.indexOf('/cart/'))
-    : url
-  const checkoutUrl = `https://hqdyqf-9e.myshopify.com${cartPath}`
-  window.location.assign(checkoutUrl)
+   onClick={() => {
+  if (!cart?.checkoutUrl) return
+  try {
+    const parsed = new URL(cart.checkoutUrl)
+    const finalUrl =
+      `https://hqdyqf-9e.myshopify.com` +
+      parsed.pathname +
+      parsed.search
+    window.location.assign(finalUrl)
+  } catch {
+    window.location.assign(cart.checkoutUrl)
+  }
 }}
               className="w-full bg-ergo-navy text-white flex items-center justify-center py-4 rounded-full font-black text-sm uppercase tracking-widest hover:bg-ergo-navy-deep transition-all shadow-md hover:shadow-lg active:scale-95"
             >

@@ -152,7 +152,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 // Next.js proxy will handle the routing
 function processCart(cart: Cart | null): Cart | null {
   if (!cart) return null
-  return cart  // no URL manipulation needed
+  if (cart.checkoutUrl) {
+    try {
+      // Parse the URL and rebuild with myshopify domain
+      const parsed = new URL(cart.checkoutUrl)
+      // Replace whatever domain Shopify returned with myshopify
+      cart.checkoutUrl =
+        `https://hqdyqf-9e.myshopify.com` +
+        parsed.pathname +
+        parsed.search
+    } catch {
+      // If URL parsing fails, use as-is
+    }
+  }
+  return cart
 }
 
   /** Persists a cart to state + localStorage */

@@ -154,7 +154,15 @@ export function CartDrawer() {
             <button
  // ✅ Simple
 onClick={() => {
-  if (cart?.checkoutUrl) {
+  if (!cart?.checkoutUrl) return
+  try {
+    const parsed = new URL(cart.checkoutUrl)
+    const finalUrl =
+      `https://hqdyqf-9e.myshopify.com` +
+      parsed.pathname +
+      parsed.search
+    window.location.assign(finalUrl)
+  } catch {
     window.location.assign(cart.checkoutUrl)
   }
 }}

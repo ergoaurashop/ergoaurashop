@@ -79,8 +79,16 @@ const handleBuyNow = async () => {
   setIsBuying(false)
 
   if (updatedCart?.checkoutUrl) {
-    // No manipulation — proxy handles it
-    window.location.assign(updatedCart.checkoutUrl)
+    try {
+      const parsed = new URL(updatedCart.checkoutUrl)
+      const finalUrl =
+        `https://hqdyqf-9e.myshopify.com` +
+        parsed.pathname +
+        parsed.search
+      window.location.assign(finalUrl)
+    } catch {
+      window.location.assign(updatedCart.checkoutUrl)
+    }
   }
 }
 
