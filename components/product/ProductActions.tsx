@@ -78,18 +78,11 @@ const handleBuyNow = async () => {
   )
   setIsBuying(false)
 
-  if (updatedCart?.checkoutUrl) {
-    try {
-      const parsed = new URL(updatedCart.checkoutUrl)
-      const finalUrl =
-        `https://hqdyqf-9e.myshopify.com` +
-        parsed.pathname +
-        parsed.search
-      window.location.assign(finalUrl)
-    } catch {
-      window.location.assign(updatedCart.checkoutUrl)
-    }
-  }
+  // TEMPORARY DEBUG — shows exact URL Shopify returns
+  alert(`
+    checkoutUrl: ${updatedCart?.checkoutUrl}
+    cartId: ${updatedCart?.id}
+  `)
 }
 
   return (
