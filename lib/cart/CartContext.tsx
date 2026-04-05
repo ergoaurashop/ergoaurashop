@@ -149,16 +149,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
    */
   // ✅ REPLACE your existing processCart with this:
   function processCart(cart: Cart | null): Cart | null {
-    if (!cart) return null;
-    
-    const domain = "hqdyqf-9e.myshopify.com";
-    
-    if (cart.checkoutUrl && !cart.checkoutUrl.startsWith("http")) {
-      cart.checkoutUrl = `https://${domain}${cart.checkoutUrl}`;
-    }
-    
-    return cart;
+  if (!cart) return null;
+  if (cart.checkoutUrl) {
+    // Force replace ANY domain with myshopify domain
+    // Fixes both relative URLs AND wrong custom domain
+    cart.checkoutUrl = cart.checkoutUrl.replace(
+      /^(https?:\/\/[^\/]*|)/,
+      "https://hqdyqf-9e.myshopify.com"
+    );
   }
+  return cart;
+}
 
   /** Persists a cart to state + localStorage */
   function setCart(cart: Cart) {

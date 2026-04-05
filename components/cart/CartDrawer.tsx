@@ -153,13 +153,14 @@ export function CartDrawer() {
 
             <button
               onClick={() => {
-                const url = cart?.checkoutUrl;
-                if (!url) return;
-                const absolute = url.startsWith("http")
-                  ? url
-                  : `https://hqdyqf-9e.myshopify.com${url}`;
-                window.location.assign(absolute);
-              }}
+  const url = cart?.checkoutUrl;
+  if (!url) return;
+  const checkoutUrl = url.replace(
+    /^(https?:\/\/[^\/]*|)/,
+    "https://hqdyqf-9e.myshopify.com"
+  );
+  window.location.assign(checkoutUrl);
+}}
               className="w-full flex items-center justify-center gap-2 bg-ergo-green hover:bg-[#2e6537] text-white rounded-xl py-[14px] font-bold text-[15px] shadow-sm transition-transform active:scale-[0.98]"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">

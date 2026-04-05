@@ -13,6 +13,7 @@ export function ProductActions({ product }: ProductActionsProps) {
   const { addItem, openCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
+const [isBuying, setIsBuying] = useState(false);
 
   const variants = product.variants.edges.map(e => e.node);
   
@@ -67,21 +68,22 @@ export function ProductActions({ product }: ProductActionsProps) {
     setIsAdding(false);
   };
 
-  const handleBuyNow = async () => {
-    if (!matchedVariant || !isAvailable) return;
-    setIsAdding(true);
-    // Pass false to addItem to prevent the cart drawer from opening
-    const updatedCart = await addItem(matchedVariant.id, quantity, false);
-    setIsAdding(false);
-    
-    if (updatedCart && updatedCart.checkoutUrl) {
-      const url = updatedCart.checkoutUrl;
-      const absolute = url.startsWith("http")
-        ? url
-        : `https://hqdyqf-9e.myshopify.com${url}`;
-      window.location.assign(absolute);
-    }
-  };
+  // ✅ REPLACE WITH — always forces correct domain
+const handleBuyNow = async () => {
+  if (!matchedVariant || !isAvailable) return;
+  setIsBuying(true);
+  const updatedCart = await addItem(matchedVariant.id, quantity, false);
+  setIsBuying(false);
+
+  if (updatedCart && updatedCart.checkoutUrl) {
+    // Force correct Shopify domain regardless of what was returned
+    const checkoutUrl = updatedCart.checkoutUrl.replace(
+      /^(https?:\/\/[^\/]*|)/,
+      "https://hqdyqf-9e.myshopify.com"
+    );
+    window.location.assign(checkoutUrl);
+  }
+};
 
   return (
     <div className="flex flex-col mt-4">
@@ -179,7 +181,7 @@ export function ProductActions({ product }: ProductActionsProps) {
           </button>
           <button
             onClick={handleBuyNow}
-            disabled={!isAvailable || isAdding}
+            disabled={!isAvailable || isBuying}
             className={`
               w-full h-14 border-2 border-ergo-navy text-ergo-navy bg-white 
               rounded-full font-black text-lg hover:bg-ergo-surface transition-all 
@@ -187,7 +189,7 @@ export function ProductActions({ product }: ProductActionsProps) {
               flex justify-center items-center active:scale-[0.98]
             `}
           >
-            BUY IT NOW
+            {isBuying ? <spinner/> : "BUY IT NOW"}
           </button>
 
           {/* Trust Badge Stack */}
