@@ -189,7 +189,11 @@ const handleBuyNow = async () => {
               flex justify-center items-center active:scale-[0.98]
             `}
           >
-            {isBuying ? <spinner/> : "BUY IT NOW"}
+            {isBuying ? (
+  <div className="w-6 h-6 border-[3px] border-white/30 border-t-white rounded-full animate-spin" />
+) : (
+  "BUY IT NOW"
+)}
           </button>
 
           {/* Trust Badge Stack */}
