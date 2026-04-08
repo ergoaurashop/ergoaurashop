@@ -1,12 +1,13 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { Collection } from "@/lib/shopify/types";
 
 interface DepartmentGridProps {
-  title: React.ReactNode;
-  collections: any[];
+  title: ReactNode;
+  collections: Collection[];
   linkHref: string;
   linkText?: string;
-  icon?: React.ReactNode;
+  icon?: ReactNode;
 }
 
 export function DepartmentGrid({ title, collections, linkHref, linkText = "Explore", icon }: DepartmentGridProps) {

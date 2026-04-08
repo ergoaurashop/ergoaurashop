@@ -12,11 +12,15 @@ export const metadata: Metadata = {
 };
 
 export default async function CollectionsIndexPage() {
-  const data = await shopifyFetch<{ collections: { edges: { node: Collection }[] } }>({
-    query: GET_ALL_COLLECTIONS,
-  });
-
-  const collections = data.collections?.edges.map(e => e.node) || [];
+  let collections: Collection[] = [];
+  try {
+    const data = await shopifyFetch<{ collections: { edges: { node: Collection }[] } }>({
+      query: GET_ALL_COLLECTIONS,
+    });
+    collections = data.collections?.edges.map(e => e.node) || [];
+  } catch (err) {
+    console.error("[CollectionsPage] Failed to fetch collections:", err);
+  }
 
   return (
     <div className="w-full bg-white min-h-screen py-16 md:py-24">

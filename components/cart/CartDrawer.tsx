@@ -9,7 +9,7 @@ import { formatPrice } from "@/lib/formatters";
 const FREE_SHIPPING_THRESHOLD = 50;
 
 export function CartDrawer() {
-  const { cart, isOpen, closeCart, isLoading } = useCart();
+  const { cart, isOpen, closeCart, isLoading, error } = useCart();
   const [mounted, setMounted] = useState(false);
 
   // Avoid hydration mismatch by waiting for mount
@@ -32,17 +32,23 @@ export function CartDrawer() {
 
   if (!mounted) return null;
 
-  const subtotal = cart?.cost?.subtotalAmount?.amount 
-    ? parseFloat(cart.cost.subtotalAmount.amount) 
+  const subtotal = cart?.cost?.subtotalAmount?.amount
+    ? parseFloat(cart.cost.subtotalAmount.amount)
     : 0;
   const isFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
   const amountToFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
   const progressPercentage = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
 
+  // ─── Checkout handler — use the URL exactly as returned by Shopify/processCart ─
+  const handleCheckout = () => {
+    if (!cart?.checkoutUrl) return;
+    window.location.assign(cart.checkoutUrl);
+  };
+
   return (
     <>
       {/* Backdrop */}
-      <div 
+      <div
         className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-50 transition-opacity duration-300 ${
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
@@ -51,7 +57,7 @@ export function CartDrawer() {
       />
 
       {/* Drawer */}
-      <div 
+      <div
         className={`fixed top-0 right-0 h-[100dvh] w-full max-w-[400px] bg-white shadow-2xl z-50 flex flex-col transform transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
@@ -59,7 +65,7 @@ export function CartDrawer() {
         aria-modal="true"
         aria-label="Shopping Cart"
       >
-        
+
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-ergo-border">
           <h2 className="text-xl font-bold text-ergo-navy-deep flex items-center gap-2">
@@ -70,7 +76,7 @@ export function CartDrawer() {
               </span>
             )}
           </h2>
-          <button 
+          <button
             onClick={closeCart}
             className="p-2 text-gray-400 hover:text-ergo-navy transition-colors bg-gray-50 hover:bg-gray-100 rounded-full"
             aria-label="Close cart"
@@ -98,12 +104,22 @@ export function CartDrawer() {
             )}
           </div>
           <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-            <div 
-              className={`h-full rounded-full transition-all duration-700 ease-out ${isFreeShipping ? 'bg-ergo-green' : 'bg-ergo-orange'}`}
+            <div
+              className={`h-full rounded-full transition-all duration-700 ease-out ${isFreeShipping ? "bg-ergo-green" : "bg-ergo-orange"}`}
               style={{ width: `${progressPercentage}%` }}
             />
           </div>
         </div>
+
+        {/* Error Banner — shows when a cart action fails */}
+        {error && (
+          <div className="mx-5 mt-4 px-4 py-3 bg-red-50 border border-red-200 rounded-xl flex items-start gap-2 text-sm text-red-700 font-medium flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 mt-0.5 flex-shrink-0">
+              <path fillRule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clipRule="evenodd" />
+            </svg>
+            <span>{error}</span>
+          </div>
+        )}
 
         {/* Cart Items Area */}
         <div className="flex-1 overflow-y-auto px-5 py-2">
@@ -121,7 +137,7 @@ export function CartDrawer() {
               </div>
               <p className="text-lg font-bold text-ergo-navy mb-1">Your cart is empty</p>
               <p className="text-sm text-gray-500 mb-6 text-center">It looks like you haven&apos;t added any items yet.</p>
-              <button 
+              <button
                 onClick={closeCart}
                 className="bg-ergo-navy text-white px-8 py-3 rounded-xl font-bold hover:bg-ergo-navy-deep transition-colors shadow-sm"
               >
@@ -143,30 +159,18 @@ export function CartDrawer() {
             <div className="flex justify-between items-center mb-1 drop-shadow-sm">
               <span className="text-gray-500 text-sm font-medium">Subtotal</span>
               <span className="font-bold text-ergo-text text-xl">
-                {cart.cost?.subtotalAmount ? formatPrice(cart.cost.subtotalAmount) : "$0.00"}
+                {cart.cost?.subtotalAmount ? formatPrice(cart.cost.subtotalAmount) : "—"}
               </span>
             </div>
-            
+
             <p className="text-[11px] text-gray-400 mb-4 pb-3 border-b border-dashed border-gray-200">
               Taxes and shipping calculated at checkout.
             </p>
 
             <button
- // ✅ Simple
-onClick={() => {
-  if (!cart?.checkoutUrl) return
-  try {
-    const parsed = new URL(cart.checkoutUrl)
-    const finalUrl =
-      `https://hqdyqf-9e.myshopify.com` +
-      parsed.pathname +
-      parsed.search
-    window.location.assign(finalUrl)
-  } catch {
-    window.location.assign(cart.checkoutUrl)
-  }
-}}
-              className="w-full flex items-center justify-center gap-2 bg-ergo-green hover:bg-[#2e6537] text-white rounded-xl py-[14px] font-bold text-[15px] shadow-sm transition-transform active:scale-[0.98]"
+              onClick={handleCheckout}
+              disabled={!cart?.checkoutUrl || isLoading}
+              className="w-full flex items-center justify-center gap-2 bg-ergo-green hover:bg-[#2e6537] text-white rounded-xl py-[14px] font-bold text-[15px] shadow-sm transition-transform active:scale-[0.98] disabled:opacity-60"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
                 <path fillRule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clipRule="evenodd" />

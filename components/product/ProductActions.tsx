@@ -68,25 +68,17 @@ const [isBuying, setIsBuying] = useState(false);
     setIsAdding(false);
   };
 
-  // ✅ REPLACE WITH — always forces correct domain
-// ✅ Simple — just use checkoutUrl directly
-const handleBuyNow = async () => {
-  if (!matchedVariant || !isAvailable) return
-  setIsBuying(true)
-  const updatedCart = await addItem(
-    matchedVariant.id, quantity, false
-  )
-  setIsBuying(false)
-
-  if (updatedCart?.checkoutUrl) {
-    // Replace myshopify domain with branded checkout domain
-    const checkoutUrl = updatedCart.checkoutUrl.replace(
-      'hqdyqf-9e.myshopify.com',
-      'checkout.ergoaurashop.com'
-    )
-    window.location.assign(checkoutUrl)
-  }
-}
+  // Use checkoutUrl exactly as returned — processCart() in CartContext already
+  // handles the domain swap (hqdyqf-9e.myshopify.com → checkout.ergoaurashop.com)
+  const handleBuyNow = async () => {
+    if (!matchedVariant || !isAvailable) return;
+    setIsBuying(true);
+    const updatedCart = await addItem(matchedVariant.id, quantity, false);
+    setIsBuying(false);
+    if (updatedCart?.checkoutUrl) {
+      window.location.assign(updatedCart.checkoutUrl);
+    }
+  };
 
   return (
     <div className="flex flex-col mt-4">
@@ -193,7 +185,7 @@ const handleBuyNow = async () => {
             `}
           >
             {isBuying ? (
-  <div className="w-6 h-6 border-[3px] border-white/30 border-t-white rounded-full animate-spin" />
+  <div className="w-6 h-6 border-[3px] border-ergo-navy/30 border-t-ergo-navy rounded-full animate-spin" />
 ) : (
   "BUY IT NOW"
 )}

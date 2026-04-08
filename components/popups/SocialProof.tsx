@@ -108,12 +108,14 @@ export default function SocialProof({ products }: SocialProofProps) {
         >
           <div className="flex items-center gap-3">
             <div className="relative w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden bg-ergo-surface">
-              <Image
-                src={currentProduct.featuredImage.url}
-                alt={currentProduct.featuredImage.altText || currentProduct.title}
-                fill
-                className="object-cover"
-              />
+              {currentProduct.featuredImage?.url && (
+                <Image
+                  src={currentProduct.featuredImage.url}
+                  alt={currentProduct.featuredImage.altText || currentProduct.title}
+                  fill
+                  className="object-cover"
+                />
+              )}
             </div>
             <div className="flex-grow min-w-0">
               <p className="text-[10px] text-ergo-muted uppercase tracking-wider font-semibold">

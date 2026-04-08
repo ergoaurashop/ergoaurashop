@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { getTrackingInfo, AfterShipTracking } from "@/lib/aftership/actions";
+import { AfterShipTracking } from "@/lib/aftership/actions";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function TrackOrderPage() {
@@ -18,14 +18,28 @@ export default function TrackOrderPage() {
     setError("");
     setData(null);
 
-    const result = await getTrackingInfo(trackingNumber.trim());
+    try {
+      // ─── Call our server-side API route — never exposes AFTERSHIP_API_KEY ───
+      const params = new URLSearchParams({ number: trackingNumber.trim() });
+      const res = await fetch(`/api/track?${params.toString()}`);
 
-    if (!result) {
-      setError("No tracking information found for this number. Check your entry and try again.");
-    } else {
-      setData(result);
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || `Server error ${res.status}`);
+      }
+
+      const { data: result } = await res.json();
+      if (!result) {
+        setError("No tracking information found for this number. Check your entry and try again.");
+      } else {
+        setData(result as AfterShipTracking);
+      }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Something went wrong. Please try again.";
+      setError(message);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const getStatusColor = (tag: string) => {
@@ -86,7 +100,7 @@ export default function TrackOrderPage() {
 
           {data && (
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col gap-8">
-              
+
               {/* Status Header */}
               <div className="bg-ergo-surface rounded-3xl p-8 border border-ergo-border flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
@@ -98,12 +112,12 @@ export default function TrackOrderPage() {
                   </div>
                   <h2 className="text-2xl font-black text-ergo-navy-deep">{data.tracking_number}</h2>
                 </div>
-                
+
                 {data.expected_delivery && (
                   <div className="bg-white p-4 rounded-2xl border border-ergo-border min-w-[200px]">
                     <p className="text-[10px] font-black text-ergo-muted uppercase tracking-widest mb-1">Expected Delivery</p>
                     <p className="text-lg font-black text-ergo-navy-deep">
-                      {new Date(data.expected_delivery).toLocaleDateString("en-AE", { weekday: 'short', month: 'short', day: 'numeric' })}
+                      {new Date(data.expected_delivery).toLocaleDateString("en-AE", { weekday: "short", month: "short", day: "numeric" })}
                     </p>
                   </div>
                 )}

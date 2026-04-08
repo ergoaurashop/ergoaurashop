@@ -73,25 +73,25 @@ export function ProductCard({ product }: ProductCardProps) {
             {discount}% OFF
           </span>
         )}
-      </div>
 
-      {/* QUICK ADD BUTTON — Prominent bottom-right quick action */}
-      <button
-        onClick={handleAddToCart}
-        className="product-card__add-btn"
-        aria-label="Add to cart"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={3}
-          stroke="currentColor"
-          className="w-6 h-6"
+        {/* QUICK ADD BUTTON — inside img-wrap so it's contained */}
+        <button
+          onClick={handleAddToCart}
+          className="product-card__add-btn"
+          aria-label="Add to cart"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-        </svg>
-      </button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={3}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+        </button>
+      </div>
 
       {/* INFO */}
       <div className="product-card__info">

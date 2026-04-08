@@ -7,11 +7,10 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function CartPage() {
-  const { cart, isLoading: isCartLoading, removeItem, updateQuantity } = useCart();
+  const { cart, isLoading: isCartLoading, removeItem, updateQuantity, error } = useCart();
   const [loadingLines, setLoadingLines] = useState<Record<string, boolean>>({});
 
   const handleRemove = async (lineId: string) => {
-    if (!cart?.id) return;
     setLoadingLines((prev) => ({ ...prev, [lineId]: true }));
     try {
       await removeItem(lineId);
@@ -21,7 +20,7 @@ export default function CartPage() {
   };
 
   const handleUpdate = async (lineId: string, quantity: number) => {
-    if (!cart?.id || quantity < 1) return;
+    if (quantity < 1) return;
     setLoadingLines((prev) => ({ ...prev, [lineId]: true }));
     try {
       await updateQuantity(lineId, quantity);
@@ -30,10 +29,16 @@ export default function CartPage() {
     }
   };
 
+  // ─── Checkout handler — use the URL exactly as returned by processCart ───────
+  const handleCheckout = () => {
+    if (!cart?.checkoutUrl) return;
+    window.location.assign(cart.checkoutUrl);
+  };
+
   if (isCartLoading && !cart) {
     return (
       <div className="w-full min-h-[60vh] flex items-center justify-center bg-ergo-surface">
-        <div className="w-8 h-8 font-black text-ergo-navy animate-spin">○</div>
+        <div className="w-8 h-8 border-[3px] border-ergo-border border-t-ergo-navy rounded-full animate-spin" />
       </div>
     );
   }
@@ -64,6 +69,18 @@ export default function CartPage() {
         </div>
       </div>
 
+      {/* Error Banner */}
+      {error && (
+        <div className="max-w-7xl mx-auto px-4 md:px-8 mb-6">
+          <div className="px-4 py-3 bg-red-50 border border-red-200 rounded-xl flex items-start gap-2 text-sm text-red-700 font-medium">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 mt-0.5 flex-shrink-0">
+              <path fillRule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clipRule="evenodd" />
+            </svg>
+            <span>{error}</span>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col lg:flex-row gap-12">
         {/* Cart Items (Left) */}
         <div className="w-full lg:w-2/3">
@@ -80,7 +97,7 @@ export default function CartPage() {
               const image = product.images.edges[0]?.node;
               return (
                 <div key={line.id} className={`grid grid-cols-1 md:grid-cols-6 gap-4 md:items-center py-4 border-b border-ergo-border last:border-0 ${loadingLines[line.id] ? "opacity-50 pointer-events-none grayscale" : ""}`}>
-                  
+
                   {/* Product Info */}
                   <div className="col-span-3 flex gap-4">
                     <Link href={`/products/${product.handle}`} className="relative w-24 h-24 bg-ergo-surface rounded-xl overflow-hidden flex-shrink-0 border border-ergo-border group">
@@ -92,8 +109,8 @@ export default function CartPage() {
                       <Link href={`/products/${product.handle}`} className="text-base font-black text-ergo-navy-deep hover:text-ergo-navy transition-colors tracking-tight line-clamp-2">
                         {product.title}
                       </Link>
-                      <p className="text-xs font-bold text-ergo-muted mt-1">{line.merchandise.title !== 'Default Title' ? line.merchandise.title : ''}</p>
-                      
+                      <p className="text-xs font-bold text-ergo-muted mt-1">{line.merchandise.title !== "Default Title" ? line.merchandise.title : ""}</p>
+
                       {/* Mobile Pricing & Actions */}
                       <div className="md:hidden flex items-center justify-between mt-4">
                         <span className="font-bold text-sm text-ergo-text">{formatPrice(line.merchandise.price)}</span>
@@ -141,12 +158,12 @@ export default function CartPage() {
         <div className="w-full lg:w-1/3">
           <div className="bg-ergo-surface rounded-3xl p-6 md:p-8 border border-ergo-border sticky top-32">
             <h2 className="text-xl font-black text-ergo-navy-deep tracking-tight mb-6">Order Summary</h2>
-            
+
             <div className="flex justify-between items-center mb-4 text-sm font-bold">
               <span className="text-ergo-muted">Subtotal</span>
               <span className="text-ergo-navy-deep">{formatPrice(cart.cost.subtotalAmount)}</span>
             </div>
-            
+
             <div className="flex justify-between items-center mb-6 border-b border-ergo-border/50 pb-6 text-sm font-bold">
               <span className="text-ergo-muted">Shipping</span>
               <span className="text-ergo-navy-deep">Calculated at checkout</span>
@@ -161,24 +178,13 @@ export default function CartPage() {
             </div>
 
             <button
-   onClick={() => {
-  if (!cart?.checkoutUrl) return
-  try {
-    const parsed = new URL(cart.checkoutUrl)
-    const finalUrl =
-      `https://hqdyqf-9e.myshopify.com` +
-      parsed.pathname +
-      parsed.search
-    window.location.assign(finalUrl)
-  } catch {
-    window.location.assign(cart.checkoutUrl)
-  }
-}}
-              className="w-full bg-ergo-navy text-white flex items-center justify-center py-4 rounded-full font-black text-sm uppercase tracking-widest hover:bg-ergo-navy-deep transition-all shadow-md hover:shadow-lg active:scale-95"
+              onClick={handleCheckout}
+              disabled={!cart?.checkoutUrl || isCartLoading}
+              className="w-full bg-ergo-navy text-white flex items-center justify-center py-4 rounded-full font-black text-sm uppercase tracking-widest hover:bg-ergo-navy-deep transition-all shadow-md hover:shadow-lg active:scale-95 disabled:opacity-60"
             >
               Secure Checkout
             </button>
-            
+
             <div className="mt-6 flex justify-center items-center gap-2 text-[10px] font-bold text-ergo-muted uppercase tracking-widest">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 text-ergo-green">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
