@@ -155,9 +155,10 @@ function processCart(cart: Cart | null): Cart | null {
   if (cart.checkoutUrl) {
     try {
       const checkoutUrl = new URL(cart.checkoutUrl);
-      // Force the checkout to use our dedicated checkout subdomain,
-      // ignoring whatever domain Shopify returns by default.
-      checkoutUrl.hostname = process.env.NEXT_PUBLIC_CHECKOUT_DOMAIN || "checkout.ergoaurashop.com";
+      // Force the checkout to use the native Shopify store domain (.myshopify.com),
+      // ignoring whatever domain Shopify returns by default. This guarantees the 
+      // checkout goes to Shopify's servers instead of trying to load on Vercel.
+      checkoutUrl.hostname = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || "hqdyqf-9e.myshopify.com";
       cart.checkoutUrl = checkoutUrl.toString();
     } catch (e) {
       console.error("Failed to process checkout URL:", e);
