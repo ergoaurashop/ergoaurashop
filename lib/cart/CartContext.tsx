@@ -151,16 +151,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 // ✅ Simple version — let Shopify return its URL
 // Next.js proxy will handle the routing
 function processCart(cart: Cart | null): Cart | null {
-  if (!cart) return null
+  if (!cart) return null;
   if (cart.checkoutUrl) {
-    cart.checkoutUrl = cart.checkoutUrl
-      .replace(
-        'hqdyqf-9e.myshopify.com',
-        process.env.NEXT_PUBLIC_CHECKOUT_DOMAIN || 
-        'checkout.ergoaurashop.com'
-      )
+    try {
+      const checkoutUrl = new URL(cart.checkoutUrl);
+      // Force the checkout to use our dedicated checkout subdomain,
+      // ignoring whatever domain Shopify returns by default.
+      checkoutUrl.hostname = process.env.NEXT_PUBLIC_CHECKOUT_DOMAIN || "checkout.ergoaurashop.com";
+      cart.checkoutUrl = checkoutUrl.toString();
+    } catch (e) {
+      console.error("Failed to process checkout URL:", e);
+    }
   }
-  return cart
+  return cart;
 }
 
   /** Persists a cart to state + localStorage */
