@@ -13,6 +13,7 @@ import { Shop } from "@/lib/shopify/types";
 import IntegrationsWrapper from "@/components/integrations/IntegrationsWrapper";
 import Script from "next/script";
 import { CustomerProvider } from "@/components/providers/CustomerProvider";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -92,6 +93,7 @@ export default async function RootLayout({
             <IntegrationsWrapper recentProducts={recentProducts as any} />
           </CartProvider>
         </CustomerProvider>
+        <Analytics />
       </body>
     </html>
   );
