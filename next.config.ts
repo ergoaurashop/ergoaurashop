@@ -31,6 +31,24 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    // If NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN is missing, fallback to the hardcoded domain to prevent crashes.
+    // This perfectly intercepts the native checkout paths and bounces them securely 
+    // to Shopify's servers, totally bypassing Vercel's 404 handler.
+    const shopifyDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || "hqdyqf-9e.myshopify.com";
+    return [
+      {
+        source: '/cart/c/:path*',
+        destination: `https://${shopifyDomain}/cart/c/:path*`,
+        permanent: false,
+      },
+      {
+        source: '/checkouts/:path*',
+        destination: `https://${shopifyDomain}/checkouts/:path*`,
+        permanent: false,
+      }
+    ];
+  },
 };
 
 export default nextConfig;
