@@ -154,6 +154,7 @@ export interface Cart {
 export interface ShopifyFetchOptions {
   query: string;
   variables?: Record<string, unknown>;
+  cache?: RequestCache;
 }
 
 export interface ShopifyResponse<T> {

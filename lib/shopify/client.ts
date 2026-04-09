@@ -6,6 +6,7 @@ import { ShopifyFetchOptions, ShopifyResponse } from "./types";
 export async function shopifyFetch<T>({
   query,
   variables,
+  cache,
 }: ShopifyFetchOptions): Promise<T> {
   const domain = process.env.SHOPIFY_STORE_DOMAIN;
   const storefrontAccessToken = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
@@ -29,6 +30,7 @@ export async function shopifyFetch<T>({
         query,
         ...(variables && { variables }),
       }),
+      ...(cache && { cache }),
     });
 
     if (!response.ok) {

@@ -80,6 +80,7 @@ export async function createCart(
   const data = await shopifyFetch<CartCreateResponse>({
     query: CREATE_CART,
     variables: { lines },
+    cache: "no-store",
   });
 
   assertNoUserErrors(data.cartCreate.userErrors);
@@ -101,6 +102,7 @@ export async function addToCart(
       cartId,
       lines: [{ merchandiseId: variantId, quantity }],
     },
+    cache: "no-store",
   });
 
   assertNoUserErrors(data.cartLinesAdd.userErrors);
@@ -121,6 +123,7 @@ export async function removeFromCart(
       cartId,
       lineIds: [lineId],
     },
+    cache: "no-store",
   });
 
   assertNoUserErrors(data.cartLinesRemove.userErrors);
@@ -142,6 +145,7 @@ export async function updateCartLine(
       cartId,
       lines: [{ id: lineId, quantity }],
     },
+    cache: "no-store",
   });
 
   assertNoUserErrors(data.cartLinesUpdate.userErrors);
@@ -157,6 +161,7 @@ export async function getCart(cartId: string): Promise<Cart | null> {
     const data = await shopifyFetch<CartQueryResponse>({
       query: GET_CART,
       variables: { cartId },
+      cache: "no-store",
     });
     return data.cart;
   } catch {
