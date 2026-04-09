@@ -45,20 +45,14 @@ export function Header({ shop }: HeaderProps) {
           {/* Row 1: Logo + Cart */}
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center" prefetch={false}>
-              {shop?.brand?.logo?.image?.url ? (
-                <Image
-                  src={shop.brand.logo.image.url}
-                  alt={shop.name}
-                  width={150}
-                  height={37.5}
-                  className="w-[120px] object-contain flex-shrink-0"
-                  priority
-                />
-              ) : (
-                <span className="text-xl font-black text-ergo-navy-deep leading-none">
-                  {shop?.name || "ErgoAura"}
-                </span>
-              )}
+              <Image
+                src="/logo.svg"
+                alt={shop?.name || "ErgoAura"}
+                width={140}
+                height={40}
+                className="w-[120px] h-auto object-contain flex-shrink-0"
+                priority
+              />
             </Link>
 
             <button
@@ -100,20 +94,14 @@ export function Header({ shop }: HeaderProps) {
             className="flex items-center flex-shrink-0"
             prefetch={false}
           >
-            {shop?.brand?.logo?.image?.url ? (
-              <Image
-                src={shop.brand.logo.image.url}
-                alt={shop.name}
-                width={150}
-                height={37.5}
-                className="w-[150px] object-contain flex-shrink-0"
-                priority
-              />
-            ) : (
-              <span className="text-2xl font-black text-ergo-navy-deep leading-none">
-                {shop?.name || "ErgoAura"}
-              </span>
-            )}
+            <Image
+              src="/logo.svg"
+              alt={shop?.name || "ErgoAura"}
+              width={160}
+              height={45}
+              className="w-[160px] h-auto object-contain flex-shrink-0"
+              priority
+            />
           </Link>
 
           {/* Search Bar - vast majority of flex space */}
