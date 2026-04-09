@@ -245,7 +245,11 @@ export function ProductReviews({
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-ergo-surface text-ergo-navy-deep font-black flex items-center justify-center border border-ergo-border">
-                          {review.author?.charAt(0) || "C"}
+                          {review.author ? review.author.charAt(0).toUpperCase() : (
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-ergo-muted/60">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                            </svg>
+                          )}
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
@@ -261,8 +265,10 @@ export function ProductReviews({
                       </div>
                       <span className="text-[10px] font-black text-ergo-muted">{review.date}</span>
                     </div>
-                    <h5 className="text-sm font-black text-ergo-navy-deep mb-2 tracking-tight">{review.title || "Brilliant Experience"}</h5>
-                    <p className="text-sm text-ergo-text leading-relaxed mb-4 italic">"{review.text}"</p>
+                    {review.title && (
+                      <h5 className="text-sm font-black text-ergo-navy-deep mb-2 tracking-tight">{review.title}</h5>
+                    )}
+                    <p className={`text-sm text-ergo-text leading-relaxed mb-4 ${!review.title ? 'mt-2' : ''} italic`}>"{review.text}"</p>
                     {review.images && review.images.length > 0 && (
                       <div className="flex gap-2">
                         {review.images.map((img: string, idx: number) => (

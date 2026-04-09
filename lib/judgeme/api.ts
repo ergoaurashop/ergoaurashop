@@ -173,8 +173,11 @@ export async function getProductReviews(
       return EMPTY_RESULT;
     }
 
-    const data = (await response.json()) as JudgemeReviewResponse;
-    const reviews = data.reviews || [];
+    const data = (await response.json()) as any;
+    const allShopReviews = data.reviews || [];
+    
+    // Explicitly filter for the specific product since the raw endpoint returns shop-wide reviews
+    const reviews = allShopReviews.filter((r: any) => r.product_handle === handle);
 
     return {
       reviews,
