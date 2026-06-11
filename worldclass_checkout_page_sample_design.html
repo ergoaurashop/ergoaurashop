@@ -1,0 +1,1288 @@
+/* Design brilliantly and remove unwanted field or rearrange according to our
+razor pay payment gateway*/
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: var(--font-sans);
+  }
+
+  .page {
+    background: var(--color-background-tertiary);
+    padding: 14px;
+    border-radius: var(--border-radius-lg);
+  }
+
+  .top-bar {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo-box {
+    width: 28px;
+    height: 28px;
+    background: #1d9e75;
+    border-radius: var(--border-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .logo-box i {
+    font-size: 15px;
+    color: #e1f5ee;
+  }
+  .logo-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+  .secure-badge {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: var(--color-text-secondary);
+  }
+  .secure-badge i {
+    font-size: 14px;
+    color: #0f6e56;
+  }
+  .step-trail {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+  }
+  .step-num {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 500;
+  }
+  .step.done .step-num {
+    background: #1d9e75;
+    color: #e1f5ee;
+  }
+  .step.active .step-num {
+    background: #378add;
+    color: #e6f1fb;
+  }
+  .step.idle .step-num {
+    background: var(--color-background-secondary);
+    color: var(--color-text-tertiary);
+    border: 0.5px solid var(--color-border-secondary);
+  }
+  .step.done .step-txt {
+    color: #0f6e56;
+  }
+  .step.active .step-txt {
+    color: #185fa5;
+    font-weight: 500;
+  }
+  .step.idle .step-txt {
+    color: var(--color-text-tertiary);
+  }
+  .step-div {
+    width: 20px;
+    height: 1px;
+    background: var(--color-border-tertiary);
+    margin: 0 4px;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 12px;
+    align-items: start;
+  }
+
+  .left-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .panel {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+  }
+  .panel-head {
+    padding: 10px 14px;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .panel-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .panel-title i {
+    font-size: 15px;
+    color: var(--color-text-secondary);
+  }
+  .panel-body {
+    padding: 12px 14px;
+  }
+  .edit-link {
+    font-size: 11px;
+    color: #185fa5;
+    cursor: pointer;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .field-single {
+    margin-bottom: 8px;
+  }
+  .field-label {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    margin-bottom: 3px;
+  }
+  .field-input {
+    width: 100%;
+    height: 36px;
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 0 10px;
+    font-size: 12px;
+    color: var(--color-text-primary);
+    background: var(--color-background-primary);
+    display: flex;
+    align-items: center;
+  }
+  .field-input.filled {
+    background: var(--color-background-secondary);
+    border-color: var(--color-border-tertiary);
+    color: var(--color-text-secondary);
+  }
+  .field-input.focus {
+    border-color: #378add;
+    border-width: 1.5px;
+  }
+
+  .pincode-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: end;
+  }
+  .pin-btn {
+    height: 36px;
+    padding: 0 14px;
+    background: var(--color-background-info);
+    color: var(--color-text-info);
+    border: 0.5px solid var(--color-border-info);
+    border-radius: var(--border-radius-md);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .delivery-confirm {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #0f6e56;
+    background: #e1f5ee;
+    padding: 7px 10px;
+    border-radius: var(--border-radius-md);
+    margin-top: 6px;
+  }
+
+  .pay-option {
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    margin-bottom: 6px;
+    overflow: hidden;
+  }
+  .pay-option.selected {
+    border: 1.5px solid #378add;
+  }
+  .pay-opt-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    cursor: pointer;
+  }
+  .radio-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-border-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .radio-dot.on {
+    border-color: #378add;
+  }
+  .radio-dot.on::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #378add;
+    display: block;
+  }
+  .pay-opt-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    flex: 1;
+  }
+  .pay-chips {
+    display: flex;
+    gap: 4px;
+  }
+  .pay-chip {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-tertiary);
+    color: var(--color-text-secondary);
+    background: var(--color-background-secondary);
+  }
+  .pay-opt-body {
+    padding: 0 12px 12px 38px;
+  }
+  .upi-input-row {
+    display: flex;
+    gap: 6px;
+  }
+  .upi-input-row .field-input {
+    flex: 1;
+  }
+  .verify-btn {
+    height: 36px;
+    padding: 0 14px;
+    background: #e1f5ee;
+    color: #085041;
+    border: 0.5px solid #5dcaa5;
+    border-radius: var(--border-radius-md);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .upi-apps {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  .upi-app {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md);
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+  }
+  .upi-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .cod-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 4px 0;
+  }
+  .cod-icon {
+    width: 32px;
+    height: 32px;
+    background: #faeeda;
+    border-radius: var(--border-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .cod-icon i {
+    font-size: 16px;
+    color: #633806;
+  }
+  .cod-note {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+  .cod-fee {
+    font-size: 11px;
+    color: #854f0b;
+    background: #faeeda;
+    padding: 2px 8px;
+    border-radius: var(--border-radius-md);
+    display: inline-block;
+    margin-top: 4px;
+  }
+
+  .order-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+  }
+  .order-item:last-child {
+    border-bottom: none;
+  }
+  .item-img {
+    width: 52px;
+    height: 52px;
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .item-img i {
+    font-size: 20px;
+    color: var(--color-text-tertiary);
+  }
+  .item-qty-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 16px;
+    height: 16px;
+    background: var(--color-text-secondary);
+    color: var(--color-background-primary);
+    border-radius: 50%;
+    font-size: 9px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .item-info {
+    flex: 1;
+  }
+  .item-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    line-height: 1.4;
+  }
+  .item-variant {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    margin-top: 2px;
+  }
+  .item-price {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+  .item-mrp {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    text-decoration: line-through;
+  }
+
+  .coupon-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .coupon-row .field-input {
+    flex: 1;
+  }
+  .apply-btn {
+    height: 36px;
+    padding: 0 14px;
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md);
+    font-size: 12px;
+    color: var(--color-text-primary);
+    background: var(--color-background-secondary);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .coupon-success {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #0f6e56;
+  }
+
+  .price-row-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    font-size: 12px;
+  }
+  .price-row-item.total {
+    border-top: 0.5px solid var(--color-border-tertiary);
+    padding-top: 10px;
+    margin-top: 4px;
+  }
+  .price-label {
+    color: var(--color-text-secondary);
+  }
+  .price-val {
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+  .price-val.green {
+    color: #0f6e56;
+  }
+  .price-val.big {
+    font-size: 16px;
+  }
+  .savings-pill {
+    background: #eaf3de;
+    color: #3b6d11;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: var(--border-radius-md);
+    font-weight: 500;
+  }
+
+  .place-btn {
+    width: 100%;
+    padding: 13px;
+    background: #1d9e75;
+    color: #e1f5ee;
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .place-btn i {
+    font-size: 16px;
+  }
+
+  .trust-icons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .trust-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 8px 6px;
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    text-align: center;
+  }
+  .trust-item i {
+    font-size: 16px;
+    color: var(--color-text-secondary);
+  }
+  .trust-item span {
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    line-height: 1.3;
+  }
+
+  .pay-logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .pay-logo {
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    padding: 3px 8px;
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    background: var(--color-background-secondary);
+  }
+
+  .section-divider {
+    height: 0.5px;
+    background: var(--color-border-tertiary);
+    margin: 8px 0;
+  }
+
+  .zone-note {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .zone-note::before {
+    content: "";
+    display: inline-block;
+    width: 3px;
+    height: 10px;
+    background: var(--color-border-secondary);
+    border-radius: 2px;
+  }
+
+  .address-confirmed {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .addr-icon {
+    width: 30px;
+    height: 30px;
+    background: #e1f5ee;
+    border-radius: var(--border-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .addr-icon i {
+    font-size: 14px;
+    color: #0f6e56;
+  }
+  .addr-text {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+  .addr-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+
+  .emi-note {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    background: var(--color-background-secondary);
+    padding: 6px 10px;
+    border-radius: var(--border-radius-md);
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .emi-note i {
+    font-size: 13px;
+    color: var(--color-text-tertiary);
+  }
+</style>
+
+<h2 class="sr-only">
+  World-class high-conversion checkout page design blueprint for Indian
+  ecommerce
+</h2>
+
+<div class="page">
+  <!-- TOP BAR -->
+  <div class="zone-note">Zone A — header: logo + steps + security signal</div>
+  <div class="top-bar" style="margin-bottom: 8px">
+    <div class="logo-area">
+      <div class="logo-box">
+        <i class="ti ti-shopping-bag" aria-hidden="true"></i>
+      </div>
+      <span class="logo-name">YourStore</span>
+    </div>
+    <div class="step-trail">
+      <div class="step done">
+        <div class="step-num">
+          <i class="ti ti-check" style="font-size: 10px" aria-hidden="true"></i>
+        </div>
+        <span class="step-txt">Cart</span>
+      </div>
+      <div class="step-div"></div>
+      <div class="step active">
+        <div class="step-num">2</div>
+        <span class="step-txt">Checkout</span>
+      </div>
+      <div class="step-div"></div>
+      <div class="step idle">
+        <div class="step-num">3</div>
+        <span class="step-txt">Confirm</span>
+      </div>
+    </div>
+    <div class="secure-badge">
+      <i class="ti ti-lock" aria-hidden="true"></i> 256-bit SSL secured
+    </div>
+  </div>
+
+  <div class="two-col">
+    <!-- LEFT COLUMN -->
+    <div class="left-col">
+      <!-- CONTACT -->
+      <div>
+        <div class="zone-note">
+          Zone B — contact: pre-fill from account if logged in
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">
+              <i class="ti ti-user" aria-hidden="true"></i> Contact information
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="field-row">
+              <div>
+                <div class="field-label">Full name</div>
+                <div
+                  class="field-input focus"
+                  style="border-color: #378add; border-width: 1.5px"
+                >
+                  Priya Sharma
+                </div>
+              </div>
+              <div>
+                <div class="field-label">Mobile number</div>
+                <div
+                  class="field-input focus"
+                  style="display: flex; align-items: center; gap: 4px"
+                >
+                  <span
+                    style="color: var(--color-text-tertiary); font-size: 12px"
+                    >+91</span
+                  ><span
+                    style="color: var(--color-text-primary); font-size: 12px"
+                    >98765 43210</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="field-single">
+              <div class="field-label">
+                Email address
+                <span style="font-size: 10px; color: var(--color-text-tertiary)"
+                  >(for order updates)</span
+                >
+              </div>
+              <div class="field-input">priya@email.com</div>
+            </div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                margin-top: 4px;
+              "
+            >
+              <div
+                style="
+                  width: 14px;
+                  height: 14px;
+                  border-radius: 3px;
+                  background: #1d9e75;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  flex-shrink: 0;
+                "
+              >
+                <i
+                  class="ti ti-check"
+                  style="font-size: 10px; color: #e1f5ee"
+                  aria-hidden="true"
+                ></i>
+              </div>
+              <span style="font-size: 11px; color: var(--color-text-secondary)"
+                >Send order updates on WhatsApp</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DELIVERY ADDRESS -->
+      <div>
+        <div class="zone-note">
+          Zone C — delivery address: pincode-first to auto-fill city/state
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">
+              <i class="ti ti-map-pin" aria-hidden="true"></i> Delivery address
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="pincode-row" style="margin-bottom: 8px">
+              <div>
+                <div class="field-label">Pincode</div>
+                <div class="field-input filled">400 001</div>
+              </div>
+              <div style="padding-top: 16px">
+                <div class="pin-btn">
+                  <i
+                    class="ti ti-search"
+                    style="font-size: 12px; margin-right: 4px"
+                    aria-hidden="true"
+                  ></i
+                  >Check delivery
+                </div>
+              </div>
+            </div>
+            <div class="delivery-confirm">
+              <i
+                class="ti ti-truck-delivery"
+                style="font-size: 14px"
+                aria-hidden="true"
+              ></i>
+              <span
+                >Delivery available — estimated by
+                <strong>Mon, Jun 16</strong></span
+              >
+            </div>
+            <div style="margin-top: 10px">
+              <div class="field-single">
+                <div class="field-label">Flat / house no. / building name</div>
+                <div class="field-input">102, Sunrise Apartments</div>
+              </div>
+              <div class="field-single">
+                <div class="field-label">Street / area / locality</div>
+                <div class="field-input">MG Road, Bandra West</div>
+              </div>
+              <div class="field-row">
+                <div>
+                  <div class="field-label">City</div>
+                  <div class="field-input filled">Mumbai</div>
+                </div>
+                <div>
+                  <div class="field-label">State</div>
+                  <div class="field-input filled">Maharashtra</div>
+                </div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; margin-top: 4px">
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 5px;
+                  padding: 5px 10px;
+                  border: 1.5px solid #378add;
+                  border-radius: var(--border-radius-md);
+                  font-size: 11px;
+                  color: #185fa5;
+                  cursor: pointer;
+                "
+              >
+                <div
+                  style="
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    background: #378add;
+                  "
+                ></div>
+                Home
+              </div>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 5px;
+                  padding: 5px 10px;
+                  border: 0.5px solid var(--color-border-secondary);
+                  border-radius: var(--border-radius-md);
+                  font-size: 11px;
+                  color: var(--color-text-secondary);
+                  cursor: pointer;
+                "
+              >
+                <div
+                  style="
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    border: 1px solid var(--color-border-secondary);
+                  "
+                ></div>
+                Work
+              </div>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 5px;
+                  padding: 5px 10px;
+                  border: 0.5px solid var(--color-border-secondary);
+                  border-radius: var(--border-radius-md);
+                  font-size: 11px;
+                  color: var(--color-text-secondary);
+                  cursor: pointer;
+                "
+              >
+                <div
+                  style="
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    border: 1px solid var(--color-border-secondary);
+                  "
+                ></div>
+                Other
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAYMENT -->
+      <div>
+        <div class="zone-note">
+          Zone D — payment: UPI first (India's #1 method), then cards, then COD
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">
+              <i class="ti ti-credit-card" aria-hidden="true"></i> Payment
+              method
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="pay-option selected">
+              <div class="pay-opt-head">
+                <div class="radio-dot on"></div>
+                <div class="pay-opt-name">UPI</div>
+                <div class="pay-chips">
+                  <div class="pay-chip">GPay</div>
+                  <div class="pay-chip">PhonePe</div>
+                  <div class="pay-chip">Paytm</div>
+                  <div class="pay-chip">BHIM</div>
+                </div>
+              </div>
+              <div class="pay-opt-body">
+                <div
+                  style="
+                    font-size: 11px;
+                    color: var(--color-text-secondary);
+                    margin-bottom: 6px;
+                  "
+                >
+                  Enter UPI ID or select your app
+                </div>
+                <div class="upi-input-row">
+                  <div
+                    class="field-input"
+                    style="
+                      border-color: #378add;
+                      border-width: 1.5px;
+                      font-size: 12px;
+                    "
+                  >
+                    priya@okaxis
+                  </div>
+                  <div class="verify-btn">Verify</div>
+                </div>
+                <div class="upi-apps">
+                  <div class="upi-app">
+                    <div class="upi-dot" style="background: #0f9d58"></div>
+                    GPay
+                  </div>
+                  <div class="upi-app">
+                    <div class="upi-dot" style="background: #5f259f"></div>
+                    PhonePe
+                  </div>
+                  <div class="upi-app">
+                    <div class="upi-dot" style="background: #00baf2"></div>
+                    Paytm
+                  </div>
+                  <div class="upi-app">
+                    <div class="upi-dot" style="background: #ff6200"></div>
+                    BHIM
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pay-option">
+              <div class="pay-opt-head">
+                <div class="radio-dot"></div>
+                <div class="pay-opt-name">Credit / debit card</div>
+                <div class="pay-chips">
+                  <div class="pay-chip">Visa</div>
+                  <div class="pay-chip">Mastercard</div>
+                  <div class="pay-chip">RuPay</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pay-option">
+              <div class="pay-opt-head">
+                <div class="radio-dot"></div>
+                <div class="pay-opt-name">Net banking</div>
+                <div class="pay-chips">
+                  <div class="pay-chip">SBI</div>
+                  <div class="pay-chip">HDFC</div>
+                  <div class="pay-chip">ICICI</div>
+                  <div class="pay-chip">Axis</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pay-option">
+              <div class="pay-opt-head">
+                <div class="radio-dot"></div>
+                <div class="pay-opt-name">EMI</div>
+                <div class="pay-chips">
+                  <div class="pay-chip">No-cost EMI available</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pay-option" style="margin-bottom: 0">
+              <div class="pay-opt-head">
+                <div class="radio-dot"></div>
+                <div class="pay-opt-name">Cash on delivery (COD)</div>
+              </div>
+              <div class="pay-opt-body" style="display: none">
+                <div class="cod-body">
+                  <div class="cod-icon">
+                    <i class="ti ti-cash" aria-hidden="true"></i>
+                  </div>
+                  <div>
+                    <div class="cod-note">
+                      Pay when your order arrives at your door. No digital
+                      payment needed.
+                    </div>
+                    <div class="cod-fee">+ ₹29 COD handling fee</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN — ORDER SUMMARY -->
+    <div class="right-col">
+      <div class="zone-note">
+        Zone E — order summary: sticky on scroll, always visible
+      </div>
+
+      <!-- ITEMS -->
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">
+            <i class="ti ti-shopping-bag" aria-hidden="true"></i> Order summary
+          </div>
+          <span class="edit-link"
+            ><i
+              class="ti ti-edit"
+              style="font-size: 12px; margin-right: 2px"
+              aria-hidden="true"
+            ></i
+            >Edit cart</span
+          >
+        </div>
+        <div class="panel-body">
+          <div class="order-item">
+            <div class="item-img">
+              <i class="ti ti-photo" aria-hidden="true"></i>
+              <div class="item-qty-badge">1</div>
+            </div>
+            <div class="item-info">
+              <div class="item-name">
+                Silicone oil splatter guard — 28 cm, black
+              </div>
+              <div class="item-variant">Size: 28 cm · Colour: Black</div>
+            </div>
+            <div style="text-align: right">
+              <div class="item-price">₹349</div>
+              <div class="item-mrp">₹519</div>
+            </div>
+          </div>
+          <div class="order-item" style="border-bottom: none">
+            <div class="item-img">
+              <i class="ti ti-photo" aria-hidden="true"></i>
+              <div class="item-qty-badge">2</div>
+            </div>
+            <div class="item-info">
+              <div class="item-name">Magnetic USB cable 3-in-1 — 1.2 m</div>
+              <div class="item-variant">Length: 1.2 m · Colour: Silver</div>
+            </div>
+            <div style="text-align: right">
+              <div class="item-price">₹598</div>
+              <div class="item-mrp">₹898</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COUPON -->
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">
+            <i class="ti ti-tag" aria-hidden="true"></i> Coupon / promo code
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="coupon-row">
+            <div
+              class="field-input"
+              style="font-size: 12px; letter-spacing: 0.05em"
+            >
+              FIRST100
+            </div>
+            <div
+              class="apply-btn"
+              style="background: #e1f5ee; color: #085041; border-color: #5dcaa5"
+            >
+              Applied
+            </div>
+          </div>
+          <div class="coupon-success">
+            <i
+              class="ti ti-check"
+              style="font-size: 13px"
+              aria-hidden="true"
+            ></i>
+            ₹100 saved with code FIRST100
+          </div>
+          <div
+            style="margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap"
+          >
+            <div
+              style="
+                font-size: 10px;
+                padding: 3px 8px;
+                background: var(--color-background-secondary);
+                border: 0.5px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-secondary);
+              "
+            >
+              SAVE50
+            </div>
+            <div
+              style="
+                font-size: 10px;
+                padding: 3px 8px;
+                background: var(--color-background-secondary);
+                border: 0.5px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-secondary);
+              "
+            >
+              NEWUSER
+            </div>
+            <div
+              style="
+                font-size: 10px;
+                padding: 3px 8px;
+                background: var(--color-background-secondary);
+                border: 0.5px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-secondary);
+              "
+            >
+              DIWALI20
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRICE BREAKUP -->
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">
+            <i class="ti ti-receipt" aria-hidden="true"></i> Price details
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="price-row-item">
+            <span class="price-label">Subtotal (3 items)</span
+            ><span class="price-val">₹1,417</span>
+          </div>
+          <div class="price-row-item">
+            <span class="price-label">Discount (you save)</span
+            ><span class="price-val green">− ₹368</span>
+          </div>
+          <div class="price-row-item">
+            <span class="price-label">Coupon (FIRST100)</span
+            ><span class="price-val green">− ₹100</span>
+          </div>
+          <div class="price-row-item">
+            <span class="price-label">Delivery charges</span
+            ><span class="price-val green">FREE</span>
+          </div>
+          <div class="price-row-item">
+            <span class="price-label">GST included</span
+            ><span class="price-val">₹84</span>
+          </div>
+          <div class="price-row-item total">
+            <span
+              style="
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+              "
+              >Total payable</span
+            >
+            <span class="price-val big">₹949</span>
+          </div>
+          <div
+            style="display: flex; justify-content: flex-end; margin-top: 6px"
+          >
+            <span class="savings-pill">You save ₹468 on this order</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACE ORDER -->
+      <div class="panel">
+        <div class="panel-body">
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 6px;
+              margin-bottom: 8px;
+              padding: 8px 10px;
+              background: var(--color-background-secondary);
+              border-radius: var(--border-radius-md);
+            "
+          >
+            <i
+              class="ti ti-map-pin"
+              style="font-size: 14px; color: #0f6e56"
+              aria-hidden="true"
+            ></i>
+            <div style="flex: 1">
+              <div style="font-size: 11px; color: var(--color-text-secondary)">
+                Delivering to
+              </div>
+              <div
+                style="
+                  font-size: 12px;
+                  font-weight: 500;
+                  color: var(--color-text-primary);
+                "
+              >
+                Priya Sharma · 102 Sunrise Apt, Bandra West, Mumbai 400001
+              </div>
+            </div>
+            <span class="edit-link">Change</span>
+          </div>
+          <button class="place-btn" aria-label="Place order for ₹949">
+            <i class="ti ti-lock" aria-hidden="true"></i>
+            Place order — ₹949
+          </button>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 5px;
+              margin-top: 8px;
+              font-size: 11px;
+              color: var(--color-text-tertiary);
+            "
+          >
+            <i
+              class="ti ti-shield-check"
+              style="font-size: 13px; color: #0f6e56"
+              aria-hidden="true"
+            ></i>
+            Your payment is 100% secure and encrypted
+          </div>
+          <div class="trust-icons">
+            <div class="trust-item">
+              <i class="ti ti-truck-delivery" aria-hidden="true"></i
+              ><span>Free delivery</span>
+            </div>
+            <div class="trust-item">
+              <i class="ti ti-refresh" aria-hidden="true"></i
+              ><span>7-day returns</span>
+            </div>
+            <div class="trust-item">
+              <i class="ti ti-headset" aria-hidden="true"></i
+              ><span>24/7 support</span>
+            </div>
+          </div>
+          <div class="pay-logos">
+            <div class="pay-logo">UPI</div>
+            <div class="pay-logo">Visa</div>
+            <div class="pay-logo">Mastercard</div>
+            <div class="pay-logo">RuPay</div>
+            <div class="pay-logo">GPay</div>
+            <div class="pay-logo">PhonePe</div>
+            <div class="pay-logo">COD</div>
+          </div>
+          <div
+            style="
+              text-align: center;
+              margin-top: 10px;
+              font-size: 10px;
+              color: var(--color-text-tertiary);
+              line-height: 1.5;
+            "
+          >
+            By placing your order you agree to our
+            <span style="color: var(--color-text-secondary)">Terms of use</span>
+            and
+            <span style="color: var(--color-text-secondary)"
+              >Privacy policy</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

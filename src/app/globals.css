@@ -1,0 +1,194 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =====================================================================
+   Inter Font (Google Font - San Francisco alternative)
+   ===================================================================== */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+/* =====================================================================
+   Design Tokens — Apple-Inspired Black & White
+   ===================================================================== */
+:root {
+  --color-primary: #000000;
+  --color-secondary: #ffffff;
+  --color-bg: #f5f5f7;
+  --color-text-primary: #1d1d1f;
+  --color-text-secondary: #86868b;
+  --color-accent: #0071e3;
+  --color-border: #d2d2d7;
+  --color-success: #30d158;
+  --color-error: #ff453a;
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+
+  --radius-apple: 12px;
+  --radius-apple-sm: 8px;
+  --radius-apple-input: 10px;
+  --radius-apple-modal: 16px;
+}
+
+/* =====================================================================
+   Base Styles
+   ===================================================================== */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-text-primary);
+    background-color: var(--color-bg);
+    line-height: 1.5;
+  }
+
+  /* Apple-style selection color */
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-secondary);
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-secondary);
+  }
+}
+
+/* =====================================================================
+   Component Classes
+   ===================================================================== */
+@layer components {
+  /* Apple-style button */
+  .btn-apple {
+    @apply bg-apple-black text-apple-white rounded-apple px-6 py-3 
+           font-medium transition-all duration-200 
+           hover:opacity-85 active:scale-[0.98]
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-apple-outline {
+    @apply border border-apple-black text-apple-black bg-transparent 
+           rounded-apple px-6 py-3 font-medium transition-all duration-200 
+           hover:bg-apple-black hover:text-apple-white 
+           active:scale-[0.98]
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-apple-ghost {
+    @apply text-apple-text-primary bg-transparent rounded-apple px-4 py-2 
+           font-medium transition-all duration-200 
+           hover:bg-black/5 active:scale-[0.98];
+  }
+
+  /* Apple-style input */
+  .input-apple {
+    @apply w-full px-4 py-3 rounded-apple-input border border-apple-border 
+           bg-apple-white text-apple-text-primary 
+           placeholder:text-apple-text-secondary/60
+           transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-apple-accent/30 focus:border-apple-accent;
+  }
+
+  /* Apple-style card */
+  .card-apple {
+    @apply bg-apple-white rounded-apple border border-apple-border/50 
+           transition-all duration-200;
+  }
+
+  .card-apple-hover {
+    @apply card-apple hover:shadow-lg hover:shadow-black/5 hover:border-apple-border;
+  }
+
+  /* Discount badge */
+  .badge-discount {
+    @apply bg-apple-error text-apple-white text-xs font-semibold px-2 py-1 
+           rounded-md inline-block;
+  }
+
+  /* Section container */
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Page heading */
+  .heading-xl {
+    @apply text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-apple-text-primary;
+  }
+
+  .heading-lg {
+    @apply text-3xl sm:text-4xl font-bold tracking-tight text-apple-text-primary;
+  }
+
+  .heading-md {
+    @apply text-2xl sm:text-3xl font-semibold tracking-tight text-apple-text-primary;
+  }
+
+  /* Stagger animation container */
+  .stagger-container > * {
+    @apply opacity-0;
+    animation: fadeInUp 0.5s ease-out forwards;
+  }
+
+  .stagger-container > *:nth-child(1) {
+    animation-delay: 0ms;
+  }
+  .stagger-container > *:nth-child(2) {
+    animation-delay: 100ms;
+  }
+  .stagger-container > *:nth-child(3) {
+    animation-delay: 200ms;
+  }
+  .stagger-container > *:nth-child(4) {
+    animation-delay: 300ms;
+  }
+  .stagger-container > *:nth-child(5) {
+    animation-delay: 400ms;
+  }
+  .stagger-container > *:nth-child(6) {
+    animation-delay: 500ms;
+  }
+  .stagger-container > *:nth-child(7) {
+    animation-delay: 600ms;
+  }
+  .stagger-container > *:nth-child(8) {
+    animation-delay: 700ms;
+  }
+}
+
+/* =====================================================================
+   Animations
+   ===================================================================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =====================================================================
+   Utility Classes
+   ===================================================================== */
+.text-balance {
+  text-wrap: balance;
+}

@@ -1,0 +1,1197 @@
+/* update the followings: no need to add sizes , the reviews we will create
+manually for each products with more than 4.4 star ratings. */
+
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: var(--font-sans);
+  }
+  .page-wrap {
+    background: var(--color-background-tertiary);
+    padding: 16px;
+    border-radius: var(--border-radius-lg);
+  }
+
+  /* ZONE LABELS */
+  .zone {
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .zone-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .zone-label span.num {
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    flex-shrink: 0;
+  }
+  .zone-label .why {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--color-text-tertiary);
+    letter-spacing: 0;
+    text-transform: none;
+    margin-left: 4px;
+  }
+
+  /* MOCKUP SURFACE */
+  .mock {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    padding: 10px 12px;
+  }
+
+  /* TRUST BAR */
+  .trust-bar {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .trust-pill {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .trust-pill i {
+    color: var(--color-text-success);
+    font-size: 13px;
+  }
+
+  /* GALLERY */
+  .gallery-row {
+    display: flex;
+    gap: 8px;
+  }
+  .thumb-col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .thumb {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--border-radius-md);
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .thumb.active {
+    border: 1.5px solid #378add;
+  }
+  .main-img {
+    flex: 1;
+    height: 200px;
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .badge-sold {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: #faece7;
+    color: #993c1d;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: var(--border-radius-md);
+  }
+  .badge-off {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #eaf3de;
+    color: #3b6d11;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: var(--border-radius-md);
+  }
+
+  /* PRODUCT INFO */
+  .product-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    line-height: 1.4;
+  }
+  .stars-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 5px 0;
+  }
+  .stars {
+    color: #ba7517;
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .review-count {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+  }
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 6px 0;
+  }
+  .price-now {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+  .price-mrp {
+    font-size: 13px;
+    color: var(--color-text-tertiary);
+    text-decoration: line-through;
+  }
+  .save-tag {
+    font-size: 11px;
+    background: #eaf3de;
+    color: #3b6d11;
+    padding: 2px 8px;
+    border-radius: var(--border-radius-md);
+    font-weight: 500;
+  }
+  .stock-warn {
+    font-size: 12px;
+    color: #993c1d;
+    background: #faece7;
+    padding: 4px 10px;
+    border-radius: var(--border-radius-md);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin: 4px 0;
+  }
+  .delivery-row {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 4px 0;
+  }
+  .delivery-row i {
+    color: var(--color-text-success);
+  }
+
+  /* VARIANT PILLS */
+  .variant-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 6px 0;
+  }
+  .vpill {
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-secondary);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    background: var(--color-background-primary);
+  }
+  .vpill.sel {
+    border: 1.5px solid #378add;
+    background: #e6f1fb;
+    color: #0c447c;
+    font-weight: 500;
+  }
+
+  /* QTY + CTA */
+  .qty-cta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 10px 0 6px;
+  }
+  .qty-box {
+    display: flex;
+    align-items: center;
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+  }
+  .qty-btn {
+    width: 30px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-background-secondary);
+    font-size: 14px;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    border: none;
+    font-weight: 500;
+  }
+  .qty-num {
+    width: 32px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--color-text-primary);
+    border: none;
+    outline: none;
+    background: transparent;
+  }
+  .btn-cart {
+    flex: 1;
+    padding: 10px;
+    border-radius: var(--border-radius-md);
+    border: 1.5px solid #185fa5;
+    background: #e6f1fb;
+    color: #0c447c;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .btn-buy {
+    flex: 1;
+    padding: 10px;
+    border-radius: var(--border-radius-md);
+    border: none;
+    background: #1d9e75;
+    color: #e1f5ee;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  /* PAYMENT ICONS */
+  .pay-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+  .pay-chip {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-tertiary);
+    color: var(--color-text-secondary);
+    background: var(--color-background-secondary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* BENEFITS STRIP */
+  .benefits-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .benefit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 6px;
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    text-align: center;
+  }
+  .benefit i {
+    font-size: 18px;
+    color: var(--color-text-secondary);
+  }
+  .benefit span {
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    line-height: 1.3;
+  }
+
+  /* PAIN→SOLUTION */
+  .pain-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .pain-card {
+    padding: 8px 10px;
+    border-radius: var(--border-radius-md);
+  }
+  .pain-card.p {
+    background: #fcebeb;
+    border: 0.5px solid #f7c1c1;
+  }
+  .pain-card.s {
+    background: #eaf3de;
+    border: 0.5px solid #c0dd97;
+  }
+  .pain-title {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .pain-card.p .pain-title {
+    color: #791f1f;
+  }
+  .pain-card.s .pain-title {
+    color: #27500a;
+  }
+  .pain-item {
+    font-size: 11px;
+    line-height: 1.6;
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .pain-card.p .pain-item {
+    color: #a32d2d;
+  }
+  .pain-card.s .pain-item {
+    color: #3b6d11;
+  }
+
+  /* REVIEWS */
+  .review-card {
+    padding: 8px 10px;
+    border-radius: var(--border-radius-md);
+    background: var(--color-background-secondary);
+    margin-bottom: 6px;
+  }
+  .rev-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3px;
+  }
+  .rev-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+  .rev-stars {
+    color: #ba7517;
+    font-size: 11px;
+  }
+  .rev-text {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+  .verified {
+    font-size: 10px;
+    color: #0f6e56;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin-top: 2px;
+  }
+
+  /* FAQ */
+  .faq-item {
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    padding: 8px 0;
+  }
+  .faq-q {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    display: flex;
+    justify-content: space-between;
+  }
+  .faq-a {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  /* STICKY CTA BAR */
+  .sticky-bar {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .sticky-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    flex: 1;
+  }
+  .sticky-price {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+  .sticky-buy {
+    padding: 8px 20px;
+    background: #1d9e75;
+    color: #e1f5ee;
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  /* SECTION DIVIDER */
+  .sec-head {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .sec-head i {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+  }
+</style>
+
+<h2 class="sr-only">
+  High-conversion product page blueprint showing all essential sections in order
+</h2>
+
+<div class="page-wrap">
+  <!-- ZONE 1: TRUST BAR -->
+  <div class="zone">
+    <div class="zone-label">
+      <span class="num">1</span> Trust bar
+      <span class="why">— kills doubt before scroll begins</span>
+    </div>
+    <div class="mock trust-bar">
+      <div class="trust-pill">
+        <i class="ti ti-shield-check" aria-hidden="true"></i> 100% original
+      </div>
+      <div class="trust-pill">
+        <i class="ti ti-truck-delivery" aria-hidden="true"></i> Free delivery
+        above ₹299
+      </div>
+      <div class="trust-pill">
+        <i class="ti ti-refresh" aria-hidden="true"></i> 7-day easy return
+      </div>
+      <div class="trust-pill">
+        <i class="ti ti-lock" aria-hidden="true"></i> Secure checkout
+      </div>
+    </div>
+  </div>
+
+  <!-- ZONE 2: IMAGE GALLERY -->
+  <div class="zone">
+    <div class="zone-label">
+      <span class="num">2</span> Image gallery
+      <span class="why"
+        >— 5–7 images: hero, lifestyle, size ref, close-up, in-use</span
+      >
+    </div>
+    <div class="mock">
+      <div class="gallery-row">
+        <div class="thumb-col">
+          <div class="thumb active">
+            <i
+              class="ti ti-photo"
+              style="font-size: 16px; color: var(--color-text-tertiary)"
+              aria-hidden="true"
+            ></i>
+          </div>
+          <div class="thumb">
+            <i
+              class="ti ti-photo"
+              style="font-size: 16px; color: var(--color-text-tertiary)"
+              aria-hidden="true"
+            ></i>
+          </div>
+          <div class="thumb">
+            <i
+              class="ti ti-photo"
+              style="font-size: 16px; color: var(--color-text-tertiary)"
+              aria-hidden="true"
+            ></i>
+          </div>
+          <div class="thumb">
+            <i
+              class="ti ti-player-play"
+              style="font-size: 14px; color: var(--color-text-tertiary)"
+              aria-hidden="true"
+            ></i>
+          </div>
+        </div>
+        <div class="main-img">
+          <i
+            class="ti ti-photo"
+            style="font-size: 40px; color: var(--color-text-tertiary)"
+            aria-hidden="true"
+          ></i>
+          <div class="badge-sold">847 sold this week</div>
+          <div class="badge-off">33% off</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZONE 3: PRODUCT INFO -->
+  <div class="zone">
+    <div class="zone-label">
+      <span class="num">3</span> Product info block
+      <span class="why"
+        >— name, stars, price, urgency — all above the fold</span
+      >
+    </div>
+    <div class="mock">
+      <div class="product-name">
+        Silicone oil splatter guard — fits all pan sizes
+      </div>
+      <div class="stars-row">
+        <span class="stars">★★★★★</span>
+        <span
+          style="
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--color-text-primary);
+          "
+          >4.8</span
+        >
+        <span class="review-count">(2,341 ratings)</span>
+        <span
+          style="
+            font-size: 11px;
+            color: #0f6e56;
+            margin-left: 4px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+          "
+          ><i class="ti ti-check" style="font-size: 12px" aria-hidden="true"></i
+          >Verified</span
+        >
+      </div>
+      <div class="price-row">
+        <span class="price-now">₹349</span>
+        <span class="price-mrp">₹519</span>
+        <span class="save-tag">Save ₹170</span>
+      </div>
+      <div class="stock-warn">
+        <i class="ti ti-clock" style="font-size: 13px" aria-hidden="true"></i>
+        Only 12 left in stock
+      </div>
+      <div class="delivery-row">
+        <i class="ti ti-truck-delivery" aria-hidden="true"></i> Free delivery by
+        <strong style="color: var(--color-text-primary)">Mon, Jun 16</strong> —
+        order in next
+        <strong style="color: var(--color-text-primary)">3h 22m</strong>
+      </div>
+
+      <div style="margin-top: 8px">
+        <div
+          style="
+            font-size: 11px;
+            color: var(--color-text-secondary);
+            margin-bottom: 4px;
+          "
+        >
+          Choose size
+        </div>
+        <div class="variant-row">
+          <div class="vpill">24 cm</div>
+          <div class="vpill sel">28 cm</div>
+          <div class="vpill">32 cm</div>
+          <div class="vpill">36 cm</div>
+        </div>
+      </div>
+
+      <div class="qty-cta">
+        <div class="qty-box">
+          <button class="qty-btn" aria-label="decrease">−</button>
+          <input class="qty-num" value="1" readonly />
+          <button class="qty-btn" aria-label="increase">+</button>
+        </div>
+        <button class="btn-cart">
+          <i class="ti ti-shopping-cart" aria-hidden="true"></i> Add to cart
+        </button>
+        <button class="btn-buy">
+          <i class="ti ti-bolt" aria-hidden="true"></i> Buy now
+        </button>
+      </div>
+
+      <div class="pay-row">
+        <span style="font-size: 11px; color: var(--color-text-tertiary)"
+          >Pay via</span
+        >
+        <div class="pay-chip">
+          <i
+            class="ti ti-credit-card"
+            style="font-size: 12px"
+            aria-hidden="true"
+          ></i>
+          UPI
+        </div>
+        <div class="pay-chip">
+          <i
+            class="ti ti-credit-card"
+            style="font-size: 12px"
+            aria-hidden="true"
+          ></i>
+          Cards
+        </div>
+        <div class="pay-chip">
+          <i class="ti ti-cash" style="font-size: 12px" aria-hidden="true"></i>
+          COD
+        </div>
+        <div class="pay-chip">
+          <i
+            class="ti ti-building-bank"
+            style="font-size: 12px"
+            aria-hidden="true"
+          ></i>
+          Net banking
+        </div>
+        <div class="pay-chip">
+          <i
+            class="ti ti-credit-card"
+            style="font-size: 12px"
+            aria-hidden="true"
+          ></i>
+          EMI
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZONE 4: BENEFITS STRIP -->
+  <div class="zone">
+    <div class="zone-label">
+      <span class="num">4</span> Benefits strip
+      <span class="why">— 4 icons, zero words wasted</span>
+    </div>
+    <div class="mock">
+      <div class="benefits-strip">
+        <div class="benefit">
+          <i class="ti ti-shield-check" aria-hidden="true"></i
+          ><span>BIS certified safe</span>
+        </div>
+        <div class="benefit">
+          <i class="ti ti-leaf" aria-hidden="true"></i
+          ><span>Food-grade silicone</span>
+        </div>
+        <div class="benefit">
+          <i class="ti ti-refresh" aria-hidden="true"></i
+          ><span>Machine washable</span>
+        </div>
+        <div class="benefit">
+          <i class="ti ti-ruler" aria-hidden="true"></i
+          ><span>Universal fit</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZONE 5: PAIN vs SOLUTION -->
+  <div class="zone">
+    <div class="zone-label">
+      <span class="num">5</span> Pain vs solution block
+      <span class="why">— makes customer feel seen before selling</span>
+    </div>
+    <div class="mock">
+      <div class="pain-row">
+        <div class="pain-card p">
+          <div class="pain-title">Without it</div>
+          <div class="pain-item">
+            <i
+              class="ti ti-x"
+              style="font-size: 11px; flex-shrink: 0; margin-top: 2px"
+              aria-hidden="true"
+            ></i>
+            Oil burns every time you fry
+          </div>
+          <div class="pain-item">
+            <i
+              class="ti ti-x"
+              style="font-size: 11px; flex-shrink: 0; margin-top: 2px"
+              aria-hidden="true"
+            ></i>
+            Stove cleaning takes 20 mins
+          </div>
+          <div class="pain-item">
+            <i
+              class="ti ti-x"
+              style="font-size: 11px; flex-shrink: 0; margin-top: 2px"
+              aria-hidden="true"
+            ></i>
+            Greasy walls &amp; countertops
+          </div>
+        </div>
+        <div class="pain-card s">
+          <div class="pain-title">With it</div>
+          <div class="pain-item">
+            <i
+              class="ti ti-check"
+              style="font-size: 11px; flex-shrink: 0; margin-top: 2px"
+              aria-hidden="true"
+            ></i>
+            Zero splatter, zero burns
+          </div>
+          <div class="pain-item">
+            <i
+              class="ti ti-check"
+              style="font-size: 11px; flex-shrink: 0; margin-top: 2px"
+              aria-hidden="true"
+            ></i>
+            Wipe clean in seconds
+          </div>
+          <div class="pain-item">
+            <i
+              class="ti ti-check"
+              style="font-size: 11px; flex-shrink: 0; margin-top: 2px"
+              aria-hidden="true"
+            ></i>
+            Kitchen stays spotless
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZONE 6: SOCIAL PROOF -->
+  <div class="zone">
+    <div class="zone-label">
+      <span class="num">6</span> Customer reviews
+      <span class="why"
+        >— show city + verified to beat fake-review distrust</span
+      >
+    </div>
+    <div class="mock">
+      <div
+        style="
+          display: flex;
+          gap: 12px;
+          align-items: center;
+          margin-bottom: 10px;
+        "
+      >
+        <div style="text-align: center">
+          <div
+            style="
+              font-size: 28px;
+              font-weight: 500;
+              color: var(--color-text-primary);
+            "
+          >
+            4.8
+          </div>
+          <div style="color: #ba7517; font-size: 14px">★★★★★</div>
+          <div style="font-size: 11px; color: var(--color-text-tertiary)">
+            2,341 reviews
+          </div>
+        </div>
+        <div style="flex: 1">
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 6px;
+              margin-bottom: 3px;
+            "
+          >
+            <span
+              style="
+                font-size: 11px;
+                color: var(--color-text-secondary);
+                width: 14px;
+              "
+              >5</span
+            >
+            <div
+              style="
+                flex: 1;
+                height: 5px;
+                background: var(--color-background-secondary);
+                border-radius: 3px;
+                overflow: hidden;
+              "
+            >
+              <div
+                style="
+                  width: 78%;
+                  height: 100%;
+                  background: #ba7517;
+                  border-radius: 3px;
+                "
+              ></div>
+            </div>
+            <span style="font-size: 11px; color: var(--color-text-tertiary)"
+              >78%</span
+            >
+          </div>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 6px;
+              margin-bottom: 3px;
+            "
+          >
+            <span
+              style="
+                font-size: 11px;
+                color: var(--color-text-secondary);
+                width: 14px;
+              "
+              >4</span
+            >
+            <div
+              style="
+                flex: 1;
+                height: 5px;
+                background: var(--color-background-secondary);
+                border-radius: 3px;
+                overflow: hidden;
+              "
+            >
+              <div
+                style="
+                  width: 14%;
+                  height: 100%;
+                  background: #ba7517;
+                  border-radius: 3px;
+                "
+              ></div>
+            </div>
+            <span style="font-size: 11px; color: var(--color-text-tertiary)"
+              >14%</span
+            >
+          </div>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 6px;
+              margin-bottom: 3px;
+            "
+          >
+            <span
+              style="
+                font-size: 11px;
+                color: var(--color-text-secondary);
+                width: 14px;
+              "
+              >3</span
+            >
+            <div
+              style="
+                flex: 1;
+                height: 5px;
+                background: var(--color-background-secondary);
+                border-radius: 3px;
+                overflow: hidden;
+              "
+            >
+              <div
+                style="
+                  width: 5%;
+                  height: 100%;
+                  background: #ba7517;
+                  border-radius: 3px;
+                "
+              ></div>
+            </div>
+            <span style="font-size: 11px; color: var(--color-text-tertiary)"
+              >5%</span
+            >
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px">
+            <span
+              style="
+                font-size: 11px;
+                color: var(--color-text-secondary);
+                width: 14px;
+              "
+              >1</span
+            >
+            <div
+              style="
+                flex: 1;
+                height: 5px;
+                background: var(--color-background-secondary);
+                border-radius: 3px;
+                overflow: hidden;
+              "
+            >
+              <div
+                style="
+                  width: 3%;
+                  height: 100%;
+                  background: #e24b4a;
+                  border-radius: 3px;
+                "
+              ></div>
+            </div>
+            <span style="font-size: 11px; color: var(--color-text-tertiary)"
+              >3%</span
+            >
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="rev-top">
+          <span class="rev-name">Priya S. · Mumbai</span
+          ><span class="rev-stars">★★★★★</span>
+        </div>
+        <div class="rev-text">
+          Works perfectly for making tadka. No more oil burns on my hands or
+          messy stovetop. Bought 2 more for my mother.
+        </div>
+        <div class="verified">
+          <i class="ti ti-check" style="font-size: 11px" aria-hidden="true"></i>
+          Verified purchase · 3 days ago
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="rev-top">
+          <span class="rev-name">Ramesh K. · Hyderabad</span
+          ><span class="rev-stars">★★★★★</span>
+        </div>
+        <div class="rev-text">
+          My wife loves this. Cleaning the stove used to be the most painful
+          part of cooking. Now it is a 10-second wipe.
+        </div>
+        <div class="verified">
+          <i class="ti ti-check" style="font-size: 11px" aria-hidden="true"></i>
+          Verified purchase · 1 week ago
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZONE 7: FAQ -->
+  <div class="zone">
+    <div class="zone-label">
+      <span class="num">7</span> FAQ
+      <span class="why"
+        >— kill the last 3 objections before cart abandonment</span
+      >
+    </div>
+    <div class="mock">
+      <div class="faq-item">
+        <div class="faq-q">
+          Is it safe for non-stick pans?
+          <i
+            class="ti ti-chevron-down"
+            style="font-size: 14px"
+            aria-hidden="true"
+          ></i>
+        </div>
+        <div class="faq-a">
+          Yes — 100% food-grade silicone. Will not scratch any pan surface
+          including Teflon, ceramic, or cast iron.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          Can I put it in the dishwasher?
+          <i
+            class="ti ti-chevron-down"
+            style="font-size: 14px"
+            aria-hidden="true"
+          ></i>
+        </div>
+        <div class="faq-a">
+          Yes. Dishwasher and microwave safe up to 230°C. Can also be
+          hand-washed with soap in 5 seconds.
+        </div>
+      </div>
+      <div class="faq-item" style="border-bottom: none">
+        <div class="faq-q">
+          What if it doesn't fit my pan?
+          <i
+            class="ti ti-chevron-down"
+            style="font-size: 14px"
+            aria-hidden="true"
+          ></i>
+        </div>
+        <div class="faq-a">
+          We offer a no-questions 7-day return. Just raise a request and we'll
+          pick it up from your door free of charge.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZONE 8: STICKY BAR -->
+  <div class="zone" style="margin-bottom: 0">
+    <div class="zone-label">
+      <span class="num">8</span> Sticky buy bar
+      <span class="why">— always visible when scrolled past the main CTA</span>
+    </div>
+    <div class="sticky-bar">
+      <div class="sticky-name">Splatter guard · 28 cm</div>
+      <div class="sticky-price">₹349</div>
+      <button class="sticky-buy">Buy now</button>
+    </div>
+  </div>
+</div>
+
+<div
+  style="
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-tertiary);
+  "
+>
+  <div
+    style="
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    "
+  >
+    <i
+      class="ti ti-bulb"
+      style="font-size: 14px; color: var(--color-text-secondary)"
+      aria-hidden="true"
+    ></i>
+    CRO cheat sheet for Indian buyers
+  </div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px">
+    <div
+      style="
+        font-size: 11px;
+        color: var(--color-text-secondary);
+        display: flex;
+        gap: 5px;
+      "
+    >
+      <i
+        class="ti ti-check"
+        style="font-size: 12px; color: #0f6e56; flex-shrink: 0; margin-top: 1px"
+        aria-hidden="true"
+      ></i
+      >COD option reduces hesitation by 40%+
+    </div>
+    <div
+      style="
+        font-size: 11px;
+        color: var(--color-text-secondary);
+        display: flex;
+        gap: 5px;
+      "
+    >
+      <i
+        class="ti ti-check"
+        style="font-size: 12px; color: #0f6e56; flex-shrink: 0; margin-top: 1px"
+        aria-hidden="true"
+      ></i
+      >Show city names in reviews (not just initials)
+    </div>
+    <div
+      style="
+        font-size: 11px;
+        color: var(--color-text-secondary);
+        display: flex;
+        gap: 5px;
+      "
+    >
+      <i
+        class="ti ti-check"
+        style="font-size: 12px; color: #0f6e56; flex-shrink: 0; margin-top: 1px"
+        aria-hidden="true"
+      ></i
+      >Real-time low-stock triggers urgency
+    </div>
+    <div
+      style="
+        font-size: 11px;
+        color: var(--color-text-secondary);
+        display: flex;
+        gap: 5px;
+      "
+    >
+      <i
+        class="ti ti-check"
+        style="font-size: 12px; color: #0f6e56; flex-shrink: 0; margin-top: 1px"
+        aria-hidden="true"
+      ></i
+      >Delivery date (not "3–5 days") builds trust
+    </div>
+    <div
+      style="
+        font-size: 11px;
+        color: var(--color-text-secondary);
+        display: flex;
+        gap: 5px;
+      "
+    >
+      <i
+        class="ti ti-check"
+        style="font-size: 12px; color: #0f6e56; flex-shrink: 0; margin-top: 1px"
+        aria-hidden="true"
+      ></i
+      >"X sold this week" = social momentum
+    </div>
+    <div
+      style="
+        font-size: 11px;
+        color: var(--color-text-secondary);
+        display: flex;
+        gap: 5px;
+      "
+    >
+      <i
+        class="ti ti-check"
+        style="font-size: 12px; color: #0f6e56; flex-shrink: 0; margin-top: 1px"
+        aria-hidden="true"
+      ></i
+      >Green "Buy now" beats orange or red for trust
+    </div>
+  </div>
+</div>

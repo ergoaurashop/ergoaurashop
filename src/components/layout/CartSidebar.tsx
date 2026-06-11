@@ -1,0 +1,212 @@
+"use client";
+
+import { useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useCartStore } from "@/store/cartStore";
+import { formatPrice } from "@/lib/utils";
+import Button from "@/components/ui/Button";
+import Link from "next/link";
+
+export default function CartSidebar() {
+  const { items, isOpen, closeCart, removeItem, updateQuantity } =
+    useCartStore();
+
+  // Lock body scroll when open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  const subtotal = items.reduce(
+    (sum, item) => sum + item.product.price * item.quantity,
+    0,
+  );
+
+  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeCart}
+            className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50"
+          />
+
+          {/* Sidebar */}
+          <motion.div
+            initial={{ transform: "translateX(100%)" }}
+            animate={{ transform: "translateX(0)" }}
+            exit={{ transform: "translateX(100%)" }}
+            transition={{ type: "spring", damping: 30, stiffness: 300 }}
+            className="fixed right-0 top-0 h-full w-full max-w-md bg-apple-white z-50 shadow-2xl flex flex-col"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-5 border-b border-apple-border/50">
+              <div>
+                <h2 className="text-lg font-semibold text-apple-text-primary">
+                  Cart
+                </h2>
+                <p className="text-sm text-apple-text-secondary">
+                  {totalItems} {totalItems === 1 ? "item" : "items"}
+                </p>
+              </div>
+              <button
+                onClick={closeCart}
+                className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 transition-colors"
+                aria-label="Close cart"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Items */}
+            <div className="flex-1 overflow-y-auto px-6 py-4">
+              {items.length === 0 ? (
+                <div className="flex flex-col items-center justify-center h-full text-center">
+                  <svg
+                    width="48"
+                    height="48"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#86868B"
+                    strokeWidth="1.5"
+                    className="mb-4"
+                  >
+                    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" />
+                  </svg>
+                  <p className="text-apple-text-secondary">
+                    Your cart is empty
+                  </p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-4"
+                    onClick={closeCart}
+                  >
+                    Continue Shopping
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {items.map((item) => (
+                    <div
+                      key={item.product.id}
+                      className="flex gap-4 py-4 border-b border-apple-border/30 last:border-0"
+                    >
+                      {/* Image */}
+                      <div className="w-20 h-20 rounded-apple-sm bg-apple-bg overflow-hidden flex-shrink-0">
+                        <img
+                          src={
+                            item.product.images?.[0] ||
+                            `/images/products/${item.product.slug}/01.jpg`
+                          }
+                          alt={item.product.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      {/* Details */}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-sm font-medium text-apple-text-primary truncate">
+                          {item.product.name}
+                        </h3>
+                        <p className="text-sm text-apple-text-secondary mt-0.5">
+                          {formatPrice(item.product.price)}
+                        </p>
+
+                        {/* Quantity controls */}
+                        <div className="flex items-center gap-3 mt-2">
+                          <div className="flex items-center border border-apple-border rounded-md">
+                            <button
+                              onClick={() =>
+                                updateQuantity(
+                                  item.product.id,
+                                  item.quantity - 1,
+                                )
+                              }
+                              className="w-7 h-7 flex items-center justify-center text-apple-text-secondary hover:text-apple-text-primary transition-colors"
+                            >
+                              −
+                            </button>
+                            <span className="w-7 text-center text-sm font-medium">
+                              {item.quantity}
+                            </span>
+                            <button
+                              onClick={() =>
+                                updateQuantity(
+                                  item.product.id,
+                                  item.quantity + 1,
+                                )
+                              }
+                              className="w-7 h-7 flex items-center justify-center text-apple-text-secondary hover:text-apple-text-primary transition-colors"
+                            >
+                              +
+                            </button>
+                          </div>
+                          <button
+                            onClick={() => removeItem(item.product.id)}
+                            className="text-xs text-apple-text-secondary hover:text-apple-error transition-colors"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Footer */}
+            {items.length > 0 && (
+              <div className="border-t border-apple-border/50 px-6 py-5 space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-apple-text-primary font-medium">
+                    Subtotal
+                  </span>
+                  <span className="text-apple-text-primary font-semibold text-lg">
+                    {formatPrice(subtotal)}
+                  </span>
+                </div>
+                <p className="text-xs text-apple-text-secondary">
+                  Shipping calculated at checkout
+                </p>
+                <Link href="/checkout" onClick={closeCart}>
+                  <Button fullWidth size="lg">
+                    Checkout
+                  </Button>
+                </Link>
+                <button
+                  onClick={closeCart}
+                  className="w-full text-center text-sm text-apple-text-secondary hover:text-apple-text-primary transition-colors"
+                >
+                  Continue Shopping
+                </button>
+              </div>
+            )}
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
