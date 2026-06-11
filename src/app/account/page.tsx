@@ -8,7 +8,7 @@ export default function AccountPage() {
   // TODO: Add auth check — redirect to signin if not authenticated
 
   return (
-    <div className="pt-24 sm:pt-28 pb-16">
+    <div className="pt-28 sm:pt-32 pb-16">
       <div className="section-container">
         <h1 className="heading-lg mb-8">My Account</h1>
 

@@ -47,7 +47,7 @@ export default function TrackOrderResultPage() {
 
   if (loading) {
     return (
-      <div className="pt-24 sm:pt-28 pb-16">
+      <div className="pt-28 sm:pt-32 pb-16">
         <div className="section-container">
           <div className="max-w-2xl mx-auto animate-pulse space-y-4">
             <div className="h-8 bg-apple-bg rounded w-1/3" />
@@ -60,7 +60,7 @@ export default function TrackOrderResultPage() {
 
   if (error || !order) {
     return (
-      <div className="pt-24 sm:pt-28 pb-16">
+      <div className="pt-28 sm:pt-32 pb-16">
         <div className="section-container text-center py-20">
           <div className="max-w-md mx-auto">
             <div className="w-16 h-16 rounded-full bg-apple-error/10 flex items-center justify-center mx-auto mb-4">
@@ -91,7 +91,7 @@ export default function TrackOrderResultPage() {
   const currentIndex = STATUS_NODES.findIndex((n) => n.key === currentStatus);
 
   return (
-    <div className="pt-24 sm:pt-28 pb-16">
+    <div className="pt-28 sm:pt-32 pb-16">
       <div className="section-container">
         <div className="max-w-2xl mx-auto">
           {/* Header */}

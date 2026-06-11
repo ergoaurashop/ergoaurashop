@@ -229,7 +229,7 @@ export default function ProductDetailPage() {
   /* ── Loading ── */
   if (loading) {
     return (
-      <div className="pt-24 sm:pt-28 section-container">
+      <div className="pt-28 sm:pt-32 section-container">
         <div className="animate-pulse grid grid-cols-1 lg:grid-cols-2 gap-10">
           <div className="aspect-square bg-apple-bg rounded-apple" />
           <div className="space-y-4">
@@ -245,7 +245,7 @@ export default function ProductDetailPage() {
   /* ── Not found ── */
   if (!product) {
     return (
-      <div className="pt-24 sm:pt-28 section-container text-center py-20">
+      <div className="pt-28 sm:pt-32 section-container text-center py-20">
         <p className="text-apple-text-secondary">Product not found.</p>
       </div>
     );
@@ -255,7 +255,7 @@ export default function ProductDetailPage() {
      Render
      ──────────────────────────────────────────────────────────────── */
   return (
-    <div className="pt-24 sm:pt-28 pb-16">
+    <div className="pt-28 sm:pt-32 pb-16">
       <div className="section-container">
         {/* ==========================================================
             HERO — Image Gallery + Product Info

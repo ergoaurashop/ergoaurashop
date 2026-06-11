@@ -116,7 +116,7 @@ function ProductsContent() {
   return (
     <div className="bg-[#F5F1EB] min-h-screen">
       {/* ===== Collection Header ===== */}
-      <section className="relative pt-28 pb-12 md:pt-32 md:pb-16 overflow-hidden">
+      <section className="relative pt-32 pb-12 md:pt-36 md:pb-16 overflow-hidden">
         {/* Decorative background */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#1A1614] via-[#1A1614] to-[#F5F1EB]" />
         <div className="absolute top-0 right-0 w-[600px] h-[600px] opacity-[0.03] pointer-events-none">
@@ -213,7 +213,7 @@ export default function ProductsPage() {
   return (
     <Suspense
       fallback={
-        <div className="bg-[#F5F1EB] min-h-screen pt-28 sm:pt-32">
+        <div className="bg-[#F5F1EB] min-h-screen pt-32 sm:pt-36">
           <div className="section-container">
             <div className="text-center mb-8">
               <span className="type-overline-gold text-[#C9A962] tracking-[0.15em] uppercase">

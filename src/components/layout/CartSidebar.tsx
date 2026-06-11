@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/store/cartStore";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, getProductImageUrl } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 
@@ -116,10 +116,7 @@ export default function CartSidebar() {
                       {/* Image */}
                       <div className="w-20 h-20 rounded-apple-sm bg-apple-bg overflow-hidden flex-shrink-0">
                         <img
-                          src={
-                            item.product.images?.[0] ||
-                            `/images/products/${item.product.slug}/01.jpg`
-                          }
+                          src={getProductImageUrl(item.product.slug)}
                           alt={item.product.name}
                           className="w-full h-full object-cover"
                         />

@@ -71,7 +71,7 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <div className="pt-24 sm:pt-28 section-container text-center py-20">
+      <div className="pt-28 sm:pt-32 section-container text-center py-20">
         <div className="max-w-md mx-auto">
           <svg
             width="64"
@@ -97,7 +97,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="pt-24 sm:pt-28 pb-16">
+    <div className="pt-28 sm:pt-32 pb-16">
       <div className="section-container">
         <h1 className="heading-lg mb-8">Checkout</h1>
 

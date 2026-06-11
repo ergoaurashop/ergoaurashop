@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SITE_METADATA, GA4_ID } from "@/lib/constants";
 import "./globals.css";
+import TrustMarquee from "@/components/layout/TrustMarquee";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
@@ -62,6 +63,7 @@ export default function RootLayout({
         )}
       </head>
       <body className="min-h-screen flex flex-col">
+        <TrustMarquee />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

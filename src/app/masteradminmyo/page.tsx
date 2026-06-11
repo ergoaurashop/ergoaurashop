@@ -52,7 +52,7 @@ export default function AdminDashboardPage() {
 
   if (!authenticated) {
     return (
-      <div className="pt-24 sm:pt-28 pb-16">
+      <div className="pt-28 sm:pt-32 pb-16">
         <div className="section-container">
           <div className="max-w-sm mx-auto">
             <Card padding="lg">
@@ -91,7 +91,7 @@ export default function AdminDashboardPage() {
   );
 
   return (
-    <div className="pt-24 sm:pt-28 pb-16">
+    <div className="pt-28 sm:pt-32 pb-16">
       <div className="section-container">
         <div className="flex items-center justify-between mb-8">
           <h1 className="heading-lg">Admin Dashboard</h1>

@@ -34,7 +34,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="pt-24 sm:pt-28 pb-16">
+    <div className="pt-28 sm:pt-32 pb-16">
       <div className="section-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

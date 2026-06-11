@@ -29,7 +29,7 @@ export default function Header() {
     <>
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-40 transition-all duration-300",
+          "fixed top-10 left-0 right-0 z-40 transition-all duration-300",
           scrolled
             ? "bg-[#1A1614]/95 backdrop-blur-xl border-b border-[#C9A962]/30 shadow-lg"
             : "bg-gradient-to-r from-[#C9A962] via-[#DFC48A] to-[#C9A962]",
