@@ -185,9 +185,6 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
             <Badge variant="dubai_climate" size="sm">
               Dubai Climate
             </Badge>
-            <Badge variant="warranty_5year" size="sm">
-              5-Year
-            </Badge>
             {product.category === "kitchen" && (
               <Badge variant="installation_included" size="sm">
                 Free Install
