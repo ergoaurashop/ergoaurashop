@@ -11,6 +11,7 @@ import ProductPrice from "./ProductPrice";
 import StarRating from "./StarRating";
 import QuickViewModal from "./QuickViewModal";
 import { useCartStore } from "@/store/cartStore";
+import { getProductReviewSummary } from "@/lib/reviews-data";
 
 interface ProductCardProps {
   product: Product;
@@ -167,7 +168,11 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
           </Link>
 
           {/* Star Rating */}
-          <StarRating rating={4.5} count={12} size="sm" />
+          <StarRating
+            rating={getProductReviewSummary(product.slug)?.averageRating ?? 4.5}
+            count={getProductReviewSummary(product.slug)?.totalReviews ?? 12}
+            size="sm"
+          />
 
           {/* Price */}
           <ProductPrice

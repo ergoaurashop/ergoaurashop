@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase/client";
-import type { Product } from "@/lib/types";
+import type { Product, ProductReviewDetail } from "@/lib/types";
 import { formatPrice, getProductImageUrl, getProductImages } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
@@ -12,6 +12,7 @@ import Card from "@/components/ui/Card";
 import { useCartStore } from "@/store/cartStore";
 import { getProductContent } from "@/lib/product-content";
 import { LOCAL_PRODUCTS } from "@/lib/products-data";
+import { useProductReviews, type SortOption } from "@/hooks/useProductReviews";
 
 /* ────────────────────────────────────────────────────────────────
    Star Rating Component
@@ -31,6 +32,103 @@ function StarRating({ rating }: { rating: number }) {
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
       ))}
+    </div>
+  );
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Review Card — Amazon-style individual review
+   ──────────────────────────────────────────────────────────────── */
+function ReviewCard({ review }: { review: ProductReviewDetail }) {
+  return (
+    <div className="bg-white border border-sand-darker/40 rounded-apple p-5 transition-shadow hover:shadow-sm">
+      {/* Top row: Stars + date */}
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex gap-0.5">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <svg
+              key={star}
+              className={`w-4 h-4 ${
+                star <= review.rating ? "text-yellow-400" : "text-gray-300"
+              }`}
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+          ))}
+        </div>
+        <span className="text-xs text-apple-text-secondary">
+          {new Date(review.date).toLocaleDateString("en-IN", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}
+        </span>
+      </div>
+
+      {/* Review title */}
+      <h4 className="text-sm font-semibold text-apple-text-primary mb-1">
+        {review.title}
+      </h4>
+
+      {/* Review text */}
+      <p className="text-sm text-apple-text-primary leading-relaxed mb-3">
+        &ldquo;{review.text}&rdquo;
+      </p>
+
+      {/* Bottom: Name + City + Verified Badge + Helpful */}
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-apple-text-secondary">
+        <span className="font-medium text-apple-text-primary">
+          {review.name}
+        </span>
+        <span className="hidden sm:inline">·</span>
+        <span>{review.city}</span>
+        {review.isVerified && (
+          <>
+            <span>·</span>
+            <span className="inline-flex items-center gap-1 text-[#059669] font-medium">
+              <svg
+                className="w-3.5 h-3.5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Verified Purchase
+            </span>
+          </>
+        )}
+      </div>
+
+      {/* Helpful count */}
+      {review.helpfulCount > 0 && (
+        <div className="mt-3 flex items-center gap-3 text-xs text-apple-text-secondary">
+          <button
+            className="inline-flex items-center gap-1 hover:text-[#C9A962] transition-colors"
+            aria-label="Mark as helpful"
+          >
+            <svg
+              className="w-3.5 h-3.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+              />
+            </svg>
+            Helpful ({review.helpfulCount})
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -100,6 +198,20 @@ export default function ProductDetailPage() {
 
   /* Rich content from our prep files */
   const content = getProductContent(slug);
+
+  /* Review data */
+  const {
+    summary: reviewSummary,
+    displayed: displayedReviews,
+    hasMore,
+    totalFiltered,
+    sortBy,
+    changeSort,
+    filterRating,
+    changeFilterRating,
+    loadMore,
+    distribution,
+  } = useProductReviews(slug);
 
   const images = product?.images?.length
     ? product.images
@@ -545,37 +657,186 @@ export default function ProductDetailPage() {
         )}
 
         {/* ==========================================================
-            REVIEWS
+            AMAZON-STYLE REVIEWS
             ========================================================== */}
-        {content?.reviews && content.reviews.length > 0 && (
-          <section className="mb-16">
-            <SectionHeader
-              title="What Our Customers Say"
-              subtitle="Real reviews from verified buyers"
-            />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {content.reviews.map((review, i) => (
-                <Card key={i}>
-                  <StarRating rating={review.rating} />
-                  <p className="mt-3 text-sm text-apple-text-primary leading-relaxed">
-                    &ldquo;{review.text}&rdquo;
-                  </p>
-                  <div className="mt-4 flex items-center gap-2 text-xs text-apple-text-secondary">
-                    <span className="font-medium text-apple-text-primary">
-                      {review.name}
-                    </span>
-                    <span>·</span>
-                    <span>{review.city}</span>
-                  </div>
-                </Card>
-              ))}
+        {reviewSummary && (
+          <section className="mb-16 scroll-mt-24" id="reviews">
+            {/* ---- Summary Header ---- */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-8 pb-6 border-b border-sand-darker/40">
+              {/* Left: Big average */}
+              <div className="flex flex-col items-center min-w-[120px]">
+                <span className="text-5xl font-bold text-apple-text-primary">
+                  {reviewSummary.averageRating.toFixed(1)}
+                </span>
+                <div className="flex items-center gap-1 mt-1">
+                  {[1, 2, 3, 4, 5].map((star) => {
+                    const fill = Math.min(
+                      1,
+                      Math.max(0, reviewSummary.averageRating - star + 1),
+                    );
+                    return (
+                      <svg
+                        key={star}
+                        className="w-5 h-5"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                      >
+                        <path
+                          d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.62l5.34-.78L10 1z"
+                          fill={
+                            fill >= 1
+                              ? "#C9A962"
+                              : fill > 0
+                                ? "url(#half)"
+                                : "#E5E2DD"
+                          }
+                        />
+                        {fill > 0 && fill < 1 && (
+                          <clipPath id={`half-${star}`}>
+                            <rect
+                              x="0"
+                              y="0"
+                              width={`${fill * 100}%`}
+                              height="100%"
+                            />
+                          </clipPath>
+                        )}
+                        {fill > 0 && fill < 1 && (
+                          <path
+                            d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.62l5.34-.78L10 1z"
+                            fill="#C9A962"
+                            clipPath={`url(#half-${star})`}
+                          />
+                        )}
+                      </svg>
+                    );
+                  })}
+                </div>
+                <span className="text-sm text-apple-text-secondary mt-1">
+                  {reviewSummary.totalReviews.toLocaleString("en-IN")} global
+                  ratings
+                </span>
+              </div>
+
+              {/* Right: Distribution bar chart */}
+              <div className="flex-1 w-full space-y-1.5 max-w-md">
+                {([5, 4, 3, 2, 1] as const).map((star) => {
+                  const count = distribution[star] ?? 0;
+                  const pct =
+                    reviewSummary.totalReviews > 0
+                      ? (count / reviewSummary.totalReviews) * 100
+                      : 0;
+                  return (
+                    <button
+                      key={star}
+                      onClick={() =>
+                        changeFilterRating(filterRating === star ? null : star)
+                      }
+                      className={`flex items-center gap-2 w-full text-left group transition-opacity ${
+                        filterRating !== null && filterRating !== star
+                          ? "opacity-40"
+                          : ""
+                      }`}
+                      aria-label={`Filter by ${star} star`}
+                    >
+                      <span className="text-xs text-apple-text-secondary w-6 text-right font-medium">
+                        {star}★
+                      </span>
+                      <div className="flex-1 h-[10px] bg-sand-darker/30 rounded-full overflow-hidden">
+                        <div
+                          className="h-full rounded-full transition-all duration-300 bg-gradient-to-r from-[#C9A962] to-[#DFC48A]"
+                          style={{ width: `${Math.max(pct, 2)}%` }}
+                        />
+                      </div>
+                      <span className="text-xs text-apple-text-secondary w-12 text-right">
+                        {count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
+
+            {/* ---- Sort Controls ---- */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+              <h3 className="text-lg font-semibold text-apple-text-primary">
+                {totalFiltered > 0
+                  ? `${totalFiltered.toLocaleString("en-IN")} review${totalFiltered !== 1 ? "s" : ""}`
+                  : "Reviews"}
+                {filterRating !== null && (
+                  <span className="text-sm font-normal text-apple-text-secondary ml-2">
+                    (filtered by {filterRating}★)
+                  </span>
+                )}
+              </h3>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-apple-text-secondary">
+                  Sort by:
+                </span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => changeSort(e.target.value as SortOption)}
+                  className="text-sm border border-sand-darker rounded-apple-sm px-3 py-1.5 bg-white text-apple-text-primary focus:outline-none focus:ring-2 focus:ring-[#C9A962]/40"
+                >
+                  <option value="most_recent">Most Recent</option>
+                  <option value="top">Top Reviews</option>
+                  <option value="lowest">Lowest Rated</option>
+                </select>
+              </div>
+            </div>
+
+            {/* ---- Review List ---- */}
+            {displayedReviews.length > 0 ? (
+              <div className="space-y-5">
+                {displayedReviews.map((review) => (
+                  <ReviewCard key={review.id} review={review} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 text-apple-text-secondary">
+                <p className="text-lg">No reviews match this filter.</p>
+                <button
+                  onClick={() => changeFilterRating(null)}
+                  className="mt-2 text-sm text-[#C9A962] hover:underline"
+                >
+                  Clear filter
+                </button>
+              </div>
+            )}
+
+            {/* ---- Load More ---- */}
+            {hasMore && (
+              <div className="text-center mt-8">
+                <button
+                  onClick={loadMore}
+                  className="inline-flex items-center gap-2 px-8 py-3 border-2 border-[#C9A962] text-[#C9A962] rounded-full text-sm font-semibold hover:bg-[#C9A962] hover:text-[#1A1614] transition-all duration-200"
+                >
+                  Load More Reviews
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+              </div>
+            )}
           </section>
         )}
 
         {/* ==========================================================
             TRUST BAR + PRICING SUMMARY
             ========================================================== */}
+        {/* ── ReviewCard sub-component ── */}
+        {/* defined after the main component below */}
+
         <section>
           <SectionHeader
             title="Why Shop With Us"

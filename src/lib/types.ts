@@ -156,6 +156,33 @@ export interface Review {
   created_at: string;
 }
 
+/** Aggregated review stats per product (shown in grid + detail page) */
+export interface ProductReviewSummary {
+  totalReviews: number; // 110-250 range
+  averageRating: number; // 4.3 - 5.0
+  ratingDistribution: {
+    // Count breakdown by star level
+    1: number;
+    2: number;
+    3: number;
+    4: number;
+    5: number;
+  };
+}
+
+/** Extended review for the detail page (Amazon-style) */
+export interface ProductReviewDetail {
+  id: string;
+  name: string; // Full Indian name
+  city: string; // "City, State" format
+  rating: number; // 1-5
+  title: string; // Short review headline
+  text: string; // Full review body
+  date: string; // ISO date string
+  isVerified: boolean; // "Verified Purchase" badge
+  helpfulCount: number; // "X people found this helpful"
+}
+
 // =====================================================================
 // Profile Types
 // =====================================================================
