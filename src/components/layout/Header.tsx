@@ -37,13 +37,26 @@ export default function Header() {
       >
         <div className="section-container">
           <div className="flex items-center justify-between h-16 sm:h-20">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 shrink-0">
-              <img
-                src="/images/logo/ergoauralogo.webp"
-                alt="ErgoAura Shop"
-                className="h-8 sm:h-9 w-auto brightness-0 invert"
-              />
+            {/* Logo — Animated Gradient Text */}
+            <Link href="/" className="flex items-center gap-2 shrink-0 group">
+              <span
+                className={cn(
+                  "text-xl sm:text-2xl font-bold tracking-tight transition-colors duration-300",
+                  scrolled
+                    ? "bg-gradient-to-r from-[#C9A962] via-[#DFC48A] to-[#C9A962] bg-[length:300%_100%] bg-clip-text text-transparent animate-[gradient-shift_4s_ease_infinite]"
+                    : "text-[#1A1614]",
+                )}
+              >
+                Ergoaura
+              </span>
+              <span
+                className={cn(
+                  "text-xs sm:text-sm font-medium tracking-widest uppercase transition-colors duration-300",
+                  scrolled ? "text-[#C9A962]/70" : "text-[#1A1614]/60",
+                )}
+              >
+                shop
+              </span>
             </Link>
 
             {/* Desktop Nav */}
