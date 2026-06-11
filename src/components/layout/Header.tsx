@@ -31,8 +31,8 @@ export default function Header() {
         className={cn(
           "fixed top-0 left-0 right-0 z-40 transition-all duration-300",
           scrolled
-            ? "bg-apple-white/80 backdrop-blur-xl border-b border-apple-border/50"
-            : "bg-transparent",
+            ? "bg-[#1A1614]/95 backdrop-blur-xl border-b border-[#C9A962]/30 shadow-lg"
+            : "bg-gradient-to-r from-[#C9A962] via-[#DFC48A] to-[#C9A962]",
         )}
       >
         <div className="section-container">
@@ -42,7 +42,7 @@ export default function Header() {
               <img
                 src="/images/logo/ergoauralogo.webp"
                 alt="ErgoAura Shop"
-                className="h-8 sm:h-9 w-auto"
+                className="h-8 sm:h-9 w-auto brightness-0 invert"
               />
             </Link>
 
@@ -50,25 +50,45 @@ export default function Header() {
             <nav className="hidden md:flex items-center gap-8">
               <Link
                 href="/"
-                className="text-sm font-medium text-apple-text-primary hover:text-apple-text-secondary transition-colors"
+                className={cn(
+                  "text-sm font-medium transition-colors",
+                  scrolled
+                    ? "text-[#C9A962] hover:text-[#DFC48A]"
+                    : "text-[#1A1614] hover:text-[#1A1614]/70",
+                )}
               >
                 Home
               </Link>
               <Link
                 href="/products"
-                className="text-sm font-medium text-apple-text-primary hover:text-apple-text-secondary transition-colors"
+                className={cn(
+                  "text-sm font-medium transition-colors",
+                  scrolled
+                    ? "text-[#C9A962] hover:text-[#DFC48A]"
+                    : "text-[#1A1614] hover:text-[#1A1614]/70",
+                )}
               >
                 Products
               </Link>
               <Link
                 href="/track-order"
-                className="text-sm font-medium text-apple-text-primary hover:text-apple-text-secondary transition-colors"
+                className={cn(
+                  "text-sm font-medium transition-colors",
+                  scrolled
+                    ? "text-[#C9A962] hover:text-[#DFC48A]"
+                    : "text-[#1A1614] hover:text-[#1A1614]/70",
+                )}
               >
                 Track Order
               </Link>
               <Link
                 href="/signin"
-                className="text-sm font-medium text-apple-text-primary hover:text-apple-text-secondary transition-colors"
+                className={cn(
+                  "text-sm font-medium transition-colors",
+                  scrolled
+                    ? "text-[#C9A962] hover:text-[#DFC48A]"
+                    : "text-[#1A1614] hover:text-[#1A1614]/70",
+                )}
               >
                 Sign In
               </Link>
@@ -79,7 +99,10 @@ export default function Header() {
               {/* Cart button */}
               <button
                 onClick={toggleCart}
-                className="relative p-2 rounded-full hover:bg-black/5 transition-colors"
+                className={cn(
+                  "relative p-2 rounded-full transition-colors",
+                  scrolled ? "hover:bg-[#C9A962]/10" : "hover:bg-[#1A1614]/10",
+                )}
                 aria-label="Open cart"
               >
                 <svg
@@ -87,7 +110,7 @@ export default function Header() {
                   height="22"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="currentColor"
+                  stroke={scrolled ? "#C9A962" : "#1A1614"}
                   strokeWidth="1.5"
                 >
                   <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" />
@@ -102,7 +125,10 @@ export default function Header() {
               {/* Mobile menu toggle */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 rounded-full hover:bg-black/5 transition-colors"
+                className={cn(
+                  "md:hidden p-2 rounded-full transition-colors",
+                  scrolled ? "hover:bg-[#C9A962]/10" : "hover:bg-[#1A1614]/10",
+                )}
                 aria-label="Toggle menu"
               >
                 <svg
@@ -110,7 +136,7 @@ export default function Header() {
                   height="20"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="currentColor"
+                  stroke={scrolled ? "#C9A962" : "#1A1614"}
                   strokeWidth="2"
                 >
                   {mobileMenuOpen ? (
@@ -128,32 +154,32 @@ export default function Header() {
 
         {/* Mobile Nav */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-apple-white border-t border-apple-border/50">
+          <div className="md:hidden bg-[#1A1614] border-t border-[#C9A962]/30">
             <div className="section-container py-4 space-y-3">
               <Link
                 href="/"
-                className="block py-2 text-sm font-medium text-apple-text-primary"
+                className="block py-2 text-sm font-medium text-[#C9A962]"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Home
               </Link>
               <Link
                 href="/products"
-                className="block py-2 text-sm font-medium text-apple-text-primary"
+                className="block py-2 text-sm font-medium text-[#C9A962]"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Products
               </Link>
               <Link
                 href="/track-order"
-                className="block py-2 text-sm font-medium text-apple-text-primary"
+                className="block py-2 text-sm font-medium text-[#C9A962]"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Track Order
               </Link>
               <Link
                 href="/signin"
-                className="block py-2 text-sm font-medium text-apple-text-primary"
+                className="block py-2 text-sm font-medium text-[#C9A962]"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Sign In

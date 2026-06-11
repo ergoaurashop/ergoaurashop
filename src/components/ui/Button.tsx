@@ -4,7 +4,13 @@ import { ButtonHTMLAttributes, forwardRef } from "react";
 import { cn } from "@/lib/utils";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "ghost" | "ghost-light" | "outline";
+  variant?:
+    | "primary"
+    | "secondary"
+    | "ghost"
+    | "ghost-light"
+    | "outline"
+    | "animated";
   size?: "sm" | "md" | "lg";
   fullWidth?: boolean;
   loading?: boolean;
@@ -16,6 +22,7 @@ const variantMap: Record<string, string> = {
   ghost: "btn-ghost",
   "ghost-light": "btn-ghost-light",
   outline: "btn-secondary", // Legacy alias
+  animated: "btn-gradient-animated",
 };
 
 const sizes = {

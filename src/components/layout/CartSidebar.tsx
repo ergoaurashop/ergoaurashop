@@ -192,7 +192,7 @@ export default function CartSidebar() {
                   Shipping calculated at checkout
                 </p>
                 <Link href="/checkout" onClick={closeCart}>
-                  <Button fullWidth size="lg">
+                  <Button variant="animated" fullWidth size="lg">
                     Checkout
                   </Button>
                 </Link>

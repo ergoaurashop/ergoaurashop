@@ -284,6 +284,7 @@ export default function ProductDetailPage() {
             {/* Add to Cart */}
             <div className="pt-4">
               <Button
+                variant="animated"
                 size="lg"
                 fullWidth
                 onClick={handleAddToCart}
@@ -296,7 +297,7 @@ export default function ProductDetailPage() {
             {/* Trust badges (static) */}
             <div className="grid grid-cols-2 gap-3">
               {[
-                { label: "Free Delivery", sub: "Above ₹299" },
+                { label: "Free Delivery", sub: "All purchase" },
                 { label: "Easy Returns", sub: "7-Day Policy" },
                 { label: "Secure Checkout", sub: "Razorpay" },
                 { label: "Support", sub: "24/7 Available" },
@@ -586,7 +587,7 @@ export default function ProductDetailPage() {
                 ? content.trustItems
                 : [
                     { icon: "✅", text: "100% original product" },
-                    { icon: "🚚", text: "Free delivery above ₹299" },
+                    { icon: "🚚", text: "Free delivery on all purchase" },
                     { icon: "🔄", text: "7-day easy return" },
                     { icon: "🔒", text: "Secure checkout" },
                   ]
@@ -651,6 +652,7 @@ export default function ProductDetailPage() {
                 </div>
                 <div className="pt-3">
                   <Button
+                    variant="animated"
                     size="lg"
                     fullWidth
                     onClick={handleAddToCart}

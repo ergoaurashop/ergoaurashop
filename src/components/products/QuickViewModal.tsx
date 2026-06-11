@@ -201,7 +201,7 @@ export default function QuickViewModal({
               {/* Badges overlay */}
               <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
                 <Badge variant="ded_licensed" size="sm">
-                  DED Licensed
+                  Original
                 </Badge>
               </div>
 
@@ -228,9 +228,6 @@ export default function QuickViewModal({
             <div className="flex-1 flex flex-col p-5 md:p-6 md:overflow-y-auto gap-4">
               {/* Trust badge strip */}
               <div className="flex flex-wrap gap-1.5">
-                <Badge variant="made_in_uae" size="sm">
-                  Made in UAE
-                </Badge>
                 <Badge variant="dubai_climate" size="sm">
                   Dubai Climate
                 </Badge>
@@ -303,7 +300,7 @@ export default function QuickViewModal({
                 <button
                   onClick={handleAddToCart}
                   disabled={isOutOfStock}
-                  className="btn-primary btn-md flex-1"
+                  className="btn-gradient-animated btn-md flex-1"
                 >
                   {isOutOfStock ? "Out of Stock" : "Add to Cart"}
                 </button>
@@ -323,7 +320,7 @@ export default function QuickViewModal({
             <button
               onClick={handleAddToCart}
               disabled={isOutOfStock}
-              className="btn-primary btn-md flex-1"
+              className="btn-gradient-animated btn-md flex-1"
             >
               {isOutOfStock ? "Out of Stock" : "Add to Cart"}
             </button>

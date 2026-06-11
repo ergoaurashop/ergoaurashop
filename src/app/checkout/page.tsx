@@ -278,6 +278,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <Button
+                  variant="animated"
                   type="submit"
                   fullWidth
                   size="lg"

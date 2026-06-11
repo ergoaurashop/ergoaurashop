@@ -90,10 +90,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
           {/* ===== Badges — Top-Left ===== */}
           <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
             <Badge variant="ded_licensed" size="sm">
-              DED Licensed
-            </Badge>
-            <Badge variant="made_in_uae" size="sm">
-              Made in UAE
+              Original
             </Badge>
           </div>
 
@@ -196,6 +193,29 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
                 Free Install
               </Badge>
             )}
+          </div>
+
+          {/* ===== Cart & Buy Now Buttons ===== */}
+          <div className="flex items-center gap-2 mt-1">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                addItem(product);
+              }}
+              className="btn-gradient-animated flex-1 !py-2 !px-3 !text-xs !rounded-full"
+              aria-label={`Add ${product.name} to cart`}
+            >
+              Add to Cart
+            </button>
+            <Link
+              href={`/products/${product.slug}`}
+              className="flex-1 py-2 px-3 text-xs font-medium rounded-full text-center
+                         border border-[#C9A962] text-[#C9A962]
+                         hover:bg-[#C9A962] hover:text-[#1A1614]
+                         transition-all duration-200"
+            >
+              Buy Now
+            </Link>
           </div>
 
           {/* ===== Mobile Quick View Button ===== */}
