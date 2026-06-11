@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
@@ -433,7 +433,7 @@ export default function ProductDetailPage() {
             <div className="max-w-3xl mx-auto">
               <Card className="!bg-apple-bg !border-apple-border">
                 <p className="text-apple-text-primary leading-relaxed text-lg italic">
-                  "{content.problemHook}"
+                  &ldquo;{content.problemHook}&rdquo;
                 </p>
               </Card>
 
@@ -557,7 +557,7 @@ export default function ProductDetailPage() {
                 <Card key={i}>
                   <StarRating rating={review.rating} />
                   <p className="mt-3 text-sm text-apple-text-primary leading-relaxed">
-                    "{review.text}"
+                    &ldquo;{review.text}&rdquo;
                   </p>
                   <div className="mt-4 flex items-center gap-2 text-xs text-apple-text-secondary">
                     <span className="font-medium text-apple-text-primary">

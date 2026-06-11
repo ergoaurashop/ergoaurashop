@@ -4,11 +4,25 @@ import { ButtonHTMLAttributes, forwardRef } from "react";
 import { cn } from "@/lib/utils";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "outline" | "ghost";
+  variant?: "primary" | "secondary" | "ghost" | "ghost-light" | "outline";
   size?: "sm" | "md" | "lg";
   fullWidth?: boolean;
   loading?: boolean;
 }
+
+const variantMap: Record<string, string> = {
+  primary: "btn-primary",
+  secondary: "btn-secondary",
+  ghost: "btn-ghost",
+  "ghost-light": "btn-ghost-light",
+  outline: "btn-secondary", // Legacy alias
+};
+
+const sizes = {
+  sm: "btn-sm",
+  md: "btn-md",
+  lg: "btn-lg",
+};
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -24,30 +38,15 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
-    const variants = {
-      primary:
-        "bg-apple-black text-apple-white hover:opacity-85 border border-transparent",
-      outline:
-        "border-apple-black text-apple-black bg-transparent hover:bg-apple-black hover:text-apple-white",
-      ghost: "text-apple-text-primary bg-transparent hover:bg-black/5",
-    };
-
-    const sizes = {
-      sm: "px-4 py-2 text-sm",
-      md: "px-6 py-3 text-base",
-      lg: "px-8 py-4 text-lg",
-    };
-
     return (
       <button
         ref={ref}
         disabled={disabled || loading}
         className={cn(
-          "rounded-apple font-medium transition-all duration-200",
+          "inline-flex items-center justify-center gap-2",
           "active:scale-[0.98]",
           "disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100",
-          "inline-flex items-center justify-center gap-2",
-          variants[variant],
+          variantMap[variant] || variantMap.primary,
           sizes[size],
           fullWidth && "w-full",
           className,
