@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { SLUG_TO_FOLDER, SLUG_TO_IMAGES } from "@/lib/products-data";
 
 /** Merge Tailwind classes with conflict resolution */
 export function cn(...inputs: ClassValue[]) {
@@ -62,8 +63,24 @@ export function truncate(text: string, maxLength: number): string {
   return text.substring(0, maxLength).trim() + "...";
 }
 
-/** Get the primary product image URL */
+/** Get the primary (first) product image URL */
 export function getProductImageUrl(slug: string, image?: string): string {
   if (image) return image;
-  return `/images/products/${slug}/01.jpg`;
+  const images = SLUG_TO_IMAGES[slug];
+  if (images && images.length > 0) {
+    const folder = SLUG_TO_FOLDER[slug] || slug;
+    return `/images/products/${encodeURIComponent(folder)}/${encodeURIComponent(images[0])}`;
+  }
+  return `/images/products/${slug}/placeholder.jpg`;
+}
+
+/** Get all image URLs for a product */
+export function getProductImages(slug: string): string[] {
+  const images = SLUG_TO_IMAGES[slug];
+  if (!images || images.length === 0) return [];
+  const folder = SLUG_TO_FOLDER[slug] || slug;
+  return images.map(
+    (img) =>
+      `/images/products/${encodeURIComponent(folder)}/${encodeURIComponent(img)}`,
+  );
 }

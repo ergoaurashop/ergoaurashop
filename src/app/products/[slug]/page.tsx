@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase/client";
 import type { Product } from "@/lib/types";
-import { formatPrice, getProductImageUrl } from "@/lib/utils";
+import { formatPrice, getProductImageUrl, getProductImages } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 import Card from "@/components/ui/Card";
@@ -64,7 +64,9 @@ export default function ProductDetailPage() {
 
   const images = product.images?.length
     ? product.images
-    : [getProductImageUrl(product.slug)];
+    : getProductImages(product.slug).length > 0
+      ? getProductImages(product.slug)
+      : [getProductImageUrl(product.slug)];
 
   const handleAddToCart = () => {
     addItem(product);

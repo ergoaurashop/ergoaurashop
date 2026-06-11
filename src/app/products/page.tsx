@@ -6,6 +6,7 @@ import { supabase } from "@/lib/supabase/client";
 import type { Product } from "@/lib/types";
 import ProductGrid from "@/components/products/ProductGrid";
 import { cn } from "@/lib/utils";
+import { LOCAL_PRODUCTS } from "@/lib/products-data";
 
 const CATEGORIES = [
   { label: "All", value: "all" },
@@ -42,7 +43,16 @@ function ProductsContent() {
         }
 
         const { data } = await query;
-        let result = data || [];
+        let result = data && data.length > 0 ? data : [];
+
+        // Fall back to local products if Supabase returned nothing
+        if (result.length === 0) {
+          let local = LOCAL_PRODUCTS;
+          if (activeCategory !== "all") {
+            local = local.filter((p) => p.category === activeCategory);
+          }
+          result = local;
+        }
 
         // Sort
         switch (sortBy) {
@@ -65,7 +75,12 @@ function ProductsContent() {
 
         setProducts(result);
       } catch {
-        // Table may not exist
+        // Fall back to local products on error
+        let local = LOCAL_PRODUCTS;
+        if (activeCategory !== "all") {
+          local = local.filter((p) => p.category === activeCategory);
+        }
+        setProducts(local);
       } finally {
         setLoading(false);
       }

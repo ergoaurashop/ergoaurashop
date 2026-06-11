@@ -7,6 +7,7 @@ import { supabase } from "@/lib/supabase/client";
 import type { Product } from "@/lib/types";
 import ProductGrid from "@/components/products/ProductGrid";
 import Button from "@/components/ui/Button";
+import { LOCAL_PRODUCTS } from "@/lib/products-data";
 
 export default function HomePage() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
@@ -16,9 +17,15 @@ export default function HomePage() {
     async function fetchProducts() {
       try {
         const { data } = await supabase.from("products").select("*").limit(8);
-        setFeaturedProducts(data || []);
+        if (data && data.length > 0) {
+          setFeaturedProducts(data.slice(0, 8));
+        } else {
+          // Fall back to local products
+          setFeaturedProducts(LOCAL_PRODUCTS.slice(0, 8));
+        }
       } catch {
-        // Products table may not exist yet — show empty state
+        // Fall back to local products on error
+        setFeaturedProducts(LOCAL_PRODUCTS.slice(0, 8));
       } finally {
         setLoading(false);
       }

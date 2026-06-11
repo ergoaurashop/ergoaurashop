@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import type { Product } from "@/lib/types";
+import { LOCAL_PRODUCTS } from "@/lib/products-data";
 
 export function useProducts(category?: string) {
   const [products, setProducts] = useState<Product[]>([]);
@@ -22,8 +23,24 @@ export function useProducts(category?: string) {
         const { data, error: fetchError } = await query;
 
         if (fetchError) throw fetchError;
-        setProducts(data || []);
+
+        // Use local data if Supabase returned nothing
+        if (!data || data.length === 0) {
+          let local = LOCAL_PRODUCTS;
+          if (category && category !== "all") {
+            local = local.filter((p) => p.category === category);
+          }
+          setProducts(local);
+        } else {
+          setProducts(data);
+        }
       } catch (err) {
+        // On any error, fall back to local data
+        let local = LOCAL_PRODUCTS;
+        if (category && category !== "all") {
+          local = local.filter((p) => p.category === category);
+        }
+        setProducts(local);
         setError(
           err instanceof Error ? err.message : "Failed to fetch products",
         );
@@ -54,8 +71,18 @@ export function useProduct(slug: string) {
           .single();
 
         if (fetchError) throw fetchError;
-        setProduct(data);
+
+        if (data) {
+          setProduct(data);
+        } else {
+          // Fall back to local data
+          const local = LOCAL_PRODUCTS.find((p) => p.slug === slug) || null;
+          setProduct(local);
+        }
       } catch (err) {
+        // Fall back to local data on any error
+        const local = LOCAL_PRODUCTS.find((p) => p.slug === slug) || null;
+        setProduct(local);
         setError(
           err instanceof Error ? err.message : "Failed to fetch product",
         );
@@ -65,6 +92,7 @@ export function useProduct(slug: string) {
     }
 
     if (slug) fetchProduct();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
   return { product, loading, error };
