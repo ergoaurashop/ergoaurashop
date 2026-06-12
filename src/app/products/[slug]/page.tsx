@@ -231,11 +231,13 @@ export default function ProductDetailPage() {
     distribution,
   } = useProductReviews(slug);
 
-  const images = product?.images?.length
-    ? product.images
-    : getProductImages(slug).length > 0
-      ? getProductImages(slug)
-      : [getProductImageUrl(slug)];
+  const localImageUrls = getProductImages(slug);
+  const images =
+    localImageUrls.length > 0
+      ? localImageUrls
+      : product?.images?.length
+        ? product.images
+        : [getProductImageUrl(slug)];
 
   /* ── Loading ── */
   if (loading) {
