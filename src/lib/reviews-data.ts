@@ -21,10 +21,13 @@ export interface ProductReviewData {
 }
 
 // =====================================================================
-// Helper to generate ISO dates spread across Oct 2025 - Mar 2026
+// Helper to generate ISO dates spread across Sep 2025 - Mar 2026
+// Months 7-12 use 2025 (past), months 1-6 use 2026 (past)
 // =====================================================================
-const d = (month: number, day: number): string =>
-  `2026-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T10:30:00Z`;
+const d = (month: number, day: number): string => {
+  const year = month >= 7 ? 2025 : 2026;
+  return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T10:30:00Z`;
+};
 
 // =====================================================================
 // 1. Anti-Snoring Chin Strap
