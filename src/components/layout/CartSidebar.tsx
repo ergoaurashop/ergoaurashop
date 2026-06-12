@@ -61,21 +61,19 @@ export default function CartSidebar() {
             animate={{ transform: "translateX(0)" }}
             exit={{ transform: "translateX(100%)" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed right-0 top-0 h-full w-full max-w-md z-50 shadow-2xl flex flex-col bg-gradient-to-br from-white via-sand/20 to-gold-muted bg-[length:400%_400%] animate-gradient-shift"
+            className="fixed right-0 top-0 h-full w-full max-w-md z-50 shadow-2xl flex flex-col bg-gradient-to-br from-[#1A1614] via-[#2E2825] to-[#3D352F] bg-[length:400%_400%] animate-gradient-shift"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-apple-border/50">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
               <div>
-                <h2 className="text-lg font-semibold text-apple-text-primary">
-                  Cart
-                </h2>
-                <p className="text-sm text-apple-text-secondary">
+                <h2 className="text-lg font-semibold text-white">Cart</h2>
+                <p className="text-sm text-white/60">
                   {totalItems} {totalItems === 1 ? "item" : "items"}
                 </p>
               </div>
               <button
                 onClick={closeCart}
-                className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 transition-colors"
+                className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors text-white"
                 aria-label="Close cart"
               >
                 <svg
@@ -100,15 +98,13 @@ export default function CartSidebar() {
                     height="48"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="#86868B"
+                    stroke="#C9A962"
                     strokeWidth="1.5"
                     className="mb-4"
                   >
                     <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" />
                   </svg>
-                  <p className="text-apple-text-secondary">
-                    Your cart is empty
-                  </p>
+                  <p className="text-white/60">Your cart is empty</p>
                   <Button
                     variant="outline"
                     size="sm"
@@ -123,13 +119,13 @@ export default function CartSidebar() {
                   {items.map((item) => (
                     <div
                       key={item.product.id}
-                      className="flex gap-4 py-4 border-b border-apple-border/30 last:border-0"
+                      className="flex gap-4 py-4 border-b border-white/10 last:border-0"
                     >
                       {/* Image */}
                       <Link
                         href={`/products/${item.product.slug}`}
                         onClick={closeCart}
-                        className="w-20 h-20 rounded-apple-sm bg-apple-bg overflow-hidden flex-shrink-0 group block"
+                        className="w-20 h-20 rounded-apple-sm bg-white/10 overflow-hidden flex-shrink-0 group block"
                       >
                         <img
                           src={getProductImageUrl(item.product.slug)}
@@ -140,7 +136,7 @@ export default function CartSidebar() {
 
                       {/* Details */}
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-medium text-apple-text-primary truncate">
+                        <h3 className="text-sm font-medium text-white truncate">
                           {item.product.name}
                         </h3>
                         <p className="text-sm mt-0.5 flex items-center gap-2 flex-wrap">
@@ -156,7 +152,7 @@ export default function CartSidebar() {
                           </span>
                           {/* Original price strikethrough */}
                           {item.product.original_price > item.product.price && (
-                            <span className="text-xs text-apple-text-secondary line-through">
+                            <span className="text-xs text-white/50 line-through">
                               {formatPrice(item.product.original_price)}
                             </span>
                           )}
@@ -168,7 +164,7 @@ export default function CartSidebar() {
 
                         {/* Quantity controls */}
                         <div className="flex items-center gap-3 mt-2">
-                          <div className="flex items-center border border-apple-border rounded-md">
+                          <div className="flex items-center border border-white/20 rounded-md">
                             <button
                               onClick={() =>
                                 updateQuantity(
@@ -176,11 +172,11 @@ export default function CartSidebar() {
                                   item.quantity - 1,
                                 )
                               }
-                              className="w-7 h-7 flex items-center justify-center text-apple-text-secondary hover:text-apple-text-primary transition-colors"
+                              className="w-7 h-7 flex items-center justify-center text-white/60 hover:text-white transition-colors"
                             >
                               −
                             </button>
-                            <span className="w-7 text-center text-sm font-medium">
+                            <span className="w-7 text-center text-sm font-medium text-white">
                               {item.quantity}
                             </span>
                             <button
@@ -190,14 +186,14 @@ export default function CartSidebar() {
                                   item.quantity + 1,
                                 )
                               }
-                              className="w-7 h-7 flex items-center justify-center text-apple-text-secondary hover:text-apple-text-primary transition-colors"
+                              className="w-7 h-7 flex items-center justify-center text-white/60 hover:text-white transition-colors"
                             >
                               +
                             </button>
                           </div>
                           <button
                             onClick={() => removeItem(item.product.id)}
-                            className="text-xs text-apple-text-secondary hover:text-apple-error transition-colors"
+                            className="text-xs text-white/60 hover:text-red-400 transition-colors"
                           >
                             Remove
                           </button>
@@ -221,13 +217,11 @@ export default function CartSidebar() {
 
             {/* Footer */}
             {items.length > 0 && (
-              <div className="border-t border-apple-border/50 px-6 py-5 space-y-4">
+              <div className="border-t border-white/10 px-6 py-5 space-y-4">
                 {/* Subtotal */}
                 <div className="flex items-center justify-between">
-                  <span className="text-apple-text-primary font-medium">
-                    Subtotal
-                  </span>
-                  <span className="text-apple-text-primary font-semibold text-lg">
+                  <span className="text-white font-medium">Subtotal</span>
+                  <span className="text-white font-semibold text-lg">
                     {formatPrice(subtotal)}
                   </span>
                 </div>
@@ -235,13 +229,13 @@ export default function CartSidebar() {
                 {/* B2G1 Discount */}
                 {b2g1Discount > 0 && (
                   <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-1.5 text-sm text-apple-text-secondary">
+                    <span className="flex items-center gap-1.5 text-sm">
                       <span className="text-[10px] font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 px-1.5 py-0.5 rounded-full">
                         B2G1
                       </span>
-                      Discount
+                      <span className="text-gold font-semibold">Discount</span>
                     </span>
-                    <span className="text-sm text-green-600 font-medium">
+                    <span className="text-sm text-white/80 font-medium">
                       -{formatPrice(b2g1Discount)}
                     </span>
                   </div>
@@ -249,11 +243,11 @@ export default function CartSidebar() {
 
                 {/* You Save */}
                 {youSave > 0 && (
-                  <div className="flex items-center justify-between bg-green-50 rounded-apple-sm px-3 py-2 -mx-3">
-                    <span className="text-sm font-semibold text-green-700">
+                  <div className="flex items-center justify-between bg-white/10 rounded-apple-sm px-3 py-2 -mx-3">
+                    <span className="text-sm font-semibold text-gold-light">
                       You Save
                     </span>
-                    <span className="text-sm font-bold text-green-700">
+                    <span className="text-sm font-bold text-gold-light">
                       {formatPrice(youSave)}
                     </span>
                   </div>
@@ -261,15 +255,13 @@ export default function CartSidebar() {
 
                 {/* Total (after discount) */}
                 <div className="flex items-center justify-between pt-1">
-                  <span className="text-apple-text-primary font-semibold">
-                    Total
-                  </span>
-                  <span className="text-apple-text-primary font-bold text-lg">
+                  <span className="text-white font-semibold">Total</span>
+                  <span className="text-white font-bold text-lg">
                     {formatPrice(discountedSubtotal)}
                   </span>
                 </div>
 
-                <p className="text-xs text-green-600 font-medium flex items-center gap-1">
+                <p className="text-xs text-white/70 font-medium flex items-center gap-1">
                   <svg
                     className="w-3.5 h-3.5"
                     viewBox="0 0 24 24"
@@ -292,7 +284,7 @@ export default function CartSidebar() {
                 </Link>
                 <button
                   onClick={closeCart}
-                  className="w-full text-center text-sm text-apple-text-secondary hover:text-apple-text-primary transition-colors"
+                  className="w-full text-center text-sm text-white/60 hover:text-white transition-colors"
                 >
                   Continue Shopping
                 </button>
