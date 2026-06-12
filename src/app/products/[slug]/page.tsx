@@ -186,6 +186,8 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
   /* Try Supabase first, fall back to local data */
   useEffect(() => {
@@ -279,16 +281,84 @@ export default function ProductDetailPage() {
         >
           {/* ── Image Gallery (lg: col-span-2) ── */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="aspect-square bg-apple-bg rounded-apple overflow-hidden">
+            {/* Main image with arrows & swipe */}
+            <div className="relative group aspect-square bg-apple-bg rounded-apple overflow-hidden">
               <motion.img
                 key={selectedImage}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 src={images[selectedImage]}
                 alt={product.name}
-                className="w-full h-full object-contain p-4"
+                className="w-full h-full object-contain p-4 select-none"
+                draggable={false}
+                onTouchStart={(e) => {
+                  touchStartX.current = e.touches[0].clientX;
+                }}
+                onTouchMove={(e) => {
+                  touchEndX.current = e.touches[0].clientX;
+                }}
+                onTouchEnd={() => {
+                  const diff = touchStartX.current - touchEndX.current;
+                  if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                      setSelectedImage((prev) => (prev + 1) % images.length);
+                    } else {
+                      setSelectedImage(
+                        (prev) => (prev - 1 + images.length) % images.length,
+                      );
+                    }
+                  }
+                }}
               />
+
+              {/* Desktop: Previous arrow */}
+              <button
+                onClick={() =>
+                  setSelectedImage(
+                    (prev) => (prev - 1 + images.length) % images.length,
+                  )
+                }
+                className="hidden lg:flex absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm shadow-md opacity-0 group-hover:opacity-100 hover:bg-white transition-all duration-200 cursor-pointer"
+                aria-label="Previous image"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+              </button>
+
+              {/* Desktop: Next arrow */}
+              <button
+                onClick={() =>
+                  setSelectedImage((prev) => (prev + 1) % images.length)
+                }
+                className="hidden lg:flex absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm shadow-md opacity-0 group-hover:opacity-100 hover:bg-white transition-all duration-200 cursor-pointer"
+                aria-label="Next image"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </button>
             </div>
+
+            {/* Thumbnail strip */}
             {images.length > 1 && (
               <div className="flex gap-3 overflow-x-auto pb-2">
                 {images.map((img, i) => (
