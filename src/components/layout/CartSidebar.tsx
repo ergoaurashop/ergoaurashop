@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/store/cartStore";
-import { formatPrice, getProductImageUrl } from "@/lib/utils";
+import { cn, formatPrice, getProductImageUrl } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 
@@ -61,7 +61,7 @@ export default function CartSidebar() {
             animate={{ transform: "translateX(0)" }}
             exit={{ transform: "translateX(100%)" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed right-0 top-0 h-full w-full max-w-md bg-apple-white z-50 shadow-2xl flex flex-col"
+            className="fixed right-0 top-0 h-full w-full max-w-md z-50 shadow-2xl flex flex-col bg-gradient-to-br from-white via-sand/20 to-gold-muted bg-[length:400%_400%] animate-gradient-shift"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-apple-border/50">
@@ -126,29 +126,44 @@ export default function CartSidebar() {
                       className="flex gap-4 py-4 border-b border-apple-border/30 last:border-0"
                     >
                       {/* Image */}
-                      <div className="w-20 h-20 rounded-apple-sm bg-apple-bg overflow-hidden flex-shrink-0">
+                      <Link
+                        href={`/products/${item.product.slug}`}
+                        onClick={closeCart}
+                        className="w-20 h-20 rounded-apple-sm bg-apple-bg overflow-hidden flex-shrink-0 group block"
+                      >
                         <img
                           src={getProductImageUrl(item.product.slug)}
                           alt={item.product.name}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                         />
-                      </div>
+                      </Link>
 
                       {/* Details */}
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-2">
-                          <h3 className="text-sm font-medium text-apple-text-primary truncate">
-                            {item.product.name}
-                          </h3>
-                          {/* B2G1 badge */}
-                          {item.quantity >= 3 && (
-                            <span className="shrink-0 text-[10px] font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 px-2 py-0.5 rounded-full whitespace-nowrap">
-                              B2G1
+                        <h3 className="text-sm font-medium text-apple-text-primary truncate">
+                          {item.product.name}
+                        </h3>
+                        <p className="text-sm mt-0.5 flex items-center gap-2 flex-wrap">
+                          {/* Current price (red if on sale) */}
+                          <span
+                            className={cn(
+                              "font-semibold",
+                              item.product.original_price >
+                                item.product.price && "text-[#EF4444]",
+                            )}
+                          >
+                            {formatPrice(item.product.price)}
+                          </span>
+                          {/* Original price strikethrough */}
+                          {item.product.original_price > item.product.price && (
+                            <span className="text-xs text-apple-text-secondary line-through">
+                              {formatPrice(item.product.original_price)}
                             </span>
                           )}
-                        </div>
-                        <p className="text-sm text-apple-text-secondary mt-0.5">
-                          {formatPrice(item.product.price)}
+                          {/* Buy 2 Get 1 badge — always visible */}
+                          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 bg-[length:200%_100%] animate-gradient-shift px-2 py-0.5 rounded-full whitespace-nowrap shadow-sm">
+                            🎁 Buy 2 Get 1
+                          </span>
                         </p>
 
                         {/* Quantity controls */}
@@ -195,9 +210,9 @@ export default function CartSidebar() {
 
               {/* B2G1 promo banner (shown when no items qualify yet) */}
               {items.length > 0 && b2g1Discount === 0 && (
-                <div className="mx-6 py-3 px-3 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-apple-sm flex items-center gap-2">
+                <div className="mx-6 py-3 px-3 bg-gradient-to-r from-amber-200 via-gold-light to-amber-100 bg-[length:200%_100%] animate-gradient-shift border border-gold/30 rounded-apple-sm flex items-center gap-2 shadow-gold/20">
                   <span className="text-lg shrink-0">🎁</span>
-                  <p className="text-xs text-amber-800 leading-snug">
+                  <p className="text-xs text-amber-900 font-medium leading-snug">
                     Add 3 of the same product to get 1 <strong>free</strong>!
                   </p>
                 </div>
@@ -254,8 +269,21 @@ export default function CartSidebar() {
                   </span>
                 </div>
 
-                <p className="text-xs text-apple-text-secondary">
-                  Shipping calculated at checkout
+                <p className="text-xs text-green-600 font-medium flex items-center gap-1">
+                  <svg
+                    className="w-3.5 h-3.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M5 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h9m-9 0V7a1 1 0 0 1 1-1h10l2 4v7h-2m0 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
+                    <path d="M9 17V9h6" />
+                    <path d="M9 13h5" />
+                  </svg>
+                  Free Delivery
                 </p>
                 <Link href="/checkout" onClick={closeCart}>
                   <Button variant="animated" fullWidth size="lg">
