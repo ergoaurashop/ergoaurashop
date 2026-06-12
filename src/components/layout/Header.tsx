@@ -36,7 +36,7 @@ export default function Header() {
         )}
       >
         <div className="section-container">
-          <div className="flex items-center justify-between h-16 sm:h-20">
+          <div className="flex items-center justify-between h-12 sm:h-16">
             {/* Logo — Animated Gradient Text */}
             <Link href="/" className="flex items-center gap-2 shrink-0 group">
               <span
