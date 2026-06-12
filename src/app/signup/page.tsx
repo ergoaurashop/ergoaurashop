@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { getSupabaseClient } from "@/lib/supabase/client";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Card from "@/components/ui/Card";
@@ -18,19 +19,59 @@ export default function SignupPage() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setSuccess("");
 
-    // TODO: Implement Supabase auth signup
-    // For now, simulate success
-    setTimeout(() => {
-      router.push("/account");
+    try {
+      const supabase = getSupabaseClient();
+
+      // 1. Sign up with Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: form.email,
+        password: form.password,
+        options: {
+          data: {
+            name: form.name,
+            phone: form.phone,
+          },
+        },
+      });
+
+      if (authError) throw new Error(authError.message);
+      if (!authData.user) throw new Error("Signup failed. Please try again.");
+
+      // 2. Create profile entry in the profiles table
+      const { error: profileError } = await supabase.from("profiles").insert({
+        id: authData.user.id,
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+      });
+
+      if (profileError) {
+        console.error("Profile creation error:", profileError);
+        // Non-fatal – the trigger may have created it already
+      }
+
+      setSuccess(
+        "Account created! Please check your email to confirm your account.",
+      );
+
+      // Redirect to account after a brief delay
+      setTimeout(() => {
+        router.push("/account");
+      }, 2000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -88,11 +129,12 @@ export default function SignupPage() {
                 <Input
                   label="Password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Create a password"
+                  placeholder="Create a password (min. 6 characters)"
                   value={form.password}
                   onChange={(e) =>
                     setForm({ ...form, password: e.target.value })
                   }
+                  minLength={6}
                   required
                 />
                 <button
@@ -104,7 +146,16 @@ export default function SignupPage() {
                 </button>
               </div>
 
-              {error && <p className="text-sm text-apple-error">{error}</p>}
+              {error && (
+                <p className="text-sm text-apple-error bg-red-50/50 p-3 rounded-lg">
+                  {error}
+                </p>
+              )}
+              {success && (
+                <p className="text-sm text-green-600 bg-green-50/50 p-3 rounded-lg">
+                  {success}
+                </p>
+              )}
 
               <Button type="submit" fullWidth size="lg" loading={loading}>
                 Create Account

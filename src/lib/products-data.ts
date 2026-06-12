@@ -162,7 +162,9 @@ export const LOCAL_PRODUCTS: Product[] = [
       Care: "Hand wash with mild soap, air dry",
       Colour: "Black / Dark grey",
     },
+    is_active: true,
     created_at: "2025-01-01T00:00:00Z",
+    updated_at: "2025-01-01T00:00:00Z",
   },
   {
     id: "prod-blackhead-remover-vacuum-tool",
@@ -190,7 +192,9 @@ export const LOCAL_PRODUCTS: Product[] = [
       "Charging Time": "1.5 hours",
       "Waterproof Rating": "IPX6",
     },
+    is_active: true,
     created_at: "2025-01-02T00:00:00Z",
+    updated_at: "2025-01-02T00:00:00Z",
   },
   {
     id: "prod-eye-massager-sleep-mask",
@@ -218,7 +222,9 @@ export const LOCAL_PRODUCTS: Product[] = [
       "Battery Life": "5+ hours",
       Weight: "210 g",
     },
+    is_active: true,
     created_at: "2025-01-03T00:00:00Z",
+    updated_at: "2025-01-03T00:00:00Z",
   },
   {
     id: "prod-foot-massage-roller-spiked",
@@ -246,7 +252,9 @@ export const LOCAL_PRODUCTS: Product[] = [
       "Max Load": "120 kg",
       Use: "Home, office, gym, travel",
     },
+    is_active: true,
     created_at: "2025-01-04T00:00:00Z",
+    updated_at: "2025-01-04T00:00:00Z",
   },
   {
     id: "prod-kitchen-sink-drain-hair-catcher",
@@ -274,7 +282,9 @@ export const LOCAL_PRODUCTS: Product[] = [
       "Suitable For": "Kitchen sinks, bathroom sinks, showers, tubs",
       "Pack Includes": "1 roll",
     },
+    is_active: true,
     created_at: "2025-01-05T00:00:00Z",
+    updated_at: "2025-01-05T00:00:00Z",
   },
   {
     id: "prod-magnetic-usb-cable-3-in-1",
@@ -302,7 +312,9 @@ export const LOCAL_PRODUCTS: Product[] = [
       "Output Tips": "Apple Watch / Micro USB / USB-C",
       "Max Output": "2A (fast charging)",
     },
+    is_active: true,
     created_at: "2025-01-06T00:00:00Z",
+    updated_at: "2025-01-06T00:00:00Z",
   },
   {
     id: "prod-menstrual-heating-pad-usb",
@@ -330,7 +342,9 @@ export const LOCAL_PRODUCTS: Product[] = [
       Battery: "2000 mAh (USB-C rechargeable)",
       "Battery Life": "6+ hours on low",
     },
+    is_active: true,
     created_at: "2025-01-07T00:00:00Z",
+    updated_at: "2025-01-07T00:00:00Z",
   },
   {
     id: "prod-posture-corrector-belt",
@@ -358,7 +372,9 @@ export const LOCAL_PRODUCTS: Product[] = [
       Use: "Office work, driving, gaming, daily wear",
       Care: "Hand wash, air dry",
     },
+    is_active: true,
     created_at: "2025-01-08T00:00:00Z",
+    updated_at: "2025-01-08T00:00:00Z",
   },
   {
     id: "prod-silicone-oil-splatter-guard",
@@ -386,7 +402,9 @@ export const LOCAL_PRODUCTS: Product[] = [
       Cleaning: "Dishwasher safe or hand wash",
       Colour: "Red / Grey",
     },
+    is_active: true,
     created_at: "2025-01-09T00:00:00Z",
+    updated_at: "2025-01-09T00:00:00Z",
   },
   {
     id: "prod-waterproof-phone-pouch",
@@ -414,7 +432,9 @@ export const LOCAL_PRODUCTS: Product[] = [
       "Pack Includes": "2 pouches + 2 lanyards",
       Use: "Swimming, beach, rain, hiking, travel",
     },
+    is_active: true,
     created_at: "2025-01-10T00:00:00Z",
+    updated_at: "2025-01-10T00:00:00Z",
   },
   {
     id: "prod-waterproof-shoe-covers",
@@ -442,6 +462,8 @@ export const LOCAL_PRODUCTS: Product[] = [
       "Pack Includes": "1 pair + carry pouch",
       Use: "Rain, hiking, camping, travel, festivals",
     },
+    is_active: true,
     created_at: "2025-01-11T00:00:00Z",
+    updated_at: "2025-01-11T00:00:00Z",
   },
 ];

@@ -1,28 +1,46 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabase/client";
-import type { Order } from "@/lib/types";
+import { useState, useEffect, useCallback } from "react";
+import { supabaseAdmin } from "@/lib/supabase/admin";
+import { ADMIN_USERNAME, ADMIN_PASSWORD } from "@/lib/constants";
+import type { DbOrder } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 
-const ADMIN_USER = "MyonMee";
-const ADMIN_PASS = "MyonMee@2029";
+type SearchField =
+  | "customer_name"
+  | "customer_email"
+  | "customer_phone"
+  | "order_id"
+  | "track_id";
+
+const SEARCH_FIELDS: { value: SearchField; label: string }[] = [
+  { value: "customer_name", label: "Name" },
+  { value: "customer_email", label: "Email" },
+  { value: "customer_phone", label: "Phone" },
+  { value: "order_id", label: "Order ID" },
+  { value: "track_id", label: "Track ID" },
+];
 
 export default function AdminDashboardPage() {
   const [authenticated, setAuthenticated] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [orders, setOrders] = useState<Order[]>([]);
+
+  const [orders, setOrders] = useState<DbOrder[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Search state
+  const [searchField, setSearchField] = useState<SearchField>("customer_name");
+  const [searchValue, setSearchValue] = useState("");
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (username === ADMIN_USER && password === ADMIN_PASS) {
+    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
       setAuthenticated(true);
       setError("");
     } else {
@@ -30,26 +48,85 @@ export default function AdminDashboardPage() {
     }
   };
 
-  useEffect(() => {
+  // ── Fetch orders (with optional search) ──────────────────────────
+  const fetchOrders = useCallback(async () => {
     if (!authenticated) return;
+    setLoading(true);
 
-    async function fetchOrders() {
-      try {
-        const { data } = await supabase
-          .from("orders")
-          .select("*")
-          .order("created_at", { ascending: false });
-        setOrders(data || []);
-      } catch {
-        // Table may not exist
-      } finally {
-        setLoading(false);
+    try {
+      let query = supabaseAdmin
+        .from("orders")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      // Apply search filter if a value is entered
+      const trimmed = searchValue.trim();
+      if (trimmed) {
+        if (searchField === "order_id" || searchField === "track_id") {
+          // Exact match for IDs
+          query = query.eq(searchField, trimmed);
+        } else {
+          // Partial / ILIKE match for text fields
+          query = query.ilike(searchField, `%${trimmed}%`);
+        }
       }
+
+      const { data, error } = await query;
+
+      if (error) {
+        console.error("Fetch error:", error);
+      } else {
+        setOrders(data || []);
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+    } finally {
+      setLoading(false);
     }
+  }, [authenticated, searchField, searchValue]);
 
+  useEffect(() => {
     fetchOrders();
-  }, [authenticated]);
+  }, [fetchOrders]);
 
+  // ── Status badge variant helper ──────────────────────────────────
+  const statusVariant = (status: string) => {
+    switch (status) {
+      case "delivered":
+        return "success" as const;
+      case "cancelled":
+        return "error" as const;
+      case "confirmed":
+      case "shipped":
+      case "out_for_delivery":
+        return "info" as const;
+      default:
+        return "outline" as const;
+    }
+  };
+
+  const paymentVariant = (status: string) => {
+    switch (status) {
+      case "paid":
+        return "success" as const;
+      case "failed":
+      case "refunded":
+        return "error" as const;
+      default:
+        return "outline" as const;
+    }
+  };
+
+  // ── Stats ────────────────────────────────────────────────────────
+  const totalRevenue = orders.reduce(
+    (sum, o) => sum + (o.payment_status === "paid" ? o.total : 0),
+    0,
+  );
+  const pendingOrders = orders.filter(
+    (o) => o.order_status === "placed",
+  ).length;
+
+  // ── Login view ───────────────────────────────────────────────────
   if (!authenticated) {
     return (
       <div className="pt-28 sm:pt-32 pb-16">
@@ -85,15 +162,12 @@ export default function AdminDashboardPage() {
     );
   }
 
-  const totalRevenue = orders.reduce(
-    (sum, o) => sum + (o.payment_status === "paid" ? o.total : 0),
-    0,
-  );
-
+  // ── Dashboard view ───────────────────────────────────────────────
   return (
     <div className="pt-28 sm:pt-32 pb-16">
       <div className="section-container">
-        <div className="flex items-center justify-between mb-8">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <h1 className="heading-lg">Admin Dashboard</h1>
           <Button
             variant="outline"
@@ -118,33 +192,72 @@ export default function AdminDashboardPage() {
           </Card>
           <Card padding="lg">
             <p className="text-sm text-apple-text-secondary">Pending Orders</p>
-            <p className="text-3xl font-bold mt-1">
-              {orders.filter((o) => o.order_status === "placed").length}
-            </p>
+            <p className="text-3xl font-bold mt-1">{pendingOrders}</p>
           </Card>
         </div>
+
+        {/* Search */}
+        <Card padding="lg" className="mb-6">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <select
+              value={searchField}
+              onChange={(e) => setSearchField(e.target.value as SearchField)}
+              className="px-3 py-2 border border-apple-border/50 rounded-apple text-sm bg-white focus:outline-none focus:ring-2 focus:ring-apple-accent/30 focus:border-apple-accent"
+            >
+              {SEARCH_FIELDS.map((f) => (
+                <option key={f.value} value={f.value}>
+                  {f.label}
+                </option>
+              ))}
+            </select>
+            <div className="flex-1 flex gap-2">
+              <Input
+                placeholder={`Search by ${SEARCH_FIELDS.find((f) => f.value === searchField)?.label || "field"}...`}
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                className="flex-1"
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setSearchValue("")}
+                disabled={!searchValue.trim()}
+              >
+                Clear
+              </Button>
+            </div>
+          </div>
+        </Card>
 
         {/* Orders Table */}
         <Card padding="none">
           <div className="p-6 border-b border-apple-border/50">
-            <h2 className="text-lg font-semibold">Recent Orders</h2>
+            <h2 className="text-lg font-semibold">
+              {searchValue.trim() ? "Search Results" : "All Orders"}
+              <span className="text-sm text-apple-text-secondary font-normal ml-2">
+                ({orders.length})
+              </span>
+            </h2>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-apple-border/50 text-apple-text-secondary text-xs uppercase tracking-wider">
                   <th className="text-left px-6 py-3 font-medium">Order ID</th>
+                  <th className="text-left px-6 py-3 font-medium">Track ID</th>
                   <th className="text-left px-6 py-3 font-medium">Customer</th>
+                  <th className="text-left px-6 py-3 font-medium">Phone</th>
                   <th className="text-left px-6 py-3 font-medium">Status</th>
                   <th className="text-left px-6 py-3 font-medium">Payment</th>
                   <th className="text-right px-6 py-3 font-medium">Total</th>
+                  <th className="text-left px-6 py-3 font-medium">Date</th>
                 </tr>
               </thead>
               <tbody>
                 {loading ? (
                   <tr>
                     <td
-                      colSpan={5}
+                      colSpan={8}
                       className="px-6 py-12 text-center text-apple-text-secondary"
                     >
                       Loading...
@@ -153,10 +266,12 @@ export default function AdminDashboardPage() {
                 ) : orders.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={5}
+                      colSpan={8}
                       className="px-6 py-12 text-center text-apple-text-secondary"
                     >
-                      No orders yet.
+                      {searchValue.trim()
+                        ? "No orders match your search."
+                        : "No orders yet."}
                     </td>
                   </tr>
                 ) : (
@@ -168,38 +283,40 @@ export default function AdminDashboardPage() {
                       <td className="px-6 py-4 font-mono text-xs">
                         {order.order_id}
                       </td>
+                      <td className="px-6 py-4 font-mono text-xs text-apple-accent">
+                        {order.track_id}
+                      </td>
                       <td className="px-6 py-4">
                         <p className="font-medium">{order.customer_name}</p>
                         <p className="text-xs text-apple-text-secondary">
                           {order.customer_email}
                         </p>
                       </td>
+                      <td className="px-6 py-4 text-xs">
+                        {order.customer_phone}
+                      </td>
                       <td className="px-6 py-4">
-                        <Badge
-                          variant={
-                            order.order_status === "delivered"
-                              ? "success"
-                              : "outline"
-                          }
-                        >
+                        <Badge variant={statusVariant(order.order_status)}>
                           {order.order_status.replace(/_/g, " ")}
                         </Badge>
                       </td>
                       <td className="px-6 py-4">
-                        <Badge
-                          variant={
-                            order.payment_status === "paid"
-                              ? "success"
-                              : order.payment_status === "failed"
-                                ? "error"
-                                : "outline"
-                          }
-                        >
+                        <Badge variant={paymentVariant(order.payment_status)}>
                           {order.payment_status}
                         </Badge>
                       </td>
                       <td className="px-6 py-4 text-right font-medium">
                         {formatPrice(order.total)}
+                      </td>
+                      <td className="px-6 py-4 text-xs text-apple-text-secondary whitespace-nowrap">
+                        {new Date(order.created_at).toLocaleDateString(
+                          "en-IN",
+                          {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          },
+                        )}
                       </td>
                     </tr>
                   ))

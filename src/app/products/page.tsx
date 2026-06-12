@@ -3,7 +3,7 @@
 import { Suspense, useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase/client";
+import { getSupabaseClient } from "@/lib/supabase/client";
 import type { Product } from "@/lib/types";
 import ProductGrid from "@/components/products/ProductGrid";
 import { cn } from "@/lib/utils";
@@ -40,6 +40,7 @@ function ProductsContent() {
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
+      const supabase = getSupabaseClient();
       let query = supabase.from("products").select("*");
 
       if (activeCategory !== "all") {

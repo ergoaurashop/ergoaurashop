@@ -14,7 +14,9 @@ export interface Product {
   stock: number;
   features: string[];
   specifications: Record<string, string>;
+  is_active: boolean;
   created_at: string;
+  updated_at: string;
 }
 
 // =====================================================================
@@ -113,11 +115,13 @@ export interface OrderAddress {
 
 export type OrderStatus =
   | "placed"
+  | "confirmed"
   | "shipped"
   | "out_for_delivery"
-  | "delivered";
+  | "delivered"
+  | "cancelled";
 
-export type PaymentStatus = "pending" | "paid" | "failed";
+export type PaymentStatus = "pending" | "paid" | "failed" | "refunded";
 
 export interface Order {
   id: string;
@@ -131,14 +135,18 @@ export interface Order {
   products: OrderProduct[];
   subtotal: number;
   discount: number;
+  shipping: number;
   total: number;
+  notes?: string;
   payment_id?: string;
   payment_status: PaymentStatus;
   order_status: OrderStatus;
   placed_at: string;
+  confirmed_at?: string;
   shipped_at?: string;
   out_for_delivery_at?: string;
   delivered_at?: string;
+  cancelled_at?: string;
   created_at: string;
 }
 
@@ -151,8 +159,12 @@ export interface Review {
   user_id: string;
   user_name: string;
   rating: number;
+  title?: string;
   comment: string;
-  images: string[];
+  images?: string[];
+  is_verified: boolean;
+  helpful_count: number;
+  is_approved: boolean;
   created_at: string;
 }
 
@@ -190,7 +202,32 @@ export interface Profile {
   id: string;
   name: string;
   email: string;
-  phone: string;
+  phone?: string;
+  avatar_url?: string;
+  created_at: string;
+}
+
+// =====================================================================
+// Contact Message Types
+// =====================================================================
+export interface ContactMessage {
+  id: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  is_read: boolean;
+  created_at: string;
+}
+
+// =====================================================================
+// Order Status History
+// =====================================================================
+export interface OrderStatusHistory {
+  id: string;
+  order_id: string;
+  status: OrderStatus;
+  note?: string;
   created_at: string;
 }
 
@@ -210,4 +247,53 @@ export interface CartState {
   getSubtotal: () => number;
   getTotal: () => number;
   getItemCount: () => number;
+}
+
+// =====================================================================
+// Database Row Types (snake_case, matching Supabase columns)
+// =====================================================================
+export type DbOrderStatus =
+  | "placed"
+  | "confirmed"
+  | "shipped"
+  | "out_for_delivery"
+  | "delivered"
+  | "cancelled";
+
+export type DbPaymentStatus = "pending" | "paid" | "failed" | "refunded";
+
+export interface DbOrder {
+  id: string;
+  order_id: string;
+  track_id: string;
+  user_id: string | null;
+  customer_name: string;
+  customer_email: string;
+  customer_phone: string;
+  address: OrderAddress;
+  products: OrderProduct[];
+  subtotal: number;
+  discount: number;
+  shipping: number;
+  total: number;
+  notes: string | null;
+  payment_id: string | null;
+  payment_status: DbPaymentStatus;
+  order_status: DbOrderStatus;
+  placed_at: string;
+  confirmed_at: string | null;
+  shipped_at: string | null;
+  out_for_delivery_at: string | null;
+  delivered_at: string | null;
+  cancelled_at: string | null;
+  created_at: string;
+}
+
+export interface DbProfile {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  avatar_url: string | null;
+  created_at: string;
 }

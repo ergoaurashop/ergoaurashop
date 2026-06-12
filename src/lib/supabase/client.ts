@@ -1,4 +1,16 @@
-import { createClient } from "@supabase/supabase-js";
+"use client";
+
+import { createBrowserClient } from "@supabase/ssr";
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from "@/lib/constants";
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+export const createClient = () =>
+  createBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Singleton for convenience in client components
+let _client: ReturnType<typeof createClient> | null = null;
+export function getSupabaseClient() {
+  if (!_client) {
+    _client = createClient();
+  }
+  return _client;
+}

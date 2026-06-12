@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { supabase } from "@/lib/supabase/client";
+import { getSupabaseClient } from "@/lib/supabase/client";
 import type { Product } from "@/lib/types";
 import ProductGrid from "@/components/products/ProductGrid";
 import Button from "@/components/ui/Button";
@@ -16,6 +16,7 @@ export default function HomePage() {
   useEffect(() => {
     async function fetchProducts() {
       try {
+        const supabase = getSupabaseClient();
         const { data } = await supabase.from("products").select("*").limit(8);
         if (data && data.length > 0) {
           setFeaturedProducts(data.slice(0, 8));

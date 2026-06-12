@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase/client";
+import { getSupabaseClient } from "@/lib/supabase/client";
 import type { Product } from "@/lib/types";
 import { LOCAL_PRODUCTS } from "@/lib/products-data";
 
@@ -14,6 +14,7 @@ export function useProducts(category?: string) {
     async function fetchProducts() {
       try {
         setLoading(true);
+        const supabase = getSupabaseClient();
         let query = supabase.from("products").select("*");
 
         if (category && category !== "all") {
@@ -64,6 +65,7 @@ export function useProduct(slug: string) {
     async function fetchProduct() {
       try {
         setLoading(true);
+        const supabase = getSupabaseClient();
         const { data, error: fetchError } = await supabase
           .from("products")
           .select("*")

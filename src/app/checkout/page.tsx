@@ -5,10 +5,50 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useCartStore } from "@/store/cartStore";
 import { formatPrice, getProductImageUrl } from "@/lib/utils";
+import { getSupabaseClient } from "@/lib/supabase/client";
+import { RAZORPAY_KEY_ID } from "@/lib/constants";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Card from "@/components/ui/Card";
 import Link from "next/link";
+
+// ── Razorpay global type ────────────────────────────────────────
+declare global {
+  interface Window {
+    Razorpay: new (options: RazorpayOptions) => RazorpayInstance;
+  }
+}
+
+interface RazorpayOptions {
+  key: string;
+  amount: number;
+  currency: string;
+  name: string;
+  description: string;
+  order_id: string;
+  handler: (response: RazorpayResponse) => void;
+  prefill: {
+    name: string;
+    email: string;
+    contact: string;
+  };
+  theme: {
+    color: string;
+  };
+  modal: {
+    ondismiss: () => void;
+  };
+}
+
+interface RazorpayInstance {
+  open: () => void;
+}
+
+interface RazorpayResponse {
+  razorpay_payment_id: string;
+  razorpay_order_id: string;
+  razorpay_signature: string;
+}
 
 interface CheckoutForm {
   name: string;
@@ -34,33 +74,30 @@ const INITIAL_FORM: CheckoutForm = {
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { items, clearCart } = useCartStore();
+  const { items, clearCart, getSubtotal, getBuy2Get1Discount } = useCartStore();
   const [form, setForm] = useState<CheckoutForm>(INITIAL_FORM);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  const subtotal = items.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
-    0,
-  );
-
-  /* ── Buy 2 Get 1 Free discount ── */
-  const b2g1Discount = items.reduce((discount, item) => {
-    if (item.quantity >= 3) {
-      const freeItems = Math.floor(item.quantity / 3);
-      return discount + item.product.price * freeItems;
-    }
-    return discount;
-  }, 0);
-
+  const subtotal = getSubtotal();
+  const b2g1Discount = getBuy2Get1Discount();
   const discountedSubtotal = Math.max(0, subtotal - b2g1Discount);
   const shipping = discountedSubtotal >= 299 ? 0 : 49;
   const total = discountedSubtotal + shipping;
 
+  // Load Razorpay script
   useEffect(() => {
-    if (items.length === 0) {
-      // Don't redirect immediately — user might have just cleared
+    if (
+      !document.querySelector(
+        'script[src="https://checkout.razorpay.com/v1/checkout.js"]',
+      )
+    ) {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
+      document.body.appendChild(script);
     }
-  }, [items]);
+  }, []);
 
   const updateField = (field: keyof CheckoutForm, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -69,17 +106,116 @@ export default function CheckoutPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    setError("");
 
-    // TODO: Implement Razorpay integration and order creation
-    // For now, simulate a successful order
-    setTimeout(() => {
-      const trackId =
-        "SIM" + Math.random().toString(36).substring(2, 11).toUpperCase();
-      const orderId = "ORD-" + Date.now().toString(36).toUpperCase();
-      clearCart();
-      router.push(`/order/success?track_id=${trackId}&order_id=${orderId}`);
+    try {
+      // 1. Create a Razorpay order via our API route
+      const orderRes = await fetch("/api/razorpay/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: total, currency: "INR" }),
+      });
+
+      if (!orderRes.ok) {
+        const errBody = await orderRes.json();
+        throw new Error(errBody.error || "Failed to create payment order");
+      }
+
+      const { id: razorpayOrderId } = await orderRes.json();
+
+      // 2. Get current user (if logged in)
+      const supabase = getSupabaseClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      // 3. Open Razorpay checkout modal
+      const options: RazorpayOptions = {
+        key: RAZORPAY_KEY_ID,
+        amount: Math.round(total * 100),
+        currency: "INR",
+        name: "ErgoAura Shop",
+        description: `Order for ${form.name}`,
+        order_id: razorpayOrderId,
+        handler: async (response: RazorpayResponse) => {
+          try {
+            // 4. Payment successful – create order in Supabase
+            const orderRes = await fetch("/api/orders/create", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                user_id: user?.id || null,
+                customer_name: form.name,
+                customer_email: form.email,
+                customer_phone: form.phone,
+                address: {
+                  line1: form.addressLine1,
+                  line2: form.addressLine2 || undefined,
+                  city: form.city,
+                  state: form.state,
+                  pincode: form.pincode,
+                },
+                products: items.map((item) => ({
+                  product_id: item.product.id,
+                  name: item.product.name,
+                  price: item.product.price,
+                  quantity: item.quantity,
+                  image: getProductImageUrl(
+                    item.product.slug,
+                    item.product.images?.[0],
+                  ),
+                })),
+                subtotal,
+                discount: b2g1Discount,
+                shipping,
+                total,
+                payment_id: response.razorpay_payment_id,
+                payment_status: "paid",
+              }),
+            });
+
+            if (!orderRes.ok) {
+              const errBody = await orderRes.json();
+              throw new Error(errBody.error || "Failed to save order");
+            }
+
+            const { order } = await orderRes.json();
+
+            // 5. Clear cart and redirect to success
+            clearCart();
+            router.push(
+              `/order/success?track_id=${order.track_id}&order_id=${order.order_id}`,
+            );
+          } catch (err) {
+            console.error("Order creation error:", err);
+            setError(
+              err instanceof Error ? err.message : "Failed to save order",
+            );
+            setSubmitting(false);
+          }
+        },
+        prefill: {
+          name: form.name,
+          email: form.email,
+          contact: form.phone,
+        },
+        theme: {
+          color: "#C9A962",
+        },
+        modal: {
+          ondismiss: () => {
+            setSubmitting(false);
+          },
+        },
+      };
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
+    } catch (err) {
+      console.error("Checkout error:", err);
+      setError(err instanceof Error ? err.message : "Something went wrong");
       setSubmitting(false);
-    }, 1500);
+    }
   };
 
   if (items.length === 0) {
@@ -213,6 +349,13 @@ export default function CheckoutPage() {
                   </div>
                 </div>
               </Card>
+
+              {/* Error message */}
+              {error && (
+                <div className="bg-red-50/80 border border-red-200 rounded-apple p-4">
+                  <p className="text-sm text-red-700">{error}</p>
+                </div>
+              )}
 
               {/* Terms agreement */}
               <p className="text-xs text-apple-text-secondary">

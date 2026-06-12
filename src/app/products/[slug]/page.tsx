@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { supabase } from "@/lib/supabase/client";
+import { getSupabaseClient } from "@/lib/supabase/client";
 import type { Product, ProductReviewDetail } from "@/lib/types";
 import { formatPrice, getProductImageUrl, getProductImages } from "@/lib/utils";
 import Badge from "@/components/ui/Badge";
@@ -191,6 +191,7 @@ export default function ProductDetailPage() {
   useEffect(() => {
     async function fetchProduct() {
       try {
+        const supabase = getSupabaseClient();
         const { data } = await supabase
           .from("products")
           .select("*")
