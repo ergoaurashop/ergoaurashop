@@ -192,7 +192,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
             </Badge>
             {product.category === "kitchen" && (
               <Badge variant="installation_included" size="sm">
-                Free Install
+                Easy to use
               </Badge>
             )}
           </div>
