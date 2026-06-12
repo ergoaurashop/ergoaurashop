@@ -43,6 +43,19 @@ export default function CheckoutPage() {
     0,
   );
 
+  /* ── Buy 2 Get 1 Free discount ── */
+  const b2g1Discount = items.reduce((discount, item) => {
+    if (item.quantity >= 3) {
+      const freeItems = Math.floor(item.quantity / 3);
+      return discount + item.product.price * freeItems;
+    }
+    return discount;
+  }, 0);
+
+  const discountedSubtotal = Math.max(0, subtotal - b2g1Discount);
+  const shipping = discountedSubtotal >= 299 ? 0 : 49;
+  const total = discountedSubtotal + shipping;
+
   useEffect(() => {
     if (items.length === 0) {
       // Don't redirect immediately — user might have just cleared
@@ -257,22 +270,70 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="border-t border-apple-border/50 pt-4 space-y-2">
+                  {/* Subtotal (full amount) */}
                   <div className="flex justify-between text-sm">
                     <span className="text-apple-text-secondary">Subtotal</span>
                     <span className="text-apple-text-primary">
                       {formatPrice(subtotal)}
                     </span>
                   </div>
+
+                  {/* B2G1 Discount */}
+                  {b2g1Discount > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="flex items-center gap-1.5 text-apple-text-secondary">
+                        <span className="text-[10px] font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 px-1.5 py-0.5 rounded-full">
+                          B2G1
+                        </span>
+                        Discount
+                      </span>
+                      <span className="text-green-600 font-medium">
+                        -{formatPrice(b2g1Discount)}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Discounted Subtotal */}
+                  {b2g1Discount > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-apple-text-secondary">
+                        Discounted Subtotal
+                      </span>
+                      <span className="text-apple-text-primary">
+                        {formatPrice(discountedSubtotal)}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Shipping */}
                   <div className="flex justify-between text-sm">
                     <span className="text-apple-text-secondary">Shipping</span>
                     <span className="text-apple-text-primary">
-                      {subtotal >= 299 ? "Free" : "₹49"}
+                      {shipping === 0 ? (
+                        <span className="text-green-600 font-medium">Free</span>
+                      ) : (
+                        "₹49"
+                      )}
                     </span>
                   </div>
+
+                  {/* You Save */}
+                  {b2g1Discount > 0 && (
+                    <div className="flex justify-between text-sm bg-green-50 rounded-apple-sm px-3 py-2 -mx-3">
+                      <span className="font-semibold text-green-700">
+                        You Save
+                      </span>
+                      <span className="font-bold text-green-700">
+                        {formatPrice(b2g1Discount)}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Total */}
                   <div className="flex justify-between text-base font-semibold pt-2 border-t border-apple-border/50">
                     <span className="text-apple-text-primary">Total</span>
                     <span className="text-apple-text-primary">
-                      {formatPrice(subtotal >= 299 ? subtotal : subtotal + 49)}
+                      {formatPrice(total)}
                     </span>
                   </div>
                 </div>

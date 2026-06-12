@@ -14,6 +14,11 @@ interface CartStore {
   toggleCart: () => void;
   openCart: () => void;
   closeCart: () => void;
+  /* ── Computed helpers ── */
+  getSubtotal: () => number;
+  getItemCount: () => number;
+  /** Total B2G1 discount: when qty >= 3 of the same product, free = price × floor(qty/3) */
+  getBuy2Get1Discount: () => number;
 }
 
 export const useCartStore = create<CartStore>()(
@@ -70,6 +75,28 @@ export const useCartStore = create<CartStore>()(
       openCart: () => set({ isOpen: true }),
 
       closeCart: () => set({ isOpen: false }),
+
+      /* ── Computed helpers ── */
+      getSubtotal: () => {
+        return get().items.reduce(
+          (sum, item) => sum + item.product.price * item.quantity,
+          0,
+        );
+      },
+
+      getItemCount: () => {
+        return get().items.reduce((sum, item) => sum + item.quantity, 0);
+      },
+
+      getBuy2Get1Discount: () => {
+        return get().items.reduce((discount, item) => {
+          if (item.quantity >= 3) {
+            const freeItems = Math.floor(item.quantity / 3);
+            return discount + item.product.price * freeItems;
+          }
+          return discount;
+        }, 0);
+      },
     }),
     {
       name: "ergoaura-cart",

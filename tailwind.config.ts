@@ -72,6 +72,7 @@ const config: Config = {
         "slide-right": "slideRight 0.3s ease-out",
         "pulse-slow": "pulse 3s ease-in-out infinite",
         shimmer: "shimmer 1.8s linear infinite",
+        "gradient-shift": "gradientShift 6s ease-in-out infinite alternate",
       },
       keyframes: {
         fadeIn: {
@@ -89,6 +90,10 @@ const config: Config = {
         shimmer: {
           "0%": { backgroundPosition: "200% 0" },
           "100%": { backgroundPosition: "-200% 0" },
+        },
+        gradientShift: {
+          "0%": { backgroundPosition: "0% 50%" },
+          "100%": { backgroundPosition: "100% 50%" },
         },
       },
     },

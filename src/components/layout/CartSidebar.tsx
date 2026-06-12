@@ -30,6 +30,18 @@ export default function CartSidebar() {
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
 
+  /* ── Buy 2 Get 1 Free discount ── */
+  const b2g1Discount = items.reduce((discount, item) => {
+    if (item.quantity >= 3) {
+      const freeItems = Math.floor(item.quantity / 3);
+      return discount + item.product.price * freeItems;
+    }
+    return discount;
+  }, 0);
+
+  const discountedSubtotal = Math.max(0, subtotal - b2g1Discount);
+  const youSave = b2g1Discount;
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -124,9 +136,17 @@ export default function CartSidebar() {
 
                       {/* Details */}
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-medium text-apple-text-primary truncate">
-                          {item.product.name}
-                        </h3>
+                        <div className="flex items-start justify-between gap-2">
+                          <h3 className="text-sm font-medium text-apple-text-primary truncate">
+                            {item.product.name}
+                          </h3>
+                          {/* B2G1 badge */}
+                          {item.quantity >= 3 && (
+                            <span className="shrink-0 text-[10px] font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 px-2 py-0.5 rounded-full whitespace-nowrap">
+                              B2G1
+                            </span>
+                          )}
+                        </div>
                         <p className="text-sm text-apple-text-secondary mt-0.5">
                           {formatPrice(item.product.price)}
                         </p>
@@ -177,6 +197,7 @@ export default function CartSidebar() {
             {/* Footer */}
             {items.length > 0 && (
               <div className="border-t border-apple-border/50 px-6 py-5 space-y-4">
+                {/* Subtotal */}
                 <div className="flex items-center justify-between">
                   <span className="text-apple-text-primary font-medium">
                     Subtotal
@@ -185,6 +206,44 @@ export default function CartSidebar() {
                     {formatPrice(subtotal)}
                   </span>
                 </div>
+
+                {/* B2G1 Discount */}
+                {b2g1Discount > 0 && (
+                  <div className="flex items-center justify-between">
+                    <span className="flex items-center gap-1.5 text-sm text-apple-text-secondary">
+                      <span className="text-[10px] font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 px-1.5 py-0.5 rounded-full">
+                        B2G1
+                      </span>
+                      Discount
+                    </span>
+                    <span className="text-sm text-green-600 font-medium">
+                      -{formatPrice(b2g1Discount)}
+                    </span>
+                  </div>
+                )}
+
+                {/* You Save */}
+                {youSave > 0 && (
+                  <div className="flex items-center justify-between bg-green-50 rounded-apple-sm px-3 py-2 -mx-3">
+                    <span className="text-sm font-semibold text-green-700">
+                      You Save
+                    </span>
+                    <span className="text-sm font-bold text-green-700">
+                      {formatPrice(youSave)}
+                    </span>
+                  </div>
+                )}
+
+                {/* Total (after discount) */}
+                <div className="flex items-center justify-between pt-1">
+                  <span className="text-apple-text-primary font-semibold">
+                    Total
+                  </span>
+                  <span className="text-apple-text-primary font-bold text-lg">
+                    {formatPrice(discountedSubtotal)}
+                  </span>
+                </div>
+
                 <p className="text-xs text-apple-text-secondary">
                   Shipping calculated at checkout
                 </p>

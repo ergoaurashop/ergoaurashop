@@ -1,18 +1,18 @@
 ﻿"use client";
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useEffect, useState, useRef } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase/client";
 import type { Product, ProductReviewDetail } from "@/lib/types";
 import { formatPrice, getProductImageUrl, getProductImages } from "@/lib/utils";
-import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 import Card from "@/components/ui/Card";
 import { useCartStore } from "@/store/cartStore";
 import { getProductContent } from "@/lib/product-content";
 import { LOCAL_PRODUCTS } from "@/lib/products-data";
 import { useProductReviews, type SortOption } from "@/hooks/useProductReviews";
+import StickyCartPanel from "@/components/products/StickyCartPanel";
 
 /* ────────────────────────────────────────────────────────────────
    Star Rating Component
@@ -133,6 +133,23 @@ function ReviewCard({ review }: { review: ProductReviewDetail }) {
   );
 }
 
+/* ── Icon helper for What's in the Box items ── */
+function getBoxIcon(name: string): string {
+  const lower = name.toLowerCase();
+  if (lower.includes("brace") || lower.includes("strap")) return "🔄";
+  if (lower.includes("massage") || lower.includes("roller")) return "🔵";
+  if (lower.includes("mask") || lower.includes("eye")) return "👁️";
+  if (lower.includes("cable") || lower.includes("usb")) return "🔌";
+  if (lower.includes("pad") || lower.includes("heat")) return "🌡️";
+  if (lower.includes("pouch") || lower.includes("phone")) return "📱";
+  if (lower.includes("cover") || lower.includes("shoe")) return "👟";
+  if (lower.includes("guard") || lower.includes("splatter")) return "🛡️";
+  if (lower.includes("tool") || lower.includes("vacuum")) return "🛠️";
+  if (lower.includes("catcher") || lower.includes("drain")) return "🚿";
+  if (lower.includes("belt") || lower.includes("corrector")) return "🎽";
+  return "📦";
+}
+
 /* ────────────────────────────────────────────────────────────────
    Section Header
    ──────────────────────────────────────────────────────────────── */
@@ -163,12 +180,12 @@ function SectionHeader({
 export default function ProductDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
-  const addItem = useCartStore((state) => state.addItem);
+  const router = useRouter();
+  const heroRef = useRef<HTMLDivElement>(null);
 
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [added, setAdded] = useState(false);
 
   /* Try Supabase first, fall back to local data */
   useEffect(() => {
@@ -219,13 +236,6 @@ export default function ProductDetailPage() {
       ? getProductImages(slug)
       : [getProductImageUrl(slug)];
 
-  const handleAddToCart = () => {
-    if (!product) return;
-    addItem(product);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
-  };
-
   /* ── Loading ── */
   if (loading) {
     return (
@@ -255,14 +265,17 @@ export default function ProductDetailPage() {
      Render
      ──────────────────────────────────────────────────────────────── */
   return (
-    <div className="pt-28 sm:pt-32 pb-16">
+    <div className="pt-28 sm:pt-32 pb-16 lg:pb-24">
       <div className="section-container">
         {/* ==========================================================
-            HERO — Image Gallery + Product Info
+            HERO — Image Gallery + Product Info + Sticky Panel
             ========================================================== */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-16">
-          {/* ── Image Gallery ── */}
-          <div className="space-y-4">
+        <div
+          ref={heroRef}
+          className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mb-16"
+        >
+          {/* ── Image Gallery (lg: col-span-2) ── */}
+          <div className="lg:col-span-2 space-y-4">
             <div className="aspect-square bg-apple-bg rounded-apple overflow-hidden">
               <motion.img
                 key={selectedImage}
@@ -392,42 +405,17 @@ export default function ProductDetailPage() {
                   </div>
                 </div>
               )}
-
-            {/* Add to Cart */}
-            <div className="pt-4">
-              <Button
-                variant="animated"
-                size="lg"
-                fullWidth
-                onClick={handleAddToCart}
-                disabled={added}
-              >
-                {added ? "✓ Added to Cart" : "Add to Cart"}
-              </Button>
-            </div>
-
-            {/* Trust badges (static) */}
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { label: "Free Delivery", sub: "All purchase" },
-                { label: "Easy Returns", sub: "7-Day Policy" },
-                { label: "Secure Checkout", sub: "Razorpay" },
-                { label: "Support", sub: "24/7 Available" },
-              ].map((item) => (
-                <div
-                  key={item.label}
-                  className="bg-apple-bg rounded-apple-sm p-3 text-center"
-                >
-                  <p className="text-sm font-medium text-apple-text-primary">
-                    {item.label}
-                  </p>
-                  <p className="text-xs text-apple-text-secondary">
-                    {item.sub}
-                  </p>
-                </div>
-              ))}
-            </div>
           </div>
+
+          {/* ── Sticky Cart Panel (desktop sidebar + mobile bottom bar) ── */}
+          <div className="hidden lg:block">
+            <StickyCartPanel product={product} heroRef={heroRef} />
+          </div>
+        </div>
+
+        {/* Mobile sticky bar — rendered outside grid for full-width positioning */}
+        <div className="lg:hidden">
+          <StickyCartPanel product={product} heroRef={heroRef} />
         </div>
 
         {/* ==========================================================
@@ -452,7 +440,7 @@ export default function ProductDetailPage() {
         )}
 
         {/* ==========================================================
-            PAIN vs SOLUTION
+            PAIN vs SOLUTION — Redesigned
             ========================================================== */}
         {content?.painPoints &&
           content.painPoints.length > 0 &&
@@ -463,48 +451,76 @@ export default function ProductDetailPage() {
                 title="Before & After"
                 subtitle="See the difference this product makes"
               />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Pain */}
-                <Card className="!bg-red-50 !border-red-100">
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="text-2xl">❌</span>
-                    <h3 className="text-lg font-semibold text-red-800">
-                      Without It
-                    </h3>
-                  </div>
-                  <ul className="space-y-3">
-                    {content.painPoints.map((p, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-2 text-sm text-red-700"
-                      >
-                        <span className="mt-0.5 shrink-0">✕</span>
-                        {p}
-                      </li>
-                    ))}
-                  </ul>
-                </Card>
+              <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* ── "VS" divider badge ── */}
+                <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                  <span className="w-10 h-10 rounded-full bg-gold text-primary text-sm font-bold flex items-center justify-center shadow-gold">
+                    VS
+                  </span>
+                </div>
 
-                {/* Solution */}
-                <Card className="!bg-green-50 !border-green-100">
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="text-2xl">✅</span>
-                    <h3 className="text-lg font-semibold text-green-800">
-                      With It
-                    </h3>
+                {/* Pain — Dark & Moody */}
+                <div className="relative overflow-hidden rounded-2xl bg-[#1A1614] border border-[#2E2825] p-6 sm:p-8">
+                  {/* Subtle diamond pattern overlay */}
+                  <div
+                    className="absolute inset-0 opacity-[0.04]"
+                    style={{
+                      backgroundImage:
+                        "radial-gradient(circle at 25px 25px, #C9A962 1px, transparent 1px)",
+                      backgroundSize: "50px 50px",
+                    }}
+                  />
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-5">
+                      <span className="w-10 h-10 rounded-full bg-amber-400/20 flex items-center justify-center text-lg">
+                        ❌
+                      </span>
+                      <h3 className="text-xl font-bold text-white">
+                        Without It
+                      </h3>
+                    </div>
+                    <ul className="space-y-3.5">
+                      {content.painPoints.map((p, i) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-3 text-sm text-amber-200/90"
+                        >
+                          <span className="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-amber-400/10 flex items-center justify-center text-amber-400 text-xs font-bold">
+                            ✕
+                          </span>
+                          {p}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className="space-y-3">
-                    {content.solutionPoints.map((s, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-2 text-sm text-green-700"
-                      >
-                        <span className="mt-0.5 shrink-0">✓</span>
-                        {s}
-                      </li>
-                    ))}
-                  </ul>
-                </Card>
+                </div>
+
+                {/* Solution — Light & Premium */}
+                <div className="relative rounded-2xl bg-white border border-gold/20 border-l-4 border-l-gold p-6 sm:p-8 shadow-gold">
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-5">
+                      <span className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-lg">
+                        ✅
+                      </span>
+                      <h3 className="text-xl font-bold text-apple-text-primary">
+                        With It
+                      </h3>
+                    </div>
+                    <ul className="space-y-3.5">
+                      {content.solutionPoints.map((s, i) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-3 text-sm text-apple-text-primary"
+                        >
+                          <span className="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs font-bold">
+                            ✓
+                          </span>
+                          {s}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               </div>
             </section>
           )}
@@ -567,7 +583,7 @@ export default function ProductDetailPage() {
         )}
 
         {/* ==========================================================
-            WHAT'S IN THE BOX + SPECS
+            WHAT'S IN THE BOX — Visual Grid of Cards
             ========================================================== */}
         {content?.whatsInTheBox &&
           Object.keys(content.whatsInTheBox).length > 0 && (
@@ -576,28 +592,31 @@ export default function ProductDetailPage() {
                 title="What's in the Box"
                 subtitle="Everything you get with your order"
               />
-              <div className="max-w-2xl mx-auto">
-                <div className="divide-y divide-apple-border border border-apple-border rounded-apple-sm overflow-hidden">
-                  {Object.entries(content.whatsInTheBox).map(([key, value]) => (
-                    <div
-                      key={key}
-                      className="flex items-start justify-between gap-4 px-5 py-3 text-sm"
-                    >
-                      <span className="font-medium text-apple-text-primary whitespace-nowrap">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {Object.entries(content.whatsInTheBox).map(([key, value]) => (
+                  <div
+                    key={key}
+                    className="flex flex-col items-center text-center gap-3 bg-apple-bg rounded-apple p-5 border border-apple-border/40 hover:border-gold/30 hover:shadow-gold transition-all duration-200"
+                  >
+                    <span className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-2xl shadow-sm">
+                      {getBoxIcon(key)}
+                    </span>
+                    <div>
+                      <h4 className="font-semibold text-apple-text-primary text-sm">
                         {key}
-                      </span>
-                      <span className="text-apple-text-secondary text-right">
+                      </h4>
+                      <p className="text-xs text-apple-text-secondary mt-1 leading-relaxed">
                         {value}
-                      </span>
+                      </p>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             </section>
           )}
 
         {/* ==========================================================
-            WHO THIS IS PERFECT FOR
+            WHO THIS IS PERFECT FOR — Animated Gradient Cards
             ========================================================== */}
         {content?.perfectFor && content.perfectFor.length > 0 && (
           <section className="mb-16">
@@ -606,16 +625,32 @@ export default function ProductDetailPage() {
               subtitle="This product was made for people like you"
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {content.perfectFor.map((item, i) => (
-                <Card key={i}>
-                  <h4 className="font-semibold text-apple-text-primary mb-1">
-                    {item.audience}
-                  </h4>
-                  <p className="text-sm text-apple-text-secondary">
-                    {item.reason}
-                  </p>
-                </Card>
-              ))}
+              {content.perfectFor.map((item, i) => {
+                const gradients = [
+                  "from-rose-100 via-pink-50 to-purple-100",
+                  "from-sky-100 via-cyan-50 to-blue-100",
+                  "from-amber-100 via-yellow-50 to-orange-100",
+                  "from-emerald-100 via-teal-50 to-green-100",
+                  "from-violet-100 via-fuchsia-50 to-pink-100",
+                  "from-teal-100 via-cyan-50 to-sky-100",
+                  "from-orange-100 via-amber-50 to-yellow-100",
+                  "from-indigo-100 via-purple-50 to-violet-100",
+                ];
+                const g = gradients[i % gradients.length];
+                return (
+                  <div
+                    key={i}
+                    className={`rounded-apple p-5 bg-gradient-to-br ${g} animate-gradient-shift bg-[length:200%_200%] border border-white/60 shadow-sm`}
+                  >
+                    <h4 className="font-semibold text-apple-text-primary mb-1">
+                      {item.audience}
+                    </h4>
+                    <p className="text-sm text-apple-text-secondary">
+                      {item.reason}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
           </section>
         )}
@@ -910,17 +945,6 @@ export default function ProductDetailPage() {
                   <span className="font-bold text-apple-text-primary">
                     {formatPrice(product.price)}
                   </span>
-                </div>
-                <div className="pt-3">
-                  <Button
-                    variant="animated"
-                    size="lg"
-                    fullWidth
-                    onClick={handleAddToCart}
-                    disabled={added}
-                  >
-                    {added ? "✓ Added to Cart" : "Add to Cart"}
-                  </Button>
                 </div>
               </div>
             </Card>
