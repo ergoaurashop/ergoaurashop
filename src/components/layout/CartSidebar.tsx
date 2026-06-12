@@ -243,11 +243,11 @@ export default function CartSidebar() {
 
                 {/* You Save */}
                 {youSave > 0 && (
-                  <div className="flex items-center justify-between bg-white/10 rounded-apple-sm px-3 py-2 -mx-3">
-                    <span className="text-sm font-semibold text-gold-light">
+                  <div className="flex items-center justify-between bg-emerald-900/60 backdrop-blur-sm rounded-apple-sm px-3 py-2 -mx-3 border border-emerald-700/30">
+                    <span className="text-sm font-semibold text-emerald-300">
                       You Save
                     </span>
-                    <span className="text-sm font-bold text-gold-light">
+                    <span className="text-sm font-bold text-emerald-200">
                       {formatPrice(youSave)}
                     </span>
                   </div>
