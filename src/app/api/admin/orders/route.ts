@@ -28,31 +28,11 @@ export async function POST(request: Request) {
       );
     }
 
-    // ── Build the query ─────────────────────────────────────────────
-    let query = supabaseAdmin
+    // ── Fetch all orders (server-side, service role bypasses RLS) ──
+    const { data, error } = await supabaseAdmin
       .from("orders")
       .select("*")
       .order("created_at", { ascending: false });
-
-    // Apply search filter if provided
-    const trimmed = (searchValue || "").trim();
-    if (trimmed) {
-      if (searchField === "order_id" || searchField === "track_id") {
-        // Exact match for IDs
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        query = (query as any).eq(searchField, trimmed);
-      } else if (
-        searchField === "customer_name" ||
-        searchField === "customer_email" ||
-        searchField === "customer_phone"
-      ) {
-        // Partial / ILIKE match for text fields
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        query = (query as any).ilike(searchField, `%${trimmed}%`);
-      }
-    }
-
-    const { data, error } = await query;
 
     if (error) {
       console.error("[Admin API] Fetch error:", error);
@@ -62,7 +42,22 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({ orders: data || [] });
+    // ── Apply search filter in-memory ─────────────────────────────
+    const trimmed = (searchValue || "").trim();
+    let orders = data || [];
+
+    if (trimmed && searchField) {
+      const lower = trimmed.toLowerCase();
+      orders = orders.filter((o: Record<string, unknown>) => {
+        const val = String(o[searchField] ?? "").toLowerCase();
+        if (searchField === "order_id" || searchField === "track_id") {
+          return val === lower; // exact match for IDs
+        }
+        return val.includes(lower); // partial match for text fields
+      });
+    }
+
+    return NextResponse.json({ orders });
   } catch (err) {
     console.error("[Admin API] Unexpected error:", err);
     return NextResponse.json(
