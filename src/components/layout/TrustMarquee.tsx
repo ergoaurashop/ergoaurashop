@@ -15,7 +15,7 @@ const TRUST_ITEMS = [
   { icon: "🔒", label: "100% Secure Checkout" },
   { icon: "🔄", label: "7-Day Easy Returns" },
   { icon: "⭐", label: "Premium Quality Products" },
-  { icon: "💰", label: "Best Price Guarantee" },
+  { icon: "🎁", label: "Buy 2 Get 1 Free" },
   { icon: "📞", label: "24/7 Customer Support" },
   { icon: "⚡", label: "Same Day Dispatch" },
   { icon: "🛡️", label: "100% Original Guaranteed" },

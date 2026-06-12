@@ -192,6 +192,16 @@ export default function CartSidebar() {
                   ))}
                 </div>
               )}
+
+              {/* B2G1 promo banner (shown when no items qualify yet) */}
+              {items.length > 0 && b2g1Discount === 0 && (
+                <div className="mx-6 py-3 px-3 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-apple-sm flex items-center gap-2">
+                  <span className="text-lg shrink-0">🎁</span>
+                  <p className="text-xs text-amber-800 leading-snug">
+                    Add 3 of the same product to get 1 <strong>free</strong>!
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Footer */}

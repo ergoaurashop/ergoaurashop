@@ -187,8 +187,8 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
 
           {/* Feature Badges Strip */}
           <div className="flex flex-wrap gap-1.5 mt-0.5">
-            <Badge variant="dubai_climate" size="sm">
-              Dubai Climate
+            <Badge variant="b2g1" size="sm">
+              Buy 2 Get 1 Free
             </Badge>
             {product.category === "kitchen" && (
               <Badge variant="installation_included" size="sm">

@@ -228,8 +228,8 @@ export default function QuickViewModal({
             <div className="flex-1 flex flex-col p-5 md:p-6 md:overflow-y-auto gap-4">
               {/* Trust badge strip */}
               <div className="flex flex-wrap gap-1.5">
-                <Badge variant="dubai_climate" size="sm">
-                  Dubai Climate
+                <Badge variant="b2g1" size="sm">
+                  Buy 2 Get 1 Free
                 </Badge>
               </div>
 
