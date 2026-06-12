@@ -51,6 +51,10 @@ export const KLAVIYO_CLIENT_SECRET = process.env.KLAVIYO_CLIENT_SECRET!;
 export const ADMIN_USERNAME = process.env.ADMIN_USERNAME!;
 export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
 
+/** Client-safe (NEXT_PUBLIC_) copies for use in "use client" components */
+export const CLIENT_ADMIN_USERNAME = process.env.NEXT_PUBLIC_ADMIN_USERNAME!;
+export const CLIENT_ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD!;
+
 // =====================================================================
 // Runtime Validation — crash on startup if required vars are missing
 // =====================================================================

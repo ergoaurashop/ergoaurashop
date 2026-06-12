@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { supabaseAdmin } from "@/lib/supabase/admin";
-import { ADMIN_USERNAME, ADMIN_PASSWORD } from "@/lib/constants";
+import { CLIENT_ADMIN_USERNAME, CLIENT_ADMIN_PASSWORD } from "@/lib/constants";
 import type { DbOrder } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
 import Button from "@/components/ui/Button";
@@ -40,7 +39,10 @@ export default function AdminDashboardPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+    if (
+      username === CLIENT_ADMIN_USERNAME &&
+      password === CLIENT_ADMIN_PASSWORD
+    ) {
       setAuthenticated(true);
       setError("");
     } else {
@@ -48,42 +50,37 @@ export default function AdminDashboardPage() {
     }
   };
 
-  // ── Fetch orders (with optional search) ──────────────────────────
+  // ── Fetch orders via secure API route ─────────────────────────────
   const fetchOrders = useCallback(async () => {
     if (!authenticated) return;
     setLoading(true);
 
     try {
-      let query = supabaseAdmin
-        .from("orders")
-        .select("*")
-        .order("created_at", { ascending: false });
+      const res = await fetch("/api/admin/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username,
+          password,
+          searchField,
+          searchValue: searchValue.trim() || undefined,
+        }),
+      });
 
-      // Apply search filter if a value is entered
-      const trimmed = searchValue.trim();
-      if (trimmed) {
-        if (searchField === "order_id" || searchField === "track_id") {
-          // Exact match for IDs
-          query = query.eq(searchField, trimmed);
-        } else {
-          // Partial / ILIKE match for text fields
-          query = query.ilike(searchField, `%${trimmed}%`);
-        }
+      const json = await res.json();
+
+      if (!res.ok) {
+        console.error("[AdminPage] API error:", json.error);
+        return;
       }
 
-      const { data, error } = await query;
-
-      if (error) {
-        console.error("Fetch error:", error);
-      } else {
-        setOrders(data || []);
-      }
+      setOrders(json.orders || []);
     } catch (err) {
-      console.error("Unexpected error:", err);
+      console.error("[AdminPage] Fetch error:", err);
     } finally {
       setLoading(false);
     }
-  }, [authenticated, searchField, searchValue]);
+  }, [authenticated, username, password, searchField, searchValue]);
 
   useEffect(() => {
     fetchOrders();
