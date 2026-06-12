@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { CLIENT_ADMIN_USERNAME, CLIENT_ADMIN_PASSWORD } from "@/lib/constants";
+import { useState, useCallback } from "react";
 import type { DbOrder } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
 import Button from "@/components/ui/Button";
@@ -37,20 +36,41 @@ export default function AdminDashboardPage() {
   const [searchField, setSearchField] = useState<SearchField>("customer_name");
   const [searchValue, setSearchValue] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  // ── Login: validate credentials server-side & fetch orders ────────
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (
-      username === CLIENT_ADMIN_USERNAME &&
-      password === CLIENT_ADMIN_PASSWORD
-    ) {
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/admin/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username,
+          password,
+          searchField,
+          searchValue: searchValue.trim() || undefined,
+        }),
+      });
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        setError(json.error || "Invalid credentials");
+        return;
+      }
+
       setAuthenticated(true);
-      setError("");
-    } else {
-      setError("Invalid credentials");
+      setOrders(json.orders || []);
+    } catch {
+      setError("Connection error. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  // ── Fetch orders via secure API route ─────────────────────────────
+  // ── Search / refresh orders (used after login) ────────────────────
   const fetchOrders = useCallback(async () => {
     if (!authenticated) return;
     setLoading(true);
@@ -81,10 +101,6 @@ export default function AdminDashboardPage() {
       setLoading(false);
     }
   }, [authenticated, username, password, searchField, searchValue]);
-
-  useEffect(() => {
-    fetchOrders();
-  }, [fetchOrders]);
 
   // ── Status badge variant helper ──────────────────────────────────
   const statusVariant = (status: string) => {
@@ -212,12 +228,19 @@ export default function AdminDashboardPage() {
                 placeholder={`Search by ${SEARCH_FIELDS.find((f) => f.value === searchField)?.label || "field"}...`}
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && fetchOrders()}
                 className="flex-1"
               />
+              <Button variant="outline" size="sm" onClick={fetchOrders}>
+                Search
+              </Button>
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setSearchValue("")}
+                onClick={() => {
+                  setSearchValue("");
+                  setTimeout(fetchOrders, 0);
+                }}
                 disabled={!searchValue.trim()}
               >
                 Clear
