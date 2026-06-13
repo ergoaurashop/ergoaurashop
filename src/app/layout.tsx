@@ -21,6 +21,14 @@ export const metadata: Metadata = {
     siteName: SITE_METADATA.title,
     locale: "en_IN",
     type: "website",
+    images: [
+      {
+        url: SITE_METADATA.logo,
+        width: 1200,
+        height: 1200,
+        alt: SITE_METADATA.title,
+      },
+    ],
   },
 };
 
