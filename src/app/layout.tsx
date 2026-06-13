@@ -14,6 +14,14 @@ export const metadata: Metadata = {
   },
   description: SITE_METADATA.description,
   metadataBase: new URL(SITE_METADATA.url),
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/images/logo/ergoauralogo.webp", type: "image/webp" },
+    ],
+    apple: [{ url: "/images/logo/ergoauralogo.webp", sizes: "180x180" }],
+  },
   openGraph: {
     title: SITE_METADATA.title,
     description: SITE_METADATA.description,
