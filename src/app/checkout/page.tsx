@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useCartStore } from "@/store/cartStore";
@@ -11,6 +11,7 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Card from "@/components/ui/Card";
 import Link from "next/link";
+import { trackBeginCheckout, trackPurchase } from "@/lib/analytics/events";
 
 // ── Razorpay global type ────────────────────────────────────────
 declare global {
@@ -78,12 +79,26 @@ export default function CheckoutPage() {
   const [form, setForm] = useState<CheckoutForm>(INITIAL_FORM);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const hasTrackedCheckout = useRef(false);
 
   const subtotal = getSubtotal();
   const b2g1Discount = getBuy2Get1Discount();
   const discountedSubtotal = Math.max(0, subtotal - b2g1Discount);
   const shipping = discountedSubtotal >= 299 ? 0 : 49;
   const total = discountedSubtotal + shipping;
+
+  // Track begin_checkout
+  useEffect(() => {
+    if (items.length > 0 && !hasTrackedCheckout.current) {
+      hasTrackedCheckout.current = true;
+      trackBeginCheckout(
+        items.map((item) => ({
+          product: item.product,
+          quantity: item.quantity,
+        })),
+      );
+    }
+  }, [items]);
 
   // Load Razorpay script
   useEffect(() => {
@@ -181,7 +196,19 @@ export default function CheckoutPage() {
 
             const { order } = await orderRes.json();
 
-            // 5. Clear cart and redirect to success
+            // 5. Track purchase event (GA4 enhanced e-commerce)
+            trackPurchase({
+              transactionId: response.razorpay_payment_id,
+              value: total,
+              shipping,
+              items: items.map((item) => ({
+                product: item.product,
+                quantity: item.quantity,
+              })),
+              userId: user?.id || undefined,
+            });
+
+            // 6. Clear cart and redirect to success
             clearCart();
             router.push(
               `/order/success?track_id=${order.track_id}&order_id=${order.order_id}`,

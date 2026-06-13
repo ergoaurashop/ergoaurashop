@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState, useEffect, useCallback } from "react";
+import { Suspense, useState, useEffect, useCallback, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { getSupabaseClient } from "@/lib/supabase/client";
@@ -8,6 +8,8 @@ import type { Product } from "@/lib/types";
 import ProductGrid from "@/components/products/ProductGrid";
 import { cn } from "@/lib/utils";
 import { LOCAL_PRODUCTS } from "@/lib/products-data";
+import { trackViewItemList, trackSearch } from "@/lib/analytics/events";
+import { useScrollDepth } from "@/hooks/useScrollDepth";
 
 const PAGE_SIZE = 12;
 
@@ -36,6 +38,10 @@ function ProductsContent() {
   const [displayCount, setDisplayCount] = useState(PAGE_SIZE);
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [sortBy, setSortBy] = useState("newest");
+  const hasTrackedList = useRef(false);
+
+  // Track scroll depth on products page
+  useScrollDepth();
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
@@ -97,6 +103,31 @@ function ProductsContent() {
     fetchProducts();
   }, [fetchProducts]);
 
+  const displayedProducts = allProducts.slice(0, displayCount);
+  const hasMore = displayCount < allProducts.length;
+
+  // Track view_item_list once products load
+  useEffect(() => {
+    if (!loading && allProducts.length > 0 && !hasTrackedList.current) {
+      hasTrackedList.current = true;
+      const listName =
+        activeCategory === "all" ? "All Products" : activeCategory;
+      trackViewItemList(
+        displayedProducts,
+        `products-${activeCategory}`,
+        listName,
+      );
+    }
+  }, [loading, allProducts, displayedProducts, activeCategory]);
+
+  // Track search if ?q= search param exists
+  useEffect(() => {
+    const query = searchParams.get("q");
+    if (query) {
+      trackSearch(query, allProducts);
+    }
+  }, [searchParams, allProducts]);
+
   const handleLoadMore = useCallback(() => {
     setIsLoadingMore(true);
     // Simulate network delay for smoother UX
@@ -110,9 +141,6 @@ function ProductsContent() {
     setActiveCategory("all");
     setSortBy("newest");
   }, []);
-
-  const displayedProducts = allProducts.slice(0, displayCount);
-  const hasMore = displayCount < allProducts.length;
 
   return (
     <div className="bg-[#F5F1EB] min-h-screen">

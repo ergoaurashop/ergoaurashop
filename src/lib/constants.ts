@@ -25,6 +25,9 @@ export const SUGGESTION_EMAIL = process.env.NEXT_PUBLIC_SUGGESTION_EMAIL!;
 // =====================================================================
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL!;
 export const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID!;
+export const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID!;
+export const GA4_MEASUREMENT_PROTOCOL_SECRET =
+  process.env.GA4_MEASUREMENT_PROTOCOL_SECRET!;
 
 /** Default metadata for all pages */
 export const SITE_METADATA = {
@@ -60,6 +63,8 @@ const REQUIRED_PUBLIC_VARS = [
   "NEXT_PUBLIC_RAZORPAY_KEY_ID",
   "NEXT_PUBLIC_CONTACT_EMAIL",
   "NEXT_PUBLIC_SITE_URL",
+  "NEXT_PUBLIC_GA4_ID",
+  "NEXT_PUBLIC_GTM_ID",
 ] as const;
 
 const REQUIRED_SERVER_VARS = [
@@ -69,6 +74,7 @@ const REQUIRED_SERVER_VARS = [
   "DEEPSEEK_API_KEY",
   "ADMIN_USERNAME",
   "ADMIN_PASSWORD",
+  "GA4_MEASUREMENT_PROTOCOL_SECRET",
 ] as const;
 
 export function validateEnv(): void {

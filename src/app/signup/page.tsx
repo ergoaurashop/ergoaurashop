@@ -8,6 +8,7 @@ import { getSupabaseClient } from "@/lib/supabase/client";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Card from "@/components/ui/Card";
+import { trackSignUp } from "@/lib/analytics/events";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -58,6 +59,9 @@ export default function SignupPage() {
         console.error("Profile creation error:", profileError);
         // Non-fatal – the trigger may have created it already
       }
+
+      // Track successful sign-up
+      trackSignUp("email");
 
       setSuccess(
         "Account created! Please check your email to confirm your account.",

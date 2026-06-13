@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { getSupabaseClient } from "@/lib/supabase/client";
@@ -8,10 +8,16 @@ import type { Product } from "@/lib/types";
 import ProductGrid from "@/components/products/ProductGrid";
 import Button from "@/components/ui/Button";
 import { LOCAL_PRODUCTS } from "@/lib/products-data";
+import { trackViewItemList } from "@/lib/analytics/events";
+import { useScrollDepth } from "@/hooks/useScrollDepth";
 
 export default function HomePage() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const hasTracked = useRef(false);
+
+  // Track scroll depth on homepage
+  useScrollDepth();
 
   useEffect(() => {
     async function fetchProducts() {
@@ -33,6 +39,18 @@ export default function HomePage() {
     }
     fetchProducts();
   }, []);
+
+  // Track view_item_list once products are loaded
+  useEffect(() => {
+    if (!loading && featuredProducts.length > 0 && !hasTracked.current) {
+      hasTracked.current = true;
+      trackViewItemList(
+        featuredProducts,
+        "homepage-featured",
+        "Featured Products",
+      );
+    }
+  }, [loading, featuredProducts]);
 
   return (
     <div>

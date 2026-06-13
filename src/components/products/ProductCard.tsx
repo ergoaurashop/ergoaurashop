@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import type { Product } from "@/lib/types";
@@ -12,6 +12,7 @@ import StarRating from "./StarRating";
 import QuickViewModal from "./QuickViewModal";
 import { useCartStore } from "@/store/cartStore";
 import { getProductReviewSummary } from "@/lib/reviews-data";
+import { trackSelectItem, trackAddToCart } from "@/lib/analytics/events";
 
 interface ProductCardProps {
   product: Product;
@@ -59,6 +60,21 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
         ? product.images
         : [getProductImageUrl(product.slug)];
 
+  // Track select_item on title/link click
+  const handleProductClick = useCallback(() => {
+    trackSelectItem(product, "products", "Products", index);
+  }, [product, index]);
+
+  // Track add_to_cart
+  const handleAddToCart = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      addItem(product);
+      trackAddToCart(product, 1);
+    },
+    [product, addItem],
+  );
+
   return (
     <>
       <motion.article
@@ -78,6 +94,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
             href={`/products/${product.slug}`}
             className="block"
             aria-label={`View ${product.name}`}
+            onClick={handleProductClick}
           >
             <ProductImage
               images={imageUrls}
@@ -157,7 +174,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
         {/* ===== Content Section ===== */}
         <div className="flex flex-col flex-1 p-4 gap-2.5">
           {/* Title */}
-          <Link href={`/products/${product.slug}`}>
+          <Link href={`/products/${product.slug}`} onClick={handleProductClick}>
             <h3
               className="font-sans text-lg font-semibold leading-snug line-clamp-2
                          text-[#1A1614] group-hover:text-[#C9A962]
@@ -200,10 +217,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
           {/* ===== Cart & Buy Now Buttons ===== */}
           <div className="flex items-center gap-2 mt-1">
             <button
-              onClick={(e) => {
-                e.preventDefault();
-                addItem(product);
-              }}
+              onClick={handleAddToCart}
               className="btn-gradient-animated flex-1 !py-2 !px-3 !text-xs !rounded-full"
               aria-label={`Add ${product.name} to cart`}
             >

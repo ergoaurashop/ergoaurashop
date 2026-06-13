@@ -1,15 +1,28 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/store/cartStore";
 import { cn, formatPrice, getProductImageUrl } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
+import { trackViewCart, trackRemoveFromCart } from "@/lib/analytics/events";
 
 export default function CartSidebar() {
   const { items, isOpen, closeCart, removeItem, updateQuantity } =
     useCartStore();
+
+  // Track view_cart once when sidebar opens
+  const hasTracked = useRef(false);
+  useEffect(() => {
+    if (isOpen && items.length > 0 && !hasTracked.current) {
+      trackViewCart(items);
+      hasTracked.current = true;
+    }
+    if (!isOpen) {
+      hasTracked.current = false;
+    }
+  }, [isOpen, items]);
 
   // Lock body scroll when open
   useEffect(() => {
@@ -192,7 +205,10 @@ export default function CartSidebar() {
                             </button>
                           </div>
                           <button
-                            onClick={() => removeItem(item.product.id)}
+                            onClick={() => {
+                              trackRemoveFromCart(item.product, item.quantity);
+                              removeItem(item.product.id);
+                            }}
                             className="text-xs text-white/60 hover:text-red-400 transition-colors"
                           >
                             Remove

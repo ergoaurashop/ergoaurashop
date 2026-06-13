@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/store/cartStore";
 import { formatPrice } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import type { Product } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import { trackAddToCart } from "@/lib/analytics/events";
 
 /* ────────────────────────────────────────────────────────────────
    Props
@@ -47,17 +48,19 @@ export default function StickyCartPanel({
     return () => observer.disconnect();
   }, [heroRef]);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = useCallback(() => {
     addItem(product, quantity);
+    trackAddToCart(product, quantity);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
     setQuantity(1);
-  };
+  }, [product, quantity, addItem]);
 
-  const handleBuyNow = () => {
+  const handleBuyNow = useCallback(() => {
     addItem(product, quantity);
+    trackAddToCart(product, quantity);
     router.push("/checkout");
-  };
+  }, [product, quantity, addItem, router]);
 
   const increment = () => setQuantity((q) => Math.min(q + 1, 99));
   const decrement = () => setQuantity((q) => Math.max(q - 1, 1));

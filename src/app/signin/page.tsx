@@ -8,6 +8,7 @@ import { getSupabaseClient } from "@/lib/supabase/client";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Card from "@/components/ui/Card";
+import { trackLogin } from "@/lib/analytics/events";
 
 function SigninContent() {
   const router = useRouter();
@@ -30,6 +31,9 @@ function SigninContent() {
       });
 
       if (authError) throw new Error(authError.message);
+
+      // Track successful login
+      trackLogin("email");
 
       // Redirect to the page they were trying to access, or /account
       const redirectTo = searchParams.get("redirect") || "/account";

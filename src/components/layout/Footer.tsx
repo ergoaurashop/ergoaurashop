@@ -5,6 +5,7 @@ import { CONTACT_EMAIL, COMPLAINT_EMAIL } from "@/lib/constants";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { trackOutboundClick } from "@/lib/analytics/engagement";
 
 export default function Footer() {
   const [trackId, setTrackId] = useState("");
@@ -76,6 +77,13 @@ export default function Footer() {
               <li>
                 <a
                   href={`mailto:${CONTACT_EMAIL}`}
+                  onClick={() =>
+                    trackOutboundClick(
+                      `mailto:${CONTACT_EMAIL}`,
+                      CONTACT_EMAIL,
+                      "external",
+                    )
+                  }
                   className="text-sm text-white/60 hover:text-white transition-colors"
                 >
                   {CONTACT_EMAIL}
@@ -84,6 +92,13 @@ export default function Footer() {
               <li>
                 <a
                   href={`mailto:${COMPLAINT_EMAIL}`}
+                  onClick={() =>
+                    trackOutboundClick(
+                      `mailto:${COMPLAINT_EMAIL}`,
+                      COMPLAINT_EMAIL,
+                      "external",
+                    )
+                  }
                   className="text-sm text-white/60 hover:text-white transition-colors"
                 >
                   {COMPLAINT_EMAIL}

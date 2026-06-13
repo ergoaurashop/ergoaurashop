@@ -1,5 +1,7 @@
 ﻿"use client";
 
+import { trackViewItem } from "@/lib/analytics/events";
+
 import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -188,6 +190,7 @@ export default function ProductDetailPage() {
   const [selectedImage, setSelectedImage] = useState(0);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
+  const hasTrackedView = useRef(false);
 
   /* Try Supabase first, fall back to local data */
   useEffect(() => {
@@ -215,6 +218,14 @@ export default function ProductDetailPage() {
     }
     if (slug) fetchProduct();
   }, [slug]);
+
+  // Track view_item once product is loaded
+  useEffect(() => {
+    if (!loading && product && !hasTrackedView.current) {
+      hasTrackedView.current = true;
+      trackViewItem(product);
+    }
+  }, [loading, product]);
 
   /* Rich content from our prep files */
   const content = getProductContent(slug);
