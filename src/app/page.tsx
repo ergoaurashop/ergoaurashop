@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { getSupabaseClient } from "@/lib/supabase/client";
 import type { Product } from "@/lib/types";
 import ProductGrid from "@/components/products/ProductGrid";
+import HeroProductShowcase from "@/components/products/HeroProductShowcase";
 import Button from "@/components/ui/Button";
 import { LOCAL_PRODUCTS } from "@/lib/products-data";
 import { trackViewItemList } from "@/lib/analytics/events";
@@ -54,6 +55,11 @@ export default function HomePage() {
 
   return (
     <div>
+      {/* ============================== */}
+      {/* Hero Product Showcase (NEW) */}
+      {/* ============================== */}
+      <HeroProductShowcase />
+
       {/* ============================== */}
       {/* Hero Section */}
       {/* ============================== */}
