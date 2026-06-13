@@ -4,16 +4,23 @@ import {
   SLUG_TO_IMAGES,
   SLUG_TO_FOLDER,
 } from "@/lib/products-data";
-import { SITE_METADATA } from "@/lib/constants";
+import { SITE_METADATA, SITE_URL } from "@/lib/constants";
+import { PRODUCT_RICH_CONTENT } from "@/lib/product-content";
+import { PRODUCT_REVIEW_SUMMARIES, PRODUCT_REVIEWS } from "@/lib/reviews-data";
 import ProductDetailClient from "./ProductDetailClient";
+import ProductSchema from "@/components/seo/ProductSchema";
+import BreadcrumbSchema from "@/components/seo/BreadcrumbSchema";
+import FaqSchema from "@/components/seo/FaqSchema";
 
 type Props = {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
 /**
  * Dynamically generates metadata (including Open Graph image) for each
  * product page so that social shares show the correct product image.
+ * Includes canonical URL for SEO deduplication.
  */
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -37,9 +44,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: product.name,
     description,
+    alternates: {
+      canonical: `${SITE_URL}/products/${product.slug}`,
+    },
     openGraph: {
       title,
       description,
+      url: `${SITE_URL}/products/${product.slug}`,
       images: [
         {
           url: imageUrl,
@@ -54,9 +65,56 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 /**
  * Product detail page — server component wrapper that provides
- * metadata / OG tags, then delegates the interactive UI to the
- * client component.
+ * metadata / OG tags, structured data (Product, Breadcrumb, FAQ),
+ * then delegates the interactive UI to the client component.
  */
-export default function Page({ params }: Props) {
-  return <ProductDetailClient />;
+export default async function Page({ params }: Props) {
+  const { slug } = await params;
+
+  const product = LOCAL_PRODUCTS.find((p) => p.slug === slug);
+  if (!product) {
+    return <ProductDetailClient />;
+  }
+
+  const content = PRODUCT_RICH_CONTENT[slug];
+  const reviewSummary = PRODUCT_REVIEW_SUMMARIES[slug];
+  const reviews = PRODUCT_REVIEWS[slug] || [];
+
+  // Build breadcrumb items: Home > Products > Product Name
+  const breadcrumbItems = [
+    { name: "Home", url: SITE_URL },
+    { name: "Products", url: `${SITE_URL}/products` },
+    { name: product.name, url: `${SITE_URL}/products/${product.slug}` },
+  ];
+
+  return (
+    <>
+      {/* JSON-LD Structured Data for this product */}
+      <ProductSchema
+        product={product}
+        aggregateRating={
+          reviewSummary
+            ? {
+                ratingValue: reviewSummary.averageRating,
+                reviewCount: reviewSummary.totalReviews,
+              }
+            : undefined
+        }
+        reviews={reviews.slice(0, 10).map((r) => ({
+          name: r.name,
+          rating: r.rating,
+          text: r.text,
+          date: r.date,
+        }))}
+      />
+      <BreadcrumbSchema items={breadcrumbItems} />
+
+      {/* FAQ Schema from rich content — enables FAQ rich results in SERP */}
+      {content?.faqs && content.faqs.length > 0 && (
+        <FaqSchema faqs={content.faqs} />
+      )}
+
+      <ProductDetailClient />
+    </>
+  );
 }

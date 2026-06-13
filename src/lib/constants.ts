@@ -29,6 +29,12 @@ export const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID!;
 export const GA4_MEASUREMENT_PROTOCOL_SECRET =
   process.env.GA4_MEASUREMENT_PROTOCOL_SECRET!;
 
+/** Social media profiles */
+export const SOCIAL_LINKS = {
+  instagram: "https://www.instagram.com/shopergoaura/",
+  facebook: "https://www.facebook.com/profile.php?id=61590640415430",
+} as const;
+
 /** Default metadata for all pages */
 export const SITE_METADATA = {
   title: "ErgoAura Shop",
@@ -36,6 +42,14 @@ export const SITE_METADATA = {
   url: SITE_URL,
   logo: "/images/logo/ergoauralogo.webp",
 } as const;
+
+/** Site categories */
+export const CATEGORIES = [
+  { slug: "wellness", name: "Wellness" },
+  { slug: "kitchen", name: "Home & Kitchen" },
+  { slug: "accessories", name: "Accessories" },
+  { slug: "personal-care", name: "Personal Care" },
+] as const;
 
 // =====================================================================
 // DeepSeek AI

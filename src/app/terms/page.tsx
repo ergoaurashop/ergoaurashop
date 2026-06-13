@@ -1,7 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import Card from "@/components/ui/Card";
+import { SITE_URL } from "@/lib/constants";
+import BreadcrumbSchemaClient from "@/components/seo/BreadcrumbSchemaClient";
 
 const SECTIONS = [
   {
@@ -106,72 +109,95 @@ const SECTIONS = [
   },
 ];
 
+const breadcrumbItems = [
+  { name: "Home", url: SITE_URL },
+  { name: "Terms & Conditions", url: `${SITE_URL}/terms` },
+];
+
 export default function TermsPage() {
   return (
-    <div className="pt-28 sm:pt-32 pb-16">
-      <div className="section-container">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-12 text-center"
-          >
-            <h1 className="heading-xl mb-4">Terms & Conditions</h1>
-            <p className="text-apple-text-secondary">Last updated: June 2026</p>
-          </motion.div>
-
-          {/* Navigation sidebar (desktop) */}
-          <div className="lg:grid lg:grid-cols-4 lg:gap-10">
-            <nav className="hidden lg:block lg:col-span-1">
-              <div className="sticky top-28 space-y-1">
-                {SECTIONS.map((section) => (
-                  <a
-                    key={section.id}
-                    href={`#${section.id}`}
-                    className="block text-xs text-apple-text-secondary hover:text-apple-text-primary transition-colors py-1.5 leading-snug"
-                  >
-                    {section.title}
-                  </a>
-                ))}
-              </div>
+    <>
+      <BreadcrumbSchemaClient items={breadcrumbItems} />
+      <div className="pt-28 sm:pt-32 pb-16">
+        <div className="section-container">
+          <div className="max-w-4xl mx-auto">
+            {/* Breadcrumb */}
+            <nav className="flex items-center gap-2 text-sm text-[#86868B] mb-6">
+              <Link
+                href="/"
+                className="hover:text-apple-black transition-colors"
+              >
+                Home
+              </Link>
+              <span>/</span>
+              <span className="text-apple-black font-medium">
+                Terms & Conditions
+              </span>
             </nav>
+            {/* Header */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-12 text-center"
+            >
+              <h1 className="heading-xl mb-4">Terms & Conditions</h1>
+              <p className="text-apple-text-secondary">
+                Last updated: June 2026
+              </p>
+            </motion.div>
 
-            {/* Content */}
-            <div className="lg:col-span-3 space-y-8">
-              {SECTIONS.map((section, index) => (
-                <motion.div
-                  key={section.id}
-                  id={section.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.05 }}
-                >
-                  <Card padding="lg">
-                    <h2 className="text-lg font-semibold mb-3">
+            {/* Navigation sidebar (desktop) */}
+            <div className="lg:grid lg:grid-cols-4 lg:gap-10">
+              <nav className="hidden lg:block lg:col-span-1">
+                <div className="sticky top-28 space-y-1">
+                  {SECTIONS.map((section) => (
+                    <a
+                      key={section.id}
+                      href={`#${section.id}`}
+                      className="block text-xs text-apple-text-secondary hover:text-apple-text-primary transition-colors py-1.5 leading-snug"
+                    >
                       {section.title}
-                    </h2>
-                    <div className="text-sm text-apple-text-secondary leading-relaxed whitespace-pre-line">
-                      {section.content}
-                    </div>
-                  </Card>
-                </motion.div>
-              ))}
+                    </a>
+                  ))}
+                </div>
+              </nav>
 
-              {/* Footer note */}
-              <Card padding="lg" className="bg-apple-black text-apple-white">
-                <p className="text-sm leading-relaxed">
-                  By using ErgoAura Shop, you acknowledge that you have read,
-                  understood, and agree to be bound by these Terms & Conditions.
-                  If you do not agree with any part of these terms, please
-                  discontinue use of our Platform immediately.
-                </p>
-              </Card>
+              {/* Content */}
+              <div className="lg:col-span-3 space-y-8">
+                {SECTIONS.map((section, index) => (
+                  <motion.div
+                    key={section.id}
+                    id={section.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <Card padding="lg">
+                      <h2 className="text-lg font-semibold mb-3">
+                        {section.title}
+                      </h2>
+                      <div className="text-sm text-apple-text-secondary leading-relaxed whitespace-pre-line">
+                        {section.content}
+                      </div>
+                    </Card>
+                  </motion.div>
+                ))}
+
+                {/* Footer note */}
+                <Card padding="lg" className="bg-apple-black text-apple-white">
+                  <p className="text-sm leading-relaxed">
+                    By using ErgoAura Shop, you acknowledge that you have read,
+                    understood, and agree to be bound by these Terms &
+                    Conditions. If you do not agree with any part of these
+                    terms, please discontinue use of our Platform immediately.
+                  </p>
+                </Card>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

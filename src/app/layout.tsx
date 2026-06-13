@@ -6,6 +6,8 @@ import TrustMarquee from "@/components/layout/TrustMarquee";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import PageViewTracker from "@/components/analytics/PageViewTracker";
+import OrganizationSchema from "@/components/seo/OrganizationSchema";
+import WebSiteSchema from "@/components/seo/WebSiteSchema";
 
 export const metadata: Metadata = {
   title: {
@@ -38,6 +40,27 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_METADATA.title,
+    description: SITE_METADATA.description,
+    images: [SITE_METADATA.logo],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: SITE_METADATA.url,
+  },
+  category: "wellness",
 };
 
 export default function RootLayout({
@@ -74,6 +97,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         )}
       </head>
       <body className="min-h-screen flex flex-col">
+        {/* JSON-LD Structured Data — site-wide schemas */}
+        <OrganizationSchema />
+        <WebSiteSchema />
         {/* GTM noscript fallback (shown when JS is disabled) */}
         {GTM_ID && (
           <noscript>

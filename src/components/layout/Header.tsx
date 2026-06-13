@@ -84,6 +84,17 @@ export default function Header() {
                 Products
               </Link>
               <Link
+                href="/blog"
+                className={cn(
+                  "text-sm font-medium transition-colors",
+                  scrolled
+                    ? "text-[#C9A962] hover:text-[#DFC48A]"
+                    : "text-[#1A1614] hover:text-[#1A1614]/70",
+                )}
+              >
+                Blog
+              </Link>
+              <Link
                 href="/track-order"
                 className={cn(
                   "text-sm font-medium transition-colors",
@@ -182,6 +193,13 @@ export default function Header() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Products
+              </Link>
+              <Link
+                href="/blog"
+                className="block py-2 text-sm font-medium text-[#C9A962]"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Blog
               </Link>
               <Link
                 href="/track-order"

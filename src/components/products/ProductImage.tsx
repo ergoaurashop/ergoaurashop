@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { cn } from "@/lib/utils";
+import { getProductImageAltText } from "@/lib/seo/product-alt-text";
 
 interface ProductImageProps {
   images: string[];
@@ -101,7 +102,7 @@ export default function ProductImage({
         <img
           key={i}
           src={images[i]}
-          alt={`${productName} - Image ${i + 1}`}
+          alt={getProductImageAltText(slug, productName, i)}
           loading={priority && i === 0 ? "eager" : "lazy"}
           className={cn(
             "absolute inset-0 w-full h-full object-cover",
