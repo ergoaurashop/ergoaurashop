@@ -84,7 +84,7 @@ export default function CheckoutPage() {
   const subtotal = getSubtotal();
   const b2g1Discount = getBuy2Get1Discount();
   const discountedSubtotal = Math.max(0, subtotal - b2g1Discount);
-  const shipping = discountedSubtotal >= 299 ? 0 : 49;
+  const shipping = 0;
   const total = discountedSubtotal + shipping;
 
   // Track begin_checkout
@@ -261,7 +261,7 @@ export default function CheckoutPage() {
             <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" />
           </svg>
           <h1 className="text-2xl font-semibold mb-3">Your cart is empty</h1>
-          <p className="text-apple-text-secondary mb-6">
+          <p className="text-[#86868B] mb-6">
             Add some products to your cart before checking out.
           </p>
           <Link href="/products">
@@ -385,19 +385,13 @@ export default function CheckoutPage() {
               )}
 
               {/* Terms agreement */}
-              <p className="text-xs text-apple-text-secondary">
+              <p className="text-xs text-[#86868B]">
                 By placing this order, you agree to our{" "}
-                <Link
-                  href="/terms"
-                  className="text-apple-accent hover:underline"
-                >
+                <Link href="/terms" className="text-[#C9A962] hover:underline">
                   Terms & Conditions
                 </Link>{" "}
                 and{" "}
-                <Link
-                  href="/terms"
-                  className="text-apple-accent hover:underline"
-                >
+                <Link href="/terms" className="text-[#C9A962] hover:underline">
                   Privacy Policy
                 </Link>
                 .
@@ -414,24 +408,29 @@ export default function CheckoutPage() {
                 <div className="space-y-4 mb-6">
                   {items.map((item) => (
                     <div key={item.product.id} className="flex gap-3">
-                      <div className="w-16 h-16 rounded-apple-sm bg-apple-bg overflow-hidden shrink-0">
+                      <div className="w-16 h-16 rounded-lg bg-[#F5F1EB] overflow-hidden shrink-0">
                         <img
+                          key={item.product.slug}
                           src={getProductImageUrl(
                             item.product.slug,
                             item.product.images?.[0],
                           )}
                           alt={item.product.name}
                           className="w-full h-full object-cover"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src =
+                              "/images/logo/ergoauralogo.webp";
+                          }}
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-apple-text-primary truncate">
+                        <p className="text-sm font-medium text-[#1A1614] truncate">
                           {item.product.name}
                         </p>
-                        <p className="text-xs text-apple-text-secondary">
+                        <p className="text-xs text-[#86868B]">
                           Qty: {item.quantity}
                         </p>
-                        <p className="text-sm font-medium text-apple-text-primary mt-1">
+                        <p className="text-sm font-medium text-[#1A1614] mt-1">
                           {formatPrice(item.product.price * item.quantity)}
                         </p>
                       </div>
@@ -439,11 +438,11 @@ export default function CheckoutPage() {
                   ))}
                 </div>
 
-                <div className="border-t border-apple-border/50 pt-4 space-y-2">
+                <div className="border-t border-[#EAE3D5]/50 pt-4 space-y-2">
                   {/* Subtotal (full amount) */}
                   <div className="flex justify-between text-sm">
-                    <span className="text-apple-text-secondary">Subtotal</span>
-                    <span className="text-apple-text-primary">
+                    <span className="text-[#86868B]">Subtotal</span>
+                    <span className="text-[#1A1614]">
                       {formatPrice(subtotal)}
                     </span>
                   </div>
@@ -451,7 +450,7 @@ export default function CheckoutPage() {
                   {/* B2G1 Discount */}
                   {b2g1Discount > 0 && (
                     <div className="flex justify-between text-sm">
-                      <span className="flex items-center gap-1.5 text-apple-text-secondary">
+                      <span className="flex items-center gap-1.5 text-[#86868B]">
                         <span className="text-[10px] font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 px-1.5 py-0.5 rounded-full">
                           B2G1
                         </span>
@@ -466,10 +465,10 @@ export default function CheckoutPage() {
                   {/* Discounted Subtotal */}
                   {b2g1Discount > 0 && (
                     <div className="flex justify-between text-sm">
-                      <span className="text-apple-text-secondary">
+                      <span className="text-[#86868B]">
                         Discounted Subtotal
                       </span>
-                      <span className="text-apple-text-primary">
+                      <span className="text-[#1A1614]">
                         {formatPrice(discountedSubtotal)}
                       </span>
                     </div>
@@ -477,8 +476,8 @@ export default function CheckoutPage() {
 
                   {/* Shipping */}
                   <div className="flex justify-between text-sm">
-                    <span className="text-apple-text-secondary">Shipping</span>
-                    <span className="text-apple-text-primary">
+                    <span className="text-[#86868B]">Shipping</span>
+                    <span className="text-[#1A1614]">
                       {shipping === 0 ? (
                         <span className="text-green-600 font-medium">Free</span>
                       ) : (
@@ -489,7 +488,7 @@ export default function CheckoutPage() {
 
                   {/* You Save */}
                   {b2g1Discount > 0 && (
-                    <div className="flex justify-between text-sm bg-green-50 rounded-apple-sm px-3 py-2 -mx-3">
+                    <div className="flex justify-between text-sm bg-green-50 rounded-lg px-3 py-2 -mx-3">
                       <span className="font-semibold text-green-700">
                         You Save
                       </span>
@@ -500,11 +499,9 @@ export default function CheckoutPage() {
                   )}
 
                   {/* Total */}
-                  <div className="flex justify-between text-base font-semibold pt-2 border-t border-apple-border/50">
-                    <span className="text-apple-text-primary">Total</span>
-                    <span className="text-apple-text-primary">
-                      {formatPrice(total)}
-                    </span>
+                  <div className="flex justify-between text-base font-semibold pt-2 border-t border-[#EAE3D5]/50">
+                    <span className="text-[#1A1614]">Total</span>
+                    <span className="text-[#1A1614]">{formatPrice(total)}</span>
                   </div>
                 </div>
 
@@ -519,7 +516,7 @@ export default function CheckoutPage() {
                   {submitting ? "Processing..." : "Place Order"}
                 </Button>
 
-                <p className="text-xs text-apple-text-secondary text-center mt-3">
+                <p className="text-xs text-[#86868B] text-center mt-3">
                   Secure payment via Razorpay
                 </p>
               </Card>

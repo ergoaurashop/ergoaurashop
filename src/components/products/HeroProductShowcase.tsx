@@ -14,8 +14,8 @@ import Button from "@/components/ui/Button";
 const PRODUCTS_PER_SET = 4; // desktop cards per set
 const PRODUCTS_TO_FETCH = 12; // 12 products = 3 sets of 4
 const TRANSITION_DURATION = 0.35; // seconds
-const GAP_MS = 1000; // 1-second visible gap between transitions
-const CYCLE_MS = GAP_MS + TRANSITION_DURATION * 1000; // ~1350ms per cycle
+const MOBILE_GAP_MS = 1000; // 1-second visible gap on mobile
+const DESKTOP_GAP_MS = 2650; // ~3-second visible gap on desktop (total ~3s)
 
 /* ─── Animation helper ──────────────────────────────────────────── */
 /**
@@ -42,6 +42,19 @@ export default function HeroProductShowcase() {
   /* ── Data ──────────────────────────────────────────────────── */
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+
+  /* ── Responsive breakpoint ─────────────────────────────────── */
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsDesktop(window.innerWidth >= 1024);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const gapMs = isDesktop ? DESKTOP_GAP_MS : MOBILE_GAP_MS;
+  const cycleMs = gapMs + TRANSITION_DURATION * 1000;
 
   /* ── Carousel state ────────────────────────────────────────── */
   const [currentSet, setCurrentSet] = useState(0);
@@ -102,7 +115,7 @@ export default function HeroProductShowcase() {
   const startInterval = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
     if (loading || products.length === 0 || totalSets <= 1) return;
-    intervalRef.current = setInterval(advance, CYCLE_MS);
+    intervalRef.current = setInterval(advance, cycleMs);
   }, [loading, products.length, totalSets, advance]);
 
   useEffect(() => {
@@ -124,7 +137,7 @@ export default function HeroProductShowcase() {
   const handleMouseLeave = useCallback(() => {
     setIsPaused(false);
     if (!loading && products.length > 0 && totalSets > 1) {
-      intervalRef.current = setInterval(advance, CYCLE_MS);
+      intervalRef.current = setInterval(advance, cycleMs);
     }
   }, [loading, products.length, totalSets, advance]);
 
@@ -137,7 +150,7 @@ export default function HeroProductShowcase() {
         intervalRef.current = null;
       }
       if (!isPaused && !loading && products.length > 0 && totalSets > 1) {
-        intervalRef.current = setInterval(advance, CYCLE_MS);
+        intervalRef.current = setInterval(advance, cycleMs);
       }
     },
     [isPaused, loading, products.length, totalSets, advance],
@@ -150,7 +163,7 @@ export default function HeroProductShowcase() {
   /* ── Loading state ─────────────────────────────────────────── */
   if (loading) {
     return (
-      <section className="bg-white border-b border-[#EAE3D5]/50 py-12 sm:py-16 lg:py-20">
+      <section className="bg-white border-b border-[#EAE3D5]/50 py-12 sm:py-16 min-h-[500px] md:min-h-[560px]">
         <div className="section-container">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             {Array.from({ length: 4 }).map((_, i) => (
@@ -170,7 +183,7 @@ export default function HeroProductShowcase() {
     <section
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="relative bg-gradient-to-b from-[#F5F1EB] to-white border-b border-[#EAE3D5]/50 py-12 sm:py-16 lg:py-20 overflow-hidden select-none"
+      className="relative bg-gradient-to-b from-[#F5F1EB] to-white border-b border-[#EAE3D5]/50 py-12 sm:py-16 overflow-hidden select-none min-h-[500px] md:min-h-[560px]"
     >
       <div className="section-container">
         {/* ─── Mobile Layout (< lg) ──────────────────────────── */}

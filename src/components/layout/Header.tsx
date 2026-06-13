@@ -1,5 +1,7 @@
 "use client";
 
+import { SOCIAL_LINKS } from "@/lib/constants";
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useCartStore } from "@/store/cartStore";
@@ -116,6 +118,70 @@ export default function Header() {
               >
                 Sign In
               </Link>
+
+              {/* Social Icons — Desktop */}
+              <span
+                className={cn(
+                  "w-px h-5",
+                  scrolled ? "bg-[#C9A962]/30" : "bg-[#1A1614]/20",
+                )}
+              />
+              <a
+                href={SOCIAL_LINKS.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "transition-colors",
+                  scrolled
+                    ? "text-[#C9A962] hover:text-[#DFC48A]"
+                    : "text-[#1A1614] hover:text-[#1A1614]/70",
+                )}
+                aria-label="Instagram"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <rect x="2" y="2" width="20" height="20" rx="5" />
+                  <circle cx="12" cy="12" r="5" />
+                  <circle
+                    cx="17.5"
+                    cy="6.5"
+                    r="1.5"
+                    fill="currentColor"
+                    stroke="none"
+                  />
+                </svg>
+              </a>
+              <a
+                href={SOCIAL_LINKS.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "transition-colors",
+                  scrolled
+                    ? "text-[#C9A962] hover:text-[#DFC48A]"
+                    : "text-[#1A1614] hover:text-[#1A1614]/70",
+                )}
+                aria-label="Facebook"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M16 8h-2a3 3 0 0 0-3 3v11" stroke="currentColor" />
+                  <path d="M9 14h6" stroke="currentColor" />
+                </svg>
+              </a>
             </nav>
 
             {/* Right side */}
@@ -215,6 +281,56 @@ export default function Header() {
               >
                 Sign In
               </Link>
+
+              {/* Social Icons — Mobile */}
+              <div className="border-t border-[#C9A962]/20 pt-4 mt-4 flex items-center gap-4">
+                <a
+                  href={SOCIAL_LINKS.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#C9A962] hover:text-[#DFC48A] transition-colors"
+                  aria-label="Instagram"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <rect x="2" y="2" width="20" height="20" rx="5" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle
+                      cx="17.5"
+                      cy="6.5"
+                      r="1.5"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
+                </a>
+                <a
+                  href={SOCIAL_LINKS.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#C9A962] hover:text-[#DFC48A] transition-colors"
+                  aria-label="Facebook"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M16 8h-2a3 3 0 0 0-3 3v11" stroke="currentColor" />
+                    <path d="M9 14h6" stroke="currentColor" />
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
         )}

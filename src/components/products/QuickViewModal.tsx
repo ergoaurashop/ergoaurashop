@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -40,16 +40,26 @@ export default function QuickViewModal({
   const addItem = useCartStore((state) => state.addItem);
   const [mounted, setMounted] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [imgError, setImgError] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const isOutOfStock = product.stock <= 0;
 
-  const images =
-    product.images.length > 0
-      ? product.images
-      : getProductImages(product.slug).length > 0
-        ? getProductImages(product.slug)
-        : [getProductImageUrl(product.slug)];
+  // Reset image error when product changes
+  useEffect(() => {
+    setImgError(false);
+  }, [product.slug]);
+
+  const images = useMemo(() => {
+    try {
+      if (product.images?.length > 0) return product.images;
+      const fallbackImages = getProductImages(product.slug);
+      if (fallbackImages.length > 0) return fallbackImages;
+      return [getProductImageUrl(product.slug)];
+    } catch {
+      return ["/images/logo/ergoauralogo.webp"];
+    }
+  }, [product]);
 
   const handleAddToCart = useCallback(() => {
     if (isOutOfStock) return;
@@ -193,9 +203,15 @@ export default function QuickViewModal({
               )}
             >
               <img
-                src={images[0] || "/images/logo/ergoauralogo.webp"}
+                key={product.slug}
+                src={
+                  imgError || !images[0]
+                    ? "/images/logo/ergoauralogo.webp"
+                    : images[0]
+                }
                 alt={product.name}
                 className="w-full h-full object-cover"
+                onError={() => setImgError(true)}
               />
 
               {/* Badges overlay */}

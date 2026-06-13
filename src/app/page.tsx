@@ -63,11 +63,17 @@ export default function HomePage() {
       {/* ============================== */}
       {/* Hero Section */}
       {/* ============================== */}
-      <section className="relative min-h-[80vh] flex items-center justify-center bg-[#1A1614] overflow-hidden">
+      <section
+        className="relative min-h-[80vh] flex items-center justify-center overflow-hidden animate-hero-gradient"
+        style={{
+          background:
+            "linear-gradient(135deg, #F5F1EB 0%, #FAF7F2 25%, #F0E8D8 50%, #FAF7F2 75%, #F5F1EB 100%)",
+        }}
+      >
         {/* Decorative gold accent */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full border border-[#C9A962]/5 pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-[#C9A962]/10 pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-[#C9A962]/[0.03] blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full border border-[#C9A962]/10 pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-[#C9A962]/15 pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-[#C9A962]/[0.06] blur-3xl pointer-events-none" />
 
         <div className="section-container relative z-10 text-center py-20">
           <motion.div
@@ -78,12 +84,12 @@ export default function HomePage() {
             <span className="type-overline-gold text-[#C9A962] tracking-[0.15em] uppercase">
               Premium Wellness Collection
             </span>
-            <h1 className="type-h1 text-[#F5F1EB] mt-4 mb-4 text-balance max-w-3xl mx-auto">
+            <h1 className="type-h1 text-[#1A1614] mt-4 mb-4 text-balance max-w-3xl mx-auto">
               Premium Wellness for
               <br />
               <span className="text-[#C9A962]">Everyday Comfort</span>
             </h1>
-            <p className="type-body-lg text-[#D8CFBF] max-w-2xl mx-auto mb-10 text-balance">
+            <p className="type-body-lg text-[#6B6560] max-w-2xl mx-auto mb-10 text-balance">
               Discover thoughtfully designed products that make your daily life
               more comfortable, healthier, and better.
             </p>
@@ -92,7 +98,7 @@ export default function HomePage() {
                 <Button size="lg">Shop All Products</Button>
               </Link>
               <Link href="/products">
-                <Button variant="ghost-light" size="lg">
+                <Button variant="ghost" size="lg">
                   Explore Categories
                 </Button>
               </Link>
