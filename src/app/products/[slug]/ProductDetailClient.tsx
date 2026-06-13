@@ -15,6 +15,7 @@ import { getProductContent } from "@/lib/product-content";
 import { LOCAL_PRODUCTS } from "@/lib/products-data";
 import { useProductReviews, type SortOption } from "@/hooks/useProductReviews";
 import StickyCartPanel from "@/components/products/StickyCartPanel";
+import PetalsBackground from "@/components/products/PetalsBackground";
 
 /* ────────────────────────────────────────────────────────────────
    Star Rating Component
@@ -543,8 +544,8 @@ export default function ProductDetailClient() {
                   </span>
                 </div>
 
-                {/* Pain — Dark & Moody */}
-                <div className="relative overflow-hidden rounded-2xl bg-[#1A1614] border border-[#2E2825] p-6 sm:p-8">
+                {/* Pain — Dark & Moody (improved readability) */}
+                <div className="relative overflow-hidden rounded-2xl bg-[#2A2522] border border-[#3D3733] p-6 sm:p-8">
                   {/* Subtle diamond pattern overlay */}
                   <div
                     className="absolute inset-0 opacity-[0.04]"
@@ -556,7 +557,7 @@ export default function ProductDetailClient() {
                   />
                   <div className="relative z-10">
                     <div className="flex items-center gap-3 mb-5">
-                      <span className="w-10 h-10 rounded-full bg-amber-400/20 flex items-center justify-center text-lg">
+                      <span className="w-10 h-10 rounded-full bg-red-400/20 flex items-center justify-center text-lg">
                         ❌
                       </span>
                       <h3 className="text-xl font-bold text-white">
@@ -567,9 +568,9 @@ export default function ProductDetailClient() {
                       {content.painPoints.map((p, i) => (
                         <li
                           key={i}
-                          className="flex items-start gap-3 text-sm text-amber-200/90"
+                          className="flex items-start gap-3 text-sm text-gray-100"
                         >
-                          <span className="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-amber-400/10 flex items-center justify-center text-amber-400 text-xs font-bold">
+                          <span className="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-white/15 flex items-center justify-center text-red-300 text-xs font-bold">
                             ✕
                           </span>
                           {p}
@@ -613,23 +614,37 @@ export default function ProductDetailClient() {
             BULLET BENEFITS (5 persuasive bullets)
             ========================================================== */}
         {content?.bulletBenefits && content.bulletBenefits.length > 0 && (
-          <section className="mb-16">
+          <section className="mb-16 relative overflow-hidden">
+            {/* Floating petals background */}
+            <PetalsBackground />
             <SectionHeader
               title="Why You'll Love It"
               subtitle="5 reasons this product makes your life better"
             />
-            <div className="space-y-4 max-w-3xl mx-auto">
-              {content.bulletBenefits.map((b, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-4 bg-apple-bg rounded-apple-sm p-5"
-                >
-                  <span className="w-8 h-8 rounded-full bg-apple-black text-white text-sm font-bold flex items-center justify-center shrink-0 mt-0.5">
-                    {i + 1}
-                  </span>
-                  <p className="text-apple-text-primary leading-relaxed">{b}</p>
-                </div>
-              ))}
+            <div className="relative z-10 space-y-4 max-w-3xl mx-auto">
+              {content.bulletBenefits.map((b, i) => {
+                const gradients = [
+                  "from-purple-50 via-pink-50 to-rose-50",
+                  "from-sky-50 via-cyan-50 to-blue-50",
+                  "from-amber-50 via-orange-50 to-yellow-50",
+                  "from-emerald-50 via-teal-50 to-green-50",
+                  "from-violet-50 via-fuchsia-50 to-pink-50",
+                ];
+                const g = gradients[i % gradients.length];
+                return (
+                  <div
+                    key={i}
+                    className={`flex items-start gap-4 rounded-apple-sm p-5 bg-gradient-to-r ${g} animate-gradient-drift bg-[length:200%_100%] border border-white/60 shadow-sm transition-shadow duration-300 hover:shadow-md`}
+                  >
+                    <span className="w-8 h-8 rounded-full bg-apple-black text-white text-sm font-bold flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+                      {i + 1}
+                    </span>
+                    <p className="text-apple-text-primary leading-relaxed">
+                      {b}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
           </section>
         )}
@@ -643,23 +658,42 @@ export default function ProductDetailClient() {
               title="The Problem"
               subtitle="We understand — we've been there too"
             />
-            <div className="max-w-3xl mx-auto">
-              <Card className="!bg-apple-bg !border-apple-border">
-                <p className="text-apple-text-primary leading-relaxed text-lg italic">
-                  &ldquo;{content.problemHook}&rdquo;
-                </p>
-              </Card>
+            <div className="max-w-3xl mx-auto space-y-6">
+              {/* Problem Box — light amber with hashed pattern */}
+              <div className="relative overflow-hidden rounded-2xl border-l-4 border-l-amber-400 bg-hash-pattern">
+                <div className="relative z-10 p-6 sm:p-8">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-2xl">😟</span>
+                    <h3 className="text-xl font-bold text-apple-text-primary">
+                      The Problem
+                    </h3>
+                  </div>
+                  <p className="text-apple-text-primary leading-relaxed text-lg italic">
+                    &ldquo;{content.problemHook}&rdquo;
+                  </p>
+                </div>
+              </div>
 
               {content.solutionBody && (
                 <>
-                  <h3 className="text-xl font-semibold text-apple-text-primary mt-8 mb-4 text-center">
+                  <h3 className="text-xl font-semibold text-apple-text-primary text-center">
                     The Solution
                   </h3>
-                  <Card>
-                    <p className="text-apple-text-primary leading-relaxed">
-                      {content.solutionBody}
-                    </p>
-                  </Card>
+
+                  {/* Solution Box — light gradient */}
+                  <div className="relative overflow-hidden rounded-2xl border-l-4 border-l-emerald-400 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50">
+                    <div className="relative z-10 p-6 sm:p-8">
+                      <div className="flex items-center gap-3 mb-4">
+                        <span className="text-2xl">💡</span>
+                        <h3 className="text-xl font-bold text-apple-text-primary">
+                          The Solution
+                        </h3>
+                      </div>
+                      <p className="text-apple-text-primary leading-relaxed">
+                        {content.solutionBody}
+                      </p>
+                    </div>
+                  </div>
                 </>
               )}
             </div>
@@ -677,24 +711,73 @@ export default function ProductDetailClient() {
                 subtitle="Everything you get with your order"
               />
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {Object.entries(content.whatsInTheBox).map(([key, value]) => (
-                  <div
-                    key={key}
-                    className="flex flex-col items-center text-center gap-3 bg-apple-bg rounded-apple p-5 border border-apple-border/40 hover:border-gold/30 hover:shadow-gold transition-all duration-200"
-                  >
-                    <span className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-2xl shadow-sm">
-                      {getBoxIcon(key)}
-                    </span>
-                    <div>
-                      <h4 className="font-semibold text-apple-text-primary text-sm">
-                        {key}
-                      </h4>
-                      <p className="text-xs text-apple-text-secondary mt-1 leading-relaxed">
-                        {value}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                {Object.entries(content.whatsInTheBox).map(
+                  ([key, value], i) => {
+                    const cardColours = [
+                      {
+                        bg: "bg-rose-50",
+                        border: "border-l-rose-300",
+                        icon: "bg-rose-100",
+                      },
+                      {
+                        bg: "bg-sky-50",
+                        border: "border-l-sky-300",
+                        icon: "bg-sky-100",
+                      },
+                      {
+                        bg: "bg-amber-50",
+                        border: "border-l-amber-300",
+                        icon: "bg-amber-100",
+                      },
+                      {
+                        bg: "bg-emerald-50",
+                        border: "border-l-emerald-300",
+                        icon: "bg-emerald-100",
+                      },
+                      {
+                        bg: "bg-violet-50",
+                        border: "border-l-violet-300",
+                        icon: "bg-violet-100",
+                      },
+                      {
+                        bg: "bg-teal-50",
+                        border: "border-l-teal-300",
+                        icon: "bg-teal-100",
+                      },
+                      {
+                        bg: "bg-pink-50",
+                        border: "border-l-pink-300",
+                        icon: "bg-pink-100",
+                      },
+                      {
+                        bg: "bg-lime-50",
+                        border: "border-l-lime-300",
+                        icon: "bg-lime-100",
+                      },
+                    ];
+                    const c = cardColours[i % cardColours.length];
+                    return (
+                      <div
+                        key={key}
+                        className={`flex flex-col items-center text-center gap-3 ${c.bg} rounded-apple p-5 border border-l-4 ${c.border} border-apple-border/20 hover:-translate-y-1 hover:shadow-md transition-all duration-200`}
+                      >
+                        <span
+                          className={`w-12 h-12 rounded-full ${c.icon} flex items-center justify-center text-2xl shadow-sm`}
+                        >
+                          {getBoxIcon(key)}
+                        </span>
+                        <div>
+                          <h4 className="font-semibold text-apple-text-primary text-sm">
+                            {key}
+                          </h4>
+                          <p className="text-xs text-apple-text-secondary mt-1 leading-relaxed">
+                            {value}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  },
+                )}
               </div>
             </section>
           )}
