@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { S23_PRODUCT, S23_FOLDER } from "@/lib/s23-ultra-data";
 import { formatPrice } from "@/lib/utils";
+import { useCartStore } from "@/store/cartStore";
 
 function getImagePath(filename: string): string {
   return `/images/products/${S23_FOLDER.split("/").map(encodeURIComponent).join("/")}/${encodeURIComponent(filename)}`;
@@ -14,6 +15,7 @@ export default function S23StickyCTA() {
   const router = useRouter();
 
   const handleBuyNow = () => {
+    useCartStore.getState().addItem(S23_PRODUCT, 1);
     router.push("/checkout");
   };
 

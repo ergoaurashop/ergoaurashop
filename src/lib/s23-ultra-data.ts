@@ -305,6 +305,29 @@ export const S23_REVIEW_SUMMARY = {
 };
 
 // -------------------------------------------------------------------
+// Review images (for photo carousels on 5-star reviews)
+// Keys match review IDs (s23-r1, s23-r2, s23-r3)
+// Values are filenames relative to the review-images/ folder
+// -------------------------------------------------------------------
+export const S23_REVIEW_IMAGES: Record<string, string[]> = {
+  "s23-r1": [
+    "review-images/1/IMG-20260614-WA0015.jpg",
+    "review-images/1/IMG-20260614-WA0016.jpg",
+    "review-images/1/IMG-20260614-WA0017.jpg",
+    "review-images/1/IMG-20260614-WA0018.jpg",
+  ],
+  "s23-r2": [
+    "review-images/2/IMG-20260614-WA0012.jpg",
+    "review-images/2/IMG-20260614-WA0013.jpg",
+  ],
+  "s23-r3": [
+    "review-images/3/IMG-20260614-WA0008.jpg",
+    "review-images/3/IMG-20260614-WA0009.jpg",
+    "review-images/3/IMG-20260614-WA0010.jpg",
+  ],
+};
+
+// -------------------------------------------------------------------
 // FAQ items
 // -------------------------------------------------------------------
 export const S23_FAQS = [

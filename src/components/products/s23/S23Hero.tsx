@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { S23_FOLDER, S23_PRODUCT } from "@/lib/s23-ultra-data";
 import { formatPrice } from "@/lib/utils";
+import { useCartStore } from "@/store/cartStore";
 
 function getImagePath(filename: string): string {
   return `/images/products/${S23_FOLDER.split("/").map(encodeURIComponent).join("/")}/${encodeURIComponent(filename)}`;
@@ -17,6 +18,7 @@ export default function S23Hero() {
   const [videoError, setVideoError] = useState(false);
 
   const handleBuyNow = () => {
+    useCartStore.getState().addItem(S23_PRODUCT, 1);
     router.push("/checkout");
   };
 
@@ -79,7 +81,23 @@ export default function S23Hero() {
           >
             <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
           </svg>
-          <span>Mega Deal — Hurry! Only {S23_PRODUCT.stock} Units Left</span>
+          <span>
+            Mega Deal — Hurry! Only{" "}
+            <b className="s23-badge-stock">{S23_PRODUCT.stock}</b> Units Left
+          </span>
+          {/* Second flame */}
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+          </svg>
         </motion.div>
 
         <motion.h1
@@ -161,6 +179,119 @@ export default function S23Hero() {
           </span>
         </motion.button>
       </div>
+
+      {/* Digital Round Seal — Stock Clearance Sale */}
+      <motion.div
+        className="s23-seal"
+        initial={{ opacity: 0, scale: 0.3 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          duration: 0.8,
+          delay: 1.5,
+          type: "spring",
+          stiffness: 120,
+        }}
+      >
+        <svg viewBox="0 0 100 100" fill="none">
+          <defs>
+            <radialGradient id="seal-grad" cx="50%" cy="40%" r="60%">
+              <stop offset="0%" stopColor="#1a1a2e" />
+              <stop offset="100%" stopColor="#0a0a0a" />
+            </radialGradient>
+          </defs>
+          {/* Outer ring */}
+          <circle
+            cx="50"
+            cy="50"
+            r="47"
+            stroke="#ffd700"
+            strokeWidth="3"
+            fill="none"
+          />
+          <circle
+            cx="50"
+            cy="50"
+            r="42"
+            stroke="#ff8c00"
+            strokeWidth="1.5"
+            fill="none"
+            opacity="0.5"
+          />
+          {/* Inner fill */}
+          <circle cx="50" cy="50" r="38" fill="url(#seal-grad)" />
+          {/* Top stars */}
+          <text
+            x="50"
+            y="24"
+            textAnchor="middle"
+            fontSize="7"
+            fill="#ffd700"
+            fontWeight="bold"
+          >
+            ✦ ✦ ✦
+          </text>
+          {/* Main text */}
+          <text
+            x="50"
+            y="38"
+            textAnchor="middle"
+            fontSize="6.5"
+            fontWeight="bold"
+            fill="#ffd700"
+            fontFamily="Arial,sans-serif"
+          >
+            STOCK
+          </text>
+          <text
+            x="50"
+            y="48"
+            textAnchor="middle"
+            fontSize="6.5"
+            fontWeight="bold"
+            fill="#ffd700"
+            fontFamily="Arial,sans-serif"
+          >
+            CLEARANCE
+          </text>
+          <text
+            x="50"
+            y="58"
+            textAnchor="middle"
+            fontSize="6"
+            fontWeight="bold"
+            fill="#ff8c00"
+            fontFamily="Arial,sans-serif"
+          >
+            SALE
+          </text>
+          {/* Divider line */}
+          <line
+            x1="30"
+            y1="64"
+            x2="70"
+            y2="64"
+            stroke="#ffd700"
+            strokeWidth="0.5"
+            opacity="0.6"
+          />
+          {/* Bottom text */}
+          <text
+            x="50"
+            y="74"
+            textAnchor="middle"
+            fontSize="4"
+            fill="#ffd700"
+            opacity="0.85"
+            fontFamily="Arial,sans-serif"
+          >
+            MEGA DEALS
+          </text>
+          {/* Bottom stars */}
+          <text x="50" y="84" textAnchor="middle" fontSize="6" fill="#ffd700">
+            ✦ ✦ ✦
+          </text>
+        </svg>
+      </motion.div>
     </section>
   );
 }

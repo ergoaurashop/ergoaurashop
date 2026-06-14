@@ -87,6 +87,14 @@ export default function CheckoutPage() {
   const shipping = 0;
   const total = discountedSubtotal + shipping;
 
+  // Deal pricing: total original value & savings across all items
+  const totalOriginalPrice = items.reduce(
+    (sum, item) =>
+      sum + (item.product.original_price || item.product.price) * item.quantity,
+    0,
+  );
+  const dealSavings = Math.max(0, totalOriginalPrice - subtotal);
+
   // Track begin_checkout
   useEffect(() => {
     if (items.length > 0 && !hasTrackedCheckout.current) {
@@ -433,6 +441,28 @@ export default function CheckoutPage() {
                         <p className="text-sm font-medium text-[#1A1614] mt-1">
                           {formatPrice(item.product.price * item.quantity)}
                         </p>
+                        {/* Deal pricing: original price strikethrough & savings */}
+                        {item.product.original_price > item.product.price && (
+                          <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                            <span className="text-xs line-through text-[#86868B]">
+                              MRP{" "}
+                              {formatPrice(
+                                item.product.original_price * item.quantity,
+                              )}
+                            </span>
+                            <span className="text-[10px] font-bold text-white bg-green-600 px-1.5 py-0.5 rounded-full">
+                              {item.product.discount_percentage}% OFF
+                            </span>
+                            <span className="text-xs font-semibold text-green-600">
+                              Save{" "}
+                              {formatPrice(
+                                (item.product.original_price -
+                                  item.product.price) *
+                                  item.quantity,
+                              )}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -486,14 +516,26 @@ export default function CheckoutPage() {
                     </span>
                   </div>
 
-                  {/* You Save */}
-                  {b2g1Discount > 0 && (
+                  {/* Deal Savings — total saved from discounted pricing */}
+                  {dealSavings > 0 && (
+                    <div className="flex justify-between text-sm bg-orange-50 rounded-lg px-3 py-2 -mx-3">
+                      <span className="font-semibold text-orange-700">
+                        Deal Savings
+                      </span>
+                      <span className="font-bold text-orange-700">
+                        -{formatPrice(dealSavings)}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* You Save (B2G1 + Deal combined) */}
+                  {(b2g1Discount > 0 || dealSavings > 0) && (
                     <div className="flex justify-between text-sm bg-green-50 rounded-lg px-3 py-2 -mx-3">
                       <span className="font-semibold text-green-700">
                         You Save
                       </span>
                       <span className="font-bold text-green-700">
-                        {formatPrice(b2g1Discount)}
+                        {formatPrice(b2g1Discount + dealSavings)}
                       </span>
                     </div>
                   )}

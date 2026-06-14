@@ -163,19 +163,129 @@
   text-align: center;
 }
 
+/* ── Hero badge with animated shimmer & pulse ── */
 .s23-hero-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1.25rem;
-  background: var(--s23-accent-bg);
-  border: 1px solid var(--s23-accent-border);
+  gap: 0.6rem;
+  padding: 0.65rem 1.5rem;
+  background: linear-gradient(
+    90deg,
+    #ff4500,
+    #ff8c00,
+    #ffd700,
+    #ff8c00,
+    #ff4500
+  );
+  background-size: 300% 100%;
+  border: none;
   border-radius: var(--s23-radius-full);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--s23-accent-text);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #ffffff;
   margin-bottom: 1rem;
   backdrop-filter: blur(8px);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  animation:
+    s23-badge-shimmer 3s ease infinite,
+    s23-badge-pulse 2s ease infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer scan-line overlay */
+.s23-hero-badge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: s23-badge-scanline 2.5s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.s23-hero-badge .s23-badge-stock {
+  color: #fff5cc;
+  font-weight: 900;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.1rem 0.5rem;
+  border-radius: 4px;
+}
+
+@keyframes s23-badge-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes s23-badge-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(255, 200, 0, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 20px rgba(255, 100, 0, 0.5),
+      0 0 40px rgba(255, 69, 0, 0.3);
+  }
+}
+
+@keyframes s23-badge-scanline {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ── Digital Round Seal ── */
+.s23-seal {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 90px;
+  height: 90px;
+  z-index: 5;
+  animation: s23-seal-pulse 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.4));
+}
+
+.s23-seal svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes s23-seal-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.3))
+      drop-shadow(0 0 16px rgba(255, 215, 0, 0.1));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(255, 215, 0, 0.6))
+      drop-shadow(0 0 32px rgba(255, 215, 0, 0.3));
+    transform: scale(1.05);
+  }
+}
+
+@media (max-width: 768px) {
+  .s23-seal {
+    width: 70px;
+    height: 70px;
+    top: 10px;
+    right: 10px;
+  }
 }
 
 .s23-hero-title {
@@ -884,20 +994,174 @@
   width: 100%;
   padding: 0.75rem;
   margin-top: 1rem;
-  background: #ffffff;
-  border: 1px solid #d0d0d0;
+  background: #1a7a3a;
+  border: 1px solid #1a7a3a;
   border-radius: 8px;
-  color: #111111;
+  color: #ffffff;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: center;
+  font-family: inherit;
 }
 
 .s23-reviews-load-more:hover {
-  background: #f5f5f5;
+  background: #15803d;
+  border-color: #15803d;
+  box-shadow: 0 2px 8px rgba(26, 122, 58, 0.3);
+}
+
+/* ── Review photo carousel ── */
+.s23-review-images {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  margin-top: 0.75rem;
+  padding-bottom: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.s23-review-images::-webkit-scrollbar {
+  height: 4px;
+}
+
+.s23-review-images::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 2px;
+}
+
+.s23-review-images::-webkit-scrollbar-thumb {
+  background: #1a7a3a;
+  border-radius: 2px;
+}
+
+.s23-review-image-wrapper {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  cursor: pointer;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+  transition: opacity 0.2s ease;
+  position: relative;
+}
+
+.s23-review-image-wrapper:hover {
+  opacity: 0.85;
+}
+
+.s23-review-image-wrapper img {
+  height: 120px;
+  width: auto;
+  object-fit: cover;
+  display: block;
+}
+
+/* Carousel nav arrows */
+.s23-review-carousel-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.s23-review-carousel-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid #d0d0d0;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #333333;
+  padding: 0;
+}
+
+.s23-review-carousel-btn:hover {
+  background: #1a7a3a;
   border-color: #1a7a3a;
+  color: #ffffff;
+}
+
+.s23-review-carousel-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.s23-review-carousel-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.s23-review-carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d0d0d0;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s ease;
+}
+
+.s23-review-carousel-dot.active {
+  background: #1a7a3a;
+  width: 20px;
+  border-radius: 4px;
+}
+
+/* ── Review lightbox ── */
+.s23-review-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  cursor: pointer;
+}
+
+.s23-review-lightbox img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+
+.s23-review-lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #ffffff;
+  transition: background 0.2s ease;
+  padding: 0;
+}
+
+.s23-review-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.s23-review-lightbox-close svg {
+  width: 24px;
+  height: 24px;
 }
 
 /* ── Spec table ── */

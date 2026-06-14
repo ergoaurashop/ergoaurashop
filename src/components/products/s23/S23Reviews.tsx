@@ -2,8 +2,19 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { S23_REVIEWS, S23_REVIEW_SUMMARY } from "@/lib/s23-ultra-data";
+import Image from "next/image";
+import {
+  S23_REVIEWS,
+  S23_REVIEW_SUMMARY,
+  S23_REVIEW_IMAGES,
+  S23_FOLDER,
+} from "@/lib/s23-ultra-data";
 import type { ProductReviewDetail } from "@/lib/types";
+
+/** Build a URL for a review image file. */
+function getReviewImagePath(filename: string): string {
+  return `/images/products/${S23_FOLDER.split("/").map(encodeURIComponent).join("/")}/${encodeURIComponent(filename)}`;
+}
 
 /* ── SVG Star (green fill) ── */
 function StarIcon({ filled }: { filled: boolean }) {
@@ -80,9 +91,30 @@ function getInitials(name: string): string {
     .slice(0, 2);
 }
 
-/* ── Review Card (Amazon-style) ── */
+/* ── Review Card (Amazon-style) with optional photo carousel & lightbox ── */
 function ReviewCard({ review }: { review: ProductReviewDetail }) {
   const [thumbsUp, setThumbsUp] = useState(false);
+  const [currentImg, setCurrentImg] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+
+  const reviewImages = S23_REVIEW_IMAGES[review.id] || [];
+
+  const openLightbox = (index: number) => {
+    setLightboxIndex(index);
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => setLightboxOpen(false);
+
+  const prevLightbox = () => {
+    setLightboxIndex((prev) => (prev > 0 ? prev - 1 : reviewImages.length - 1));
+  };
+
+  const nextLightbox = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLightboxIndex((prev) => (prev < reviewImages.length - 1 ? prev + 1 : 0));
+  };
 
   return (
     <motion.div
@@ -108,6 +140,83 @@ function ReviewCard({ review }: { review: ProductReviewDetail }) {
       <h4 className="s23-review-title">{review.title}</h4>
       <p className="s23-review-text">{review.text}</p>
 
+      {/* ── Review photo carousel (only for reviews with images) ── */}
+      {reviewImages.length > 0 && (
+        <div className="s23-review-images">
+          {reviewImages.map((filename, i) => (
+            <div
+              key={filename}
+              className="s23-review-image-wrapper"
+              onClick={() => openLightbox(i)}
+            >
+              <Image
+                src={getReviewImagePath(filename)}
+                alt={`${review.name} review photo ${i + 1}`}
+                width={120}
+                height={120}
+                style={{ height: "120px", width: "auto", objectFit: "cover" }}
+                unoptimized
+              />
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Carousel dot indicators */}
+      {reviewImages.length > 1 && (
+        <div className="s23-review-carousel-nav">
+          <button
+            className="s23-review-carousel-btn"
+            onClick={() =>
+              setCurrentImg((prev) =>
+                prev > 0 ? prev - 1 : reviewImages.length - 1,
+              )
+            }
+            aria-label="Previous image"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+          <div className="s23-review-carousel-dots">
+            {reviewImages.map((_, i) => (
+              <button
+                key={i}
+                className={`s23-review-carousel-dot${i === currentImg ? " active" : ""}`}
+                onClick={() => {
+                  setCurrentImg(i);
+                  openLightbox(i);
+                }}
+                aria-label={`View photo ${i + 1}`}
+              />
+            ))}
+          </div>
+          <button
+            className="s23-review-carousel-btn"
+            onClick={() =>
+              setCurrentImg((prev) =>
+                prev < reviewImages.length - 1 ? prev + 1 : 0,
+              )
+            }
+            aria-label="Next image"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+        </div>
+      )}
+
       <div className="s23-review-meta">
         {review.isVerified && (
           <span className="s23-review-verified">
@@ -125,6 +234,145 @@ function ReviewCard({ review }: { review: ProductReviewDetail }) {
           <span>{review.helpfulCount} people found this helpful</span>
         </button>
       </div>
+
+      {/* ── Lightbox overlay ── */}
+      {lightboxOpen && (
+        <div
+          className="s23-review-lightbox"
+          onClick={closeLightbox}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") closeLightbox();
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Review photo lightbox"
+        >
+          <button
+            className="s23-review-lightbox-close"
+            onClick={closeLightbox}
+            aria-label="Close lightbox"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+
+          {/* Previous arrow */}
+          {reviewImages.length > 1 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                prevLightbox();
+              }}
+              style={{
+                position: "absolute",
+                left: "1rem",
+                top: "50%",
+                transform: "translateY(-50%)",
+                background: "rgba(255,255,255,0.15)",
+                border: "none",
+                borderRadius: "50%",
+                width: "44px",
+                height: "44px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                color: "#ffffff",
+                zIndex: 10,
+              }}
+              aria-label="Previous image"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                width="24"
+                height="24"
+              >
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+          )}
+
+          <Image
+            src={getReviewImagePath(reviewImages[lightboxIndex])}
+            alt={`${review.name} review photo ${lightboxIndex + 1}`}
+            width={800}
+            height={800}
+            style={{
+              maxWidth: "90vw",
+              maxHeight: "90vh",
+              objectFit: "contain",
+            }}
+            unoptimized
+            onClick={(e) => e.stopPropagation()}
+          />
+
+          {/* Next arrow */}
+          {reviewImages.length > 1 && (
+            <button
+              onClick={nextLightbox}
+              style={{
+                position: "absolute",
+                right: "1rem",
+                top: "50%",
+                transform: "translateY(-50%)",
+                background: "rgba(255,255,255,0.15)",
+                border: "none",
+                borderRadius: "50%",
+                width: "44px",
+                height: "44px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                color: "#ffffff",
+                zIndex: 10,
+              }}
+              aria-label="Next image"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                width="24"
+                height="24"
+              >
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          )}
+
+          {/* Image counter */}
+          {reviewImages.length > 1 && (
+            <span
+              style={{
+                position: "absolute",
+                bottom: "1.5rem",
+                left: "50%",
+                transform: "translateX(-50%)",
+                color: "#ffffff",
+                fontSize: "0.85rem",
+                background: "rgba(0,0,0,0.5)",
+                padding: "0.3rem 0.8rem",
+                borderRadius: "20px",
+                fontFamily: "Arial, sans-serif",
+              }}
+            >
+              {lightboxIndex + 1} / {reviewImages.length}
+            </span>
+          )}
+        </div>
+      )}
     </motion.div>
   );
 }
@@ -288,8 +536,8 @@ export default function S23Reviews() {
             </div>
           </div>
 
-          {/* Review cards grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Review cards grid — single column */}
+          <div className="grid grid-cols-1 gap-4">
             <AnimatePresence>
               {displayed.map((review) => (
                 <ReviewCard key={review.id} review={review} />

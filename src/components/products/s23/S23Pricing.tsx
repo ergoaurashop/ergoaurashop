@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { S23_PRODUCT } from "@/lib/s23-ultra-data";
 import { formatPrice } from "@/lib/utils";
+import { useCartStore } from "@/store/cartStore";
 
 interface S23PricingProps {
   id?: string;
@@ -35,6 +36,7 @@ export default function S23Pricing({ id }: S23PricingProps) {
   }, []);
 
   const handleBuyNow = () => {
+    useCartStore.getState().addItem(S23_PRODUCT, 1);
     router.push("/checkout");
   };
 
