@@ -1,109 +1,165 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { S23_HERO_IMAGES, S23_FOLDER } from "@/lib/s23-ultra-data";
+import { S23_FOLDER, S23_PRODUCT } from "@/lib/s23-ultra-data";
 import { formatPrice } from "@/lib/utils";
-
-const SLIDE_INTERVAL = 5000;
 
 function getImagePath(filename: string): string {
   return `/images/products/${S23_FOLDER.split("/").map(encodeURIComponent).join("/")}/${encodeURIComponent(filename)}`;
 }
 
-interface S23HeroProps {
-  scrollToPricing: () => void;
-}
+export default function S23Hero() {
+  const router = useRouter();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoError, setVideoError] = useState(false);
 
-export default function S23Hero({ scrollToPricing }: S23HeroProps) {
-  const [current, setCurrent] = useState(0);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  const startInterval = useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % S23_HERO_IMAGES.length);
-    }, SLIDE_INTERVAL);
-  }, []);
-
-  useEffect(() => {
-    startInterval();
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [startInterval]);
-
-  const goTo = useCallback(
-    (index: number) => {
-      setCurrent(index);
-      startInterval();
-    },
-    [startInterval],
-  );
+  const handleBuyNow = () => {
+    router.push("/checkout");
+  };
 
   return (
     <section className="s23-hero" id="s23-hero">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={current}
-          className="s23-hero-slide"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-        >
-          <Image
-            src={getImagePath(S23_HERO_IMAGES[current])}
-            alt={`Samsung Galaxy S23 Ultra - ${S23_HERO_IMAGES[current].replace(/\.(jpg|webp)$/, "").replace(/-/g, " ")}`}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-        </motion.div>
-      </AnimatePresence>
+      {/* Video background */}
+      {!videoError ? (
+        <div className="s23-hero-video">
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            onError={() => setVideoError(true)}
+            className="w-full h-full object-cover"
+          >
+            <source
+              src={`/images/products/${S23_FOLDER.split("/").map(encodeURIComponent).join("/")}/WhatsApp%20Video%202026-06-14%20at%201.59.31%20PM.mp4`}
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      ) : (
+        /* Fallback image if video fails */
+        <Image
+          src={getImagePath("galaxy-s23-ultra-highlights-kv-1.jpg")}
+          alt="Samsung Galaxy S23 Ultra"
+          fill
+          priority
+          sizes="100vw"
+          className="s23-hero-fallback"
+        />
+      )}
 
       {/* Gradient overlay */}
       <div className="s23-hero-overlay" />
 
       {/* Content overlay */}
       <div className="s23-hero-content">
-        <div className="s23-hero-badge">
-          <span>🔥</span>
-          <span>Limited Stock — Only 15 Units Left</span>
-        </div>
+        {/* Mega Deal Badge (SVG, no emoji) */}
+        <motion.div
+          className="s23-hero-badge"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          {/* SVG fire/flame icon */}
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+          </svg>
+          <span>Mega Deal — Hurry! Only {S23_PRODUCT.stock} Units Left</span>
+        </motion.div>
 
-        <h1 className="s23-hero-title">Samsung Galaxy S23 Ultra</h1>
+        <motion.h1
+          className="s23-hero-title"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          Samsung Galaxy S23 Ultra
+        </motion.h1>
 
-        <p className="s23-hero-subtitle">
-          200MP Camera • S Pen • Snapdragon 8 Gen 2 • 12GB RAM • 512GB Storage
-        </p>
+        <motion.p
+          className="s23-hero-subtitle"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+        >
+          200MP Camera &middot; S Pen &middot; Snapdragon 8 Gen 2 &middot; 12GB
+          RAM &middot; 512GB Storage
+        </motion.p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
-          <span className="s23-price-original">{formatPrice(124999)}</span>
-          <span className="s23-price-current">{formatPrice(14990)}</span>
-          <span className="s23-price-badge">88% OFF</span>
-        </div>
+        <motion.div
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+        >
+          <span className="s23-price-original">
+            {formatPrice(S23_PRODUCT.original_price)}
+          </span>
+          <span className="s23-price-current">
+            {formatPrice(S23_PRODUCT.price)}
+          </span>
+          <span className="s23-price-badge">
+            {S23_PRODUCT.discount_percentage}% OFF
+          </span>
+        </motion.div>
 
-        <p className="s23-savings mb-6">You save ₹1,10,009!</p>
+        <motion.p
+          className="s23-savings mb-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 1.0 }}
+        >
+          You save ₹
+          {(S23_PRODUCT.original_price - S23_PRODUCT.price).toLocaleString(
+            "en-IN",
+          )}
+          !
+        </motion.p>
 
-        <button onClick={scrollToPricing} className="s23-btn-primary text-lg">
-          🛒 Buy The Mega Deal
-          <span className="text-sm opacity-80">— ₹14,990</span>
-        </button>
-      </div>
-
-      {/* Indicator dots */}
-      <div className="s23-hero-dots">
-        {S23_HERO_IMAGES.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => goTo(i)}
-            className={`s23-hero-dot ${i === current ? "active" : ""}`}
-            aria-label={`Go to slide ${i + 1}`}
-          />
-        ))}
+        <motion.button
+          onClick={handleBuyNow}
+          className="s23-btn-primary text-lg"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.2 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          {/* Shopping bag SVG icon */}
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          Buy The Mega Deal
+          <span className="text-sm opacity-80">
+            &mdash; {formatPrice(S23_PRODUCT.price)}
+          </span>
+        </motion.button>
       </div>
     </section>
   );

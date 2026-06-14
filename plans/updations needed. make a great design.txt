@@ -1,0 +1,37 @@
+updations needed. make a great design and plan with  errorless
+
+ 1. we need big changes in the colour of the background and style. please set this page complete bg as this (background: hsla(0, 0%, 0%, 1);
+
+background: linear-gradient(90deg, hsla(0, 0%, 0%, 1) 13%, hsla(158, 84%, 23%, 1) 88%);
+
+background: -moz-linear-gradient(90deg, hsla(0, 0%, 0%, 1) 13%, hsla(158, 84%, 23%, 1) 88%);
+
+background: -webkit-linear-gradient(90deg, hsla(0, 0%, 0%, 1) 13%, hsla(158, 84%, 23%, 1) 88%);
+
+filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#000000", endColorstr="#096A46", GradientType=1 );). do not change hero banner of this page. 2. hero banner section not showing the images . 3. do not add any imojis that is very un professioanal. add SVG for the related points if needed. 4. all buy button in this page should go to checkout page immediatly. 5. in the below fixed buy bar, make sure to stick always in the bottom when the page opened. also display one product image on the left side of the price like we did in the cart desplay. make sure the stick buy bar bg is should be animated gradient of this(background: hsla(0, 0%, 0%, 1);
+
+background: linear-gradient(90deg, hsla(0, 0%, 0%, 1) 13%, hsla(158, 84%, 23%, 1) 88%);
+
+background: -moz-linear-gradient(90deg, hsla(0, 0%, 0%, 1) 13%, hsla(158, 84%, 23%, 1) 88%);
+
+background: -webkit-linear-gradient(90deg, hsla(0, 0%, 0%, 1) 13%, hsla(158, 84%, 23%, 1) 88%);
+
+filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#000000", endColorstr="#096A46", GradientType=1 );)
+
+
+2.
+make hero banner 100% vh, with bg video path is  "\images\products\Part-2\Samsung Galaxy S23 Ultra Dual SIM Smartphone 12GB RAM 512GB Storage - Internationa Version\WhatsApp Video 2026-06-14 at 1.59.31 PM.mp4" full screen. in the banner only shows badge "Mega Deal- Hurry", Heading "Samsung Galaxy S23 Ultra", ₹1,24,999
+₹14,990
+88% OFF
+You save ₹1,10,009!, and Buy Button. keep the marque same as now with our gradient theme. 
+3. after the hero banner, display one 50% view full length image ""D:\ergoaurashop.com\ergoaura-shop\images\products\Part-2\Samsung Galaxy S23 Ultra Dual SIM Smartphone 12GB RAM 512GB Storage - Internationa Version\LFfcQbsfMYnTWFzPZy7sND-750-80.jpg.webp"" and write a eye catching classic sentence like ad for Samsung galaxy s23 ultra. 
+4.
+completely need to redesign the section "Key Features". my idea is , deplay image one side and other side write feature. next feature is left feauture right image. then a full length image, then continue the feature as described till the feature complete. 
+
+5. all button of "buy Now" in the page should directly redirect immediately to the checkout page 
+6. The down stick bar always display from the page loads. it should be set fixed at the bottom. make sure to change the bg to Animated gradient of the above mentioned gradient css style. also add an image box (like in our cart) left to the price (do not bigger the image size or canvas). 
+7. the section "Camera" also need to follow the same as  "key feature" section updation approach. 
+8.product review style of this page need to change exactly like Amazon style. keep all field exactly like this page style. 
+
+9. add some area for a beautifull and engaging Scroll effects And Amazing Parallax effects brilliantly. 
+10. after "Key Features" container, add a full 100%vh video auto play without navigation buttons or control button , this is the file path "\ergoaura-shop\images\products\Part-2\Samsung Galaxy S23 Ultra Dual SIM Smartphone 12GB RAM 512GB Storage - Internationa Version\WhatsApp Video 2026-06-14 at 1.59.29 PM.mp4"

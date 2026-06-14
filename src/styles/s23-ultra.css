@@ -1,19 +1,22 @@
 /* =====================================================================
-   Samsung Galaxy S23 Ultra — Scoped Styles
+   Samsung Galaxy S23 Ultra — Scoped Styles (Redesigned)
    All styles are scoped under .s23-page to prevent bleed-through from
    the existing Desert Luxury (gold/sand) theme.
 
+   New page background: linear gradient (black → deep green)
+   New sections: full-width image, 100vh video, parallax wrappers
+   Amazon-style reviews with white bg, black fonts, green accents
    ── WCAG Contrast Audit ──
    All text-on-background combinations verified against WCAG 2.1 AA
    (minimum 4.5:1 for normal text, 3:1 for large text):
      #ffffff on #0a0a0a   → 20.4:1 ✅
      #a0a0a0 on #0a0a0a   →  8.1:1 ✅
-     #949494 on #0a0a0a   →  7.5:1 ✅  (text-tertiary on primary bg)
-     #949494 on #1a1a1a   →  5.7:1 ✅  (text-tertiary on card bg)
-     #728541 on #0a0a0a   →  5.6:1 ✅  (accent-text on primary bg)
-     #728541 on #1a1a1a   →  4.6:1 ✅  (accent-text on card bg)
-     #ffffff on #4a5d23   →  6.3:1 ✅  (white on darkest green)
-     #ffffff on #5c7530   →  4.5:1 ✅  (white on lightest green)
+     #949494 on #0a0a0a   →  7.5:1 ✅
+     #949494 on #1a1a1a   →  5.7:1 ✅
+     #728541 on #0a0a0a   →  5.6:1 ✅
+     #728541 on #1a1a1a   →  4.6:1 ✅
+     #ffffff on #4a5d23   →  6.3:1 ✅
+     #ffffff on #5c7530   →  4.5:1 ✅
    ===================================================================== */
 
 /* ── CSS Custom Properties ── */
@@ -30,21 +33,16 @@
   --s23-accent-bg: rgba(74, 93, 35, 0.1);
   --s23-accent-border: rgba(74, 93, 35, 0.25);
 
-  /* WCAG AA-safe accent green for text on dark backgrounds (5.6:1 on #0a0a0a)
-     Kept separate from --s23-accent (#4a5d23) which is used for
-     decorative/background/border purposes where contrast is less critical */
+  /* WCAG AA-safe accent green for text on dark backgrounds (5.6:1 on #0a0a0a) */
   --s23-accent-text: #728541;
 
   --s23-text-primary: #ffffff;
   --s23-text-secondary: #a0a0a0;
-  /* #949494 provides 7.5:1 on #0a0a0a and 5.7:1 on #1a1a1a card bg */
   --s23-text-tertiary: #949494;
 
   --s23-border: rgba(255, 255, 255, 0.08);
   --s23-border-light: rgba(255, 255, 255, 0.12);
 
-  /* Gradient end capped at #5c7530 (white text contrast 4.5:1 ✅)
-     Previously #6b8c36 gave only 3.49:1 ❌ */
   --s23-gradient-green: linear-gradient(135deg, #4a5d23 0%, #5c7530 100%);
   --s23-gradient-dark: linear-gradient(
     180deg,
@@ -58,6 +56,16 @@
     rgba(26, 26, 26, 0.4) 100%
   );
 
+  /* New animated gradient for sticky CTA */
+  --s23-gradient-animated: linear-gradient(
+    270deg,
+    #0a0a0a,
+    #1a3a2a,
+    #2a5a3a,
+    #1a3a2a,
+    #0a0a0a
+  );
+
   --s23-radius: 12px;
   --s23-radius-lg: 20px;
   --s23-radius-xl: 28px;
@@ -67,6 +75,15 @@
   --s23-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
   --s23-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
   --s23-shadow-glow: 0 0 20px rgba(74, 93, 35, 0.2);
+
+  /* New black-to-green gradient page background (NOT applied to hero) */
+  background: hsla(0, 0%, 0%, 1);
+  background: linear-gradient(
+    90deg,
+    hsla(0, 0%, 0%, 1) 13%,
+    hsla(158, 84%, 23%, 1) 88%
+  );
+  background-attachment: fixed;
 }
 
 /* ── Base reset for S23 context ── */
@@ -98,25 +115,26 @@
   color: var(--s23-text-primary);
 }
 
-/* ── Hero section ── */
+/* ── Hero section (100vh video) ── */
 .s23-hero {
   position: relative;
   width: 100%;
-  height: 75vh;
-  min-height: 500px;
-  max-height: 900px;
+  height: 100vh;
+  min-height: 600px;
+  max-height: 1080px;
   overflow: hidden;
   background: var(--s23-bg-primary);
 }
 
-.s23-hero-slide {
+.s23-hero-video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
-.s23-hero-slide img {
+.s23-hero-video video {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -141,7 +159,7 @@
   left: 0;
   right: 0;
   z-index: 2;
-  padding: 3rem 1.5rem 4rem;
+  padding: 3rem 1.5rem 5rem;
   text-align: center;
 }
 
@@ -176,31 +194,13 @@
   line-height: 1.6;
 }
 
-.s23-hero-dots {
+/* ── Video fallback image ── */
+.s23-hero-fallback {
   position: absolute;
-  bottom: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
-  display: flex;
-  gap: 0.5rem;
-}
-
-.s23-hero-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 0;
-}
-
-.s23-hero-dot.active {
-  background: var(--s23-accent);
-  width: 24px;
-  border-radius: 4px;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* ── Deal banner ── */
@@ -355,7 +355,194 @@
   border-color: var(--s23-accent-border);
 }
 
-/* ── Feature cards ── */
+/* ── Feature/Camera alternating layout ── */
+.s23-alternating-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+}
+
+.s23-alternating-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.s23-alternating-row.reverse {
+  direction: rtl;
+}
+
+.s23-alternating-row.reverse > * {
+  direction: ltr;
+}
+
+.s23-alternating-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--s23-radius-lg);
+  overflow: hidden;
+  background: var(--s23-bg-card);
+}
+
+.s23-alternating-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.s23-alternating-image:hover img {
+  transform: scale(1.05);
+}
+
+.s23-alternating-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--s23-accent-bg);
+  border: 1px solid var(--s23-accent-border);
+  border-radius: var(--s23-radius);
+  margin-bottom: 1rem;
+  color: var(--s23-accent-text);
+}
+
+.s23-alternating-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.s23-alternating-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.s23-alternating-desc {
+  font-size: 0.95rem;
+  color: var(--s23-text-secondary);
+  line-height: 1.7;
+}
+
+/* Full-width image break between alternating rows */
+.s23-fullwidth-break {
+  width: 100%;
+  height: 50vh;
+  min-height: 350px;
+  max-height: 600px;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--s23-radius-xl);
+}
+
+.s23-fullwidth-break img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Full-Width Image Section (50vh) ── */
+.s23-fullwidth-section {
+  width: 100%;
+  height: 50vh;
+  min-height: 350px;
+  max-height: 600px;
+  position: relative;
+  overflow: hidden;
+}
+
+.s23-fullwidth-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.s23-fullwidth-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(10, 10, 10, 0.7) 0%,
+    rgba(10, 10, 10, 0.3) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.s23-fullwidth-text {
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  max-width: 700px;
+  line-height: 1.4;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Video Section (100vh autoplay) ── */
+.s23-video-section {
+  width: 100%;
+  height: 100vh;
+  min-height: 500px;
+  position: relative;
+  overflow: hidden;
+}
+
+.s23-video-section video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.s23-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.s23-video-text {
+  color: #ffffff;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 700;
+  text-align: center;
+  max-width: 600px;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+  padding: 2rem;
+}
+
+/* ── Parallax wrapper ── */
+.s23-parallax-wrapper {
+  perspective: 1px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.s23-parallax-layer {
+  position: relative;
+}
+
+.s23-parallax-bg {
+  position: absolute;
+  inset: 0;
+  transform: translateZ(-1px) scale(2);
+  z-index: 0;
+}
+
+.s23-parallax-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Feature cards (kept for compatibility) ── */
 .s23-feature-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -395,94 +582,322 @@
   line-height: 1.6;
 }
 
-/* ── Reviews ── */
+/* ── Reviews (Amazon-style) ── */
+.s23-reviews-section {
+  padding: 4rem 1.5rem;
+}
+
+.s23-reviews-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Amazon-style review card */
 .s23-review-card {
-  background: var(--s23-bg-card);
-  border: 1px solid var(--s23-border);
-  border-radius: var(--s23-radius-lg);
-  padding: 1.5rem;
-  transition: all 0.3s ease;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  transition: box-shadow 0.2s ease;
 }
 
 .s23-review-card:hover {
-  border-color: var(--s23-accent-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* White bg means black fonts for all text */
+.s23-review-card,
+.s23-review-card p,
+.s23-review-card span,
+.s23-review-card div {
+  color: #111111;
 }
 
 .s23-review-header {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
+/* Green avatar (initials circle, green bg, white text) */
 .s23-review-avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: var(--s23-accent-bg);
-  border: 1px solid var(--s23-accent-border);
+  background: #1a7a3a;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--s23-accent-text);
+  color: #ffffff;
   flex-shrink: 0;
 }
 
 .s23-review-name {
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  color: #111111;
 }
 
 .s23-review-city {
   font-size: 0.8rem;
-  color: var(--s23-text-tertiary);
+  color: #666666;
 }
 
+/* Green stars */
 .s23-review-stars {
   display: flex;
   gap: 2px;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.35rem;
 }
 
 .s23-review-star {
-  color: #f59e0b;
+  color: #22c55e;
   font-size: 0.95rem;
 }
 
 .s23-review-star.empty {
-  color: var(--s23-text-tertiary);
-  opacity: 0.3;
+  color: #cccccc;
+  opacity: 0.5;
+}
+
+/* Green star SVG fill */
+.s23-review-star svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
 }
 
 .s23-review-title {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.95rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.35rem;
+  color: #111111;
+  line-height: 1.3;
 }
 
 .s23-review-text {
   font-size: 0.88rem;
-  color: var(--s23-text-secondary);
-  line-height: 1.7;
+  color: #333333;
+  line-height: 1.6;
+}
+
+/* "Verified Purchase" — green, italic, bold */
+.s23-review-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #1a7a3a;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 0.82rem;
+  margin-top: 0.5rem;
+}
+
+/* Verified checkmark SVG */
+.s23-review-verified svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
 }
 
 .s23-review-meta {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-top: 0.75rem;
-  font-size: 0.78rem;
-  color: var(--s23-text-tertiary);
+  margin-top: 0.65rem;
+  font-size: 0.8rem;
+  color: #666666;
 }
 
-.s23-review-verified {
+/* Thumbs up button */
+.s23-review-helpful {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  color: #22c55e;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: #666666;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  transition: color 0.2s ease;
+}
+
+.s23-review-helpful svg {
+  width: 16px;
+  height: 16px;
+  stroke: #666666;
+  fill: none;
+  transition: all 0.2s ease;
+}
+
+.s23-review-helpful.thumbs-up-active svg {
+  stroke: #1a7a3a;
+  fill: #1a7a3a;
+}
+
+.s23-review-helpful.thumbs-up-active {
+  color: #1a7a3a;
   font-weight: 600;
+}
+
+/* Rating bar chart (Amazon-style) */
+.s23-rating-bars {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.s23-rating-bars-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111111;
+  margin-bottom: 0.75rem;
+}
+
+.s23-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.2rem 0;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
+}
+
+.s23-rating-row:hover {
+  background: #f5f5f5;
+}
+
+.s23-rating-row.active {
+  background: #f0fdf4;
+}
+
+.s23-rating-label {
+  font-size: 0.85rem;
+  color: #1a7a3a;
+  font-weight: 500;
+  min-width: 60px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.s23-rating-bar-track {
+  flex: 1;
+  height: 18px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.s23-rating-bar-fill {
+  height: 100%;
+  background: #22c55e;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.s23-rating-count {
+  font-size: 0.8rem;
+  color: #666666;
+  min-width: 30px;
+  text-align: right;
+}
+
+/* Sort controls */
+.s23-reviews-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.s23-reviews-count {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111111;
+}
+
+.s23-reviews-sort {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #333333;
+}
+
+.s23-reviews-sort select {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #111111;
+  font-size: 0.85rem;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Average rating display (Amazon-style) */
+.s23-rating-summary {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.s23-average-rating {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #111111;
+  line-height: 1;
+}
+
+.s23-average-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.s23-average-stars .s23-review-star {
+  font-size: 1.2rem;
+}
+
+.s23-total-reviews {
+  font-size: 0.9rem;
+  color: #666666;
+}
+
+/* ── Amazon-style review pagination ── */
+.s23-reviews-load-more {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  background: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  color: #111111;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.s23-reviews-load-more:hover {
+  background: #f5f5f5;
+  border-color: #1a7a3a;
 }
 
 /* ── Spec table ── */
@@ -572,23 +987,33 @@
   line-height: 1.7;
 }
 
-/* ── Sticky CTA ── */
+/* ── Sticky CTA (always visible, animated gradient) ── */
 .s23-sticky-cta {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  background: rgba(10, 10, 10, 0.95);
+  background: var(--s23-gradient-animated);
+  background-size: 400% 100%;
+  animation: s23-gradient-shift 8s ease infinite;
   backdrop-filter: blur(12px);
-  border-top: 1px solid var(--s23-border);
-  padding: 0.85rem 1.5rem;
-  transform: translateY(100%);
+  border-top: 1px solid var(--s23-accent-border);
+  padding: 0.75rem 1.5rem;
+  transform: translateY(0);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.s23-sticky-cta.visible {
-  transform: translateY(0);
+@keyframes s23-gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .s23-sticky-cta-inner {
@@ -600,6 +1025,34 @@
   margin: 0 auto;
 }
 
+.s23-sticky-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.s23-sticky-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--s23-bg-card);
+}
+
+.s23-sticky-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.s23-sticky-product-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+  display: none;
+}
+
 .s23-sticky-pricing {
   display: flex;
   align-items: center;
@@ -609,21 +1062,21 @@
 .s23-sticky-price {
   font-size: 1.35rem;
   font-weight: 800;
-  color: var(--s23-text-primary);
+  color: #ffffff;
 }
 
 .s23-sticky-original {
   font-size: 0.9rem;
-  color: var(--s23-text-tertiary);
+  color: rgba(255, 255, 255, 0.6);
   text-decoration: line-through;
 }
 
 .s23-sticky-badge {
   font-size: 0.75rem;
   font-weight: 700;
-  color: var(--s23-accent-text);
-  background: var(--s23-accent-bg);
-  border: 1px solid var(--s23-accent-border);
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.3);
   padding: 0.2rem 0.6rem;
   border-radius: var(--s23-radius-full);
 }
@@ -674,12 +1127,65 @@
   transition: width 1s ease;
 }
 
+/* ── Scroll-triggered fade-in ── */
+.s23-fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.s23-fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.s23-fade-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.s23-fade-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.s23-fade-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.s23-fade-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.s23-scale-in {
+  opacity: 0;
+  transform: scale(0.9);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+.s23-scale-in.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .s23-hero {
-    height: 60vh;
-    min-height: 400px;
-    max-height: 700px;
+    height: 100vh;
+    min-height: 500px;
+    max-height: 800px;
   }
 
   .s23-hero-content {
@@ -711,12 +1217,69 @@
     padding: 0.65rem 1.25rem;
     font-size: 0.9rem;
   }
+
+  /* Alternating layout → single column on mobile */
+  .s23-alternating-row {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .s23-alternating-row.reverse {
+    direction: ltr;
+  }
+
+  .s23-alternating-image {
+    aspect-ratio: 16 / 9;
+  }
+
+  .s23-alternating-section {
+    gap: 3rem;
+  }
+
+  .s23-fullwidth-break {
+    height: 40vh;
+    min-height: 250px;
+  }
+
+  .s23-fullwidth-section {
+    height: 40vh;
+    min-height: 250px;
+  }
+
+  .s23-video-section {
+    height: 60vh;
+    min-height: 350px;
+  }
+
+  .s23-reviews-section {
+    padding: 2rem 0.85rem;
+  }
+
+  .s23-rating-summary {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .s23-reviews-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .s23-sticky-product-name {
+    display: none;
+  }
+
+  .s23-sticky-thumb {
+    width: 40px;
+    height: 40px;
+  }
 }
 
 @media (max-width: 480px) {
   .s23-hero {
-    height: 50vh;
-    min-height: 350px;
+    height: 100vh;
+    min-height: 400px;
   }
 
   .s23-section {
@@ -734,5 +1297,33 @@
   .s23-btn-primary {
     padding: 0.85rem 1.75rem;
     font-size: 1rem;
+  }
+
+  .s23-alternating-title {
+    font-size: 1.25rem;
+  }
+
+  .s23-fullwidth-break {
+    height: 30vh;
+    min-height: 200px;
+  }
+
+  .s23-fullwidth-section {
+    height: 30vh;
+    min-height: 200px;
+  }
+
+  .s23-video-section {
+    height: 50vh;
+    min-height: 300px;
+  }
+
+  .s23-review-card {
+    padding: 1rem;
+  }
+
+  .s23-sticky-thumb {
+    width: 36px;
+    height: 36px;
   }
 }

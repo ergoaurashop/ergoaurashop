@@ -1,55 +1,79 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { S23_PRODUCT, S23_FOLDER } from "@/lib/s23-ultra-data";
 import { formatPrice } from "@/lib/utils";
 
+function getImagePath(filename: string): string {
+  return `/images/products/${S23_FOLDER.split("/").map(encodeURIComponent).join("/")}/${encodeURIComponent(filename)}`;
+}
+
 export default function S23StickyCTA() {
-  const [visible, setVisible] = useState(false);
-  const heroRef = useRef<HTMLElement | null>(null);
+  const router = useRouter();
 
-  useEffect(() => {
-    heroRef.current = document.getElementById("s23-hero");
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setVisible(!entry.isIntersecting);
-      },
-      { threshold: 0 },
-    );
-
-    const hero = heroRef.current;
-    if (hero) {
-      observer.observe(hero);
-    }
-
-    return () => {
-      if (hero) observer.unobserve(hero);
-    };
-  }, []);
-
-  const scrollToPricing = () => {
-    const el = document.getElementById("s23-pricing");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+  const handleBuyNow = () => {
+    router.push("/checkout");
   };
 
   return (
-    <div className={`s23-sticky-cta ${visible ? "visible" : ""}`}>
+    <motion.div
+      className="s23-sticky-cta"
+      initial={{ y: 100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5, delay: 0.5 }}
+    >
       <div className="s23-sticky-cta-inner">
-        <div className="s23-sticky-pricing">
-          <span className="s23-sticky-price">{formatPrice(14990)}</span>
-          <span className="s23-sticky-original">{formatPrice(124999)}</span>
-          <span className="s23-sticky-badge">88% OFF</span>
+        <div className="s23-sticky-left">
+          {/* Product thumbnail */}
+          <div className="s23-sticky-thumb">
+            <Image
+              src={getImagePath("galaxy-s23-ultra-highlights-kv-1.jpg")}
+              alt="Samsung Galaxy S23 Ultra"
+              width={48}
+              height={48}
+              className="object-cover"
+            />
+          </div>
+          <span className="s23-sticky-product-name">
+            Samsung Galaxy S23 Ultra
+          </span>
+          <div className="s23-sticky-pricing">
+            <span className="s23-sticky-price">
+              {formatPrice(S23_PRODUCT.price)}
+            </span>
+            <span className="s23-sticky-original">
+              {formatPrice(S23_PRODUCT.original_price)}
+            </span>
+            <span className="s23-sticky-badge">
+              -{S23_PRODUCT.discount_percentage}%
+            </span>
+          </div>
         </div>
 
         <button
-          onClick={scrollToPricing}
+          onClick={handleBuyNow}
           className="s23-btn-primary s23-sticky-btn"
         >
-          🛒 Buy Now
+          {/* Shopping bag SVG */}
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          Buy Now &mdash; {formatPrice(S23_PRODUCT.price)}
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -5,18 +5,69 @@ import { motion, AnimatePresence } from "framer-motion";
 import { S23_REVIEWS, S23_REVIEW_SUMMARY } from "@/lib/s23-ultra-data";
 import type { ProductReviewDetail } from "@/lib/types";
 
+/* ── SVG Star (green fill) ── */
+function StarIcon({ filled }: { filled: boolean }) {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill={filled ? "#22c55e" : "none"}
+      stroke={filled ? "#22c55e" : "#cccccc"}
+      strokeWidth="1.5"
+    >
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+    </svg>
+  );
+}
+
+/* ── Star Row ── */
 function StarRow({ rating }: { rating: number }) {
   return (
     <div className="s23-review-stars">
       {[1, 2, 3, 4, 5].map((star) => (
-        <span
-          key={star}
-          className={`s23-review-star ${star > rating ? "empty" : ""}`}
-        >
-          ★
+        <span key={star} className="s23-review-star">
+          <StarIcon filled={star <= rating} />
         </span>
       ))}
     </div>
+  );
+}
+
+/* ── Thumbs Up SVG ── */
+function ThumbsUpIcon({ active }: { active: boolean }) {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      stroke={active ? "#1a7a3a" : "#666666"}
+      fill={active ? "#1a7a3a" : "none"}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+    </svg>
+  );
+}
+
+/* ── Verified checkmark SVG ── */
+function VerifiedCheckmark() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+      <polyline points="22 4 12 14.01 9 11.01" />
+    </svg>
   );
 }
 
@@ -29,7 +80,10 @@ function getInitials(name: string): string {
     .slice(0, 2);
 }
 
+/* ── Review Card (Amazon-style) ── */
 function ReviewCard({ review }: { review: ProductReviewDetail }) {
+  const [thumbsUp, setThumbsUp] = useState(false);
+
   return (
     <motion.div
       className="s23-review-card"
@@ -40,6 +94,7 @@ function ReviewCard({ review }: { review: ProductReviewDetail }) {
       transition={{ duration: 0.3 }}
     >
       <div className="s23-review-header">
+        {/* Green avatar with initials */}
         <div className="s23-review-avatar">{getInitials(review.name)}</div>
         <div>
           <div className="s23-review-name">{review.name}</div>
@@ -47,6 +102,7 @@ function ReviewCard({ review }: { review: ProductReviewDetail }) {
         </div>
       </div>
 
+      {/* Green star row */}
       <StarRow rating={review.rating} />
 
       <h4 className="s23-review-title">{review.title}</h4>
@@ -55,119 +111,184 @@ function ReviewCard({ review }: { review: ProductReviewDetail }) {
       <div className="s23-review-meta">
         {review.isVerified && (
           <span className="s23-review-verified">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-              <polyline points="22 4 12 14.01 9 11.01" />
-            </svg>
+            <VerifiedCheckmark />
             Verified Purchase
           </span>
         )}
-        <span>{review.helpfulCount} people found this helpful</span>
+        {/* Thumbs up toggle (no count increment, only visual toggle) */}
+        <button
+          onClick={() => setThumbsUp(!thumbsUp)}
+          className={`s23-review-helpful ${thumbsUp ? "thumbs-up-active" : ""}`}
+          aria-label={thumbsUp ? "Mark as not helpful" : "Mark as helpful"}
+        >
+          <ThumbsUpIcon active={thumbsUp} />
+          <span>{review.helpfulCount} people found this helpful</span>
+        </button>
       </div>
     </motion.div>
   );
 }
 
+/* ── Rating bar chart row ── */
+function RatingBarRow({
+  star,
+  count,
+  maxCount,
+  isActive,
+  onClick,
+}: {
+  star: number;
+  count: number;
+  maxCount: number;
+  isActive: boolean;
+  onClick: () => void;
+}) {
+  const pct = maxCount > 0 ? (count / maxCount) * 100 : 0;
+  return (
+    <div
+      className={`s23-rating-row ${isActive ? "active" : ""}`}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") onClick();
+      }}
+    >
+      <span className="s23-rating-label">{star}★</span>
+      <div className="s23-rating-bar-track">
+        <div className="s23-rating-bar-fill" style={{ width: `${pct}%` }} />
+      </div>
+      <span className="s23-rating-count">{count}</span>
+    </div>
+  );
+}
+
+/* ── Main Reviews Component ── */
 export default function S23Reviews() {
   const [showAll, setShowAll] = useState(false);
-  const displayed = showAll ? S23_REVIEWS : S23_REVIEWS.slice(0, 8);
+  const [filterStar, setFilterStar] = useState<number | null>(null);
+  const [sortBy, setSortBy] = useState<"recent" | "highest" | "lowest">(
+    "recent",
+  );
+
   const summary = S23_REVIEW_SUMMARY;
 
-  // Rating distribution bar
+  // Filter
+  let filtered = filterStar
+    ? S23_REVIEWS.filter((r) => r.rating === filterStar)
+    : [...S23_REVIEWS];
+
+  // Sort
+  if (sortBy === "highest") {
+    filtered.sort((a, b) => b.rating - a.rating);
+  } else if (sortBy === "lowest") {
+    filtered.sort((a, b) => a.rating - b.rating);
+  } else {
+    // "recent" — sort by date descending
+    filtered.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    );
+  }
+
+  const displayed = showAll ? filtered : filtered.slice(0, 8);
   const maxCount = Math.max(...Object.values(summary.ratingDistribution));
 
   return (
-    <section className="s23-section s23-section-dark" id="s23-reviews">
-      <div className="s23-section-container">
+    <section className="s23-reviews-section" id="s23-reviews">
+      <div className="s23-reviews-container">
         <motion.div
-          className="max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="text-center mb-10">
-            <span className="s23-section-label">Customer Reviews</span>
-            <h2 className="s23-section-title">What Our Customers Say</h2>
+          {/* Section heading */}
+          <div className="text-center mb-8">
+            <h2 className="s23-section-title" style={{ color: "#ffffff" }}>
+              Customer Reviews
+            </h2>
             <p className="s23-section-subtitle mx-auto">
               Real reviews from real buyers. We don't filter or edit feedback —
               honesty builds trust.
             </p>
           </div>
 
-          {/* Rating summary */}
-          <div className="bg-[var(--s23-bg-card)] border border-[var(--s23-border)] rounded-[var(--s23-radius-xl)] p-6 md:p-8 mb-8">
-            <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
-              {/* Big rating number */}
-              <div className="text-center">
-                <div
-                  className="text-5xl font-bold"
-                  style={{ color: "var(--s23-accent-text)" }}
-                >
-                  {summary.averageRating.toFixed(1)}
+          {/* Rating summary (Amazon-style: white bg card) */}
+          <div className="s23-rating-bars">
+            <div className="s23-rating-summary">
+              <div className="s23-average-rating">
+                {summary.averageRating.toFixed(1)}
+              </div>
+              <div>
+                <div className="s23-average-stars">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <span key={star} className="s23-review-star">
+                      <StarIcon
+                        filled={star <= Math.round(summary.averageRating)}
+                      />
+                    </span>
+                  ))}
                 </div>
-                <StarRow rating={Math.round(summary.averageRating)} />
-                <div
-                  className="text-sm mt-1"
-                  style={{ color: "var(--s23-text-tertiary)" }}
-                >
-                  {summary.totalReviews} reviews
+                <div className="s23-total-reviews">
+                  {summary.totalReviews} global ratings
                 </div>
               </div>
+            </div>
 
-              {/* Distribution bars */}
-              <div className="flex-1 w-full space-y-1.5">
-                {([5, 4, 3, 2, 1] as const).map((star) => {
-                  const count = summary.ratingDistribution[star] || 0;
-                  const pct = maxCount > 0 ? (count / maxCount) * 100 : 0;
-                  return (
-                    <div key={star} className="flex items-center gap-2 text-sm">
-                      <span
-                        style={{
-                          color: "var(--s23-text-secondary)",
-                          width: "20px",
-                        }}
-                      >
-                        {star}★
-                      </span>
-                      <div
-                        className="flex-1 h-2 rounded-full"
-                        style={{ background: "var(--s23-bg-primary)" }}
-                      >
-                        <div
-                          className="h-full rounded-full"
-                          style={{
-                            width: `${pct}%`,
-                            background: "var(--s23-gradient-green)",
-                          }}
-                        />
-                      </div>
-                      <span
-                        style={{
-                          color: "var(--s23-text-tertiary)",
-                          width: "24px",
-                          textAlign: "right",
-                        }}
-                      >
-                        {count}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
+            {/* Clickable rating bars */}
+            <div className="s23-rating-bars-title">Filter by star rating</div>
+            {([5, 4, 3, 2, 1] as const).map((star) => (
+              <RatingBarRow
+                key={star}
+                star={star}
+                count={summary.ratingDistribution[star] || 0}
+                maxCount={maxCount}
+                isActive={filterStar === star}
+                onClick={() => setFilterStar(filterStar === star ? null : star)}
+              />
+            ))}
+            {filterStar && (
+              <button
+                onClick={() => setFilterStar(null)}
+                style={{
+                  marginTop: "0.5rem",
+                  fontSize: "0.85rem",
+                  color: "#1a7a3a",
+                  textDecoration: "underline",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  fontFamily: "inherit",
+                }}
+              >
+                Clear filter
+              </button>
+            )}
+          </div>
+
+          {/* Toolbar: count + sort */}
+          <div className="s23-reviews-toolbar">
+            <span className="s23-reviews-count">
+              {filtered.length} review{filtered.length !== 1 ? "s" : ""}
+              {filterStar ? ` (${filterStar}★)` : ""}
+            </span>
+            <div className="s23-reviews-sort">
+              <label htmlFor="s23-sort">Sort by:</label>
+              <select
+                id="s23-sort"
+                value={sortBy}
+                onChange={(e) =>
+                  setSortBy(e.target.value as "recent" | "highest" | "lowest")
+                }
+              >
+                <option value="recent">Most recent</option>
+                <option value="highest">Highest rated</option>
+                <option value="lowest">Lowest rated</option>
+              </select>
             </div>
           </div>
 
-          {/* Review cards */}
+          {/* Review cards grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <AnimatePresence>
               {displayed.map((review) => (
@@ -176,18 +297,30 @@ export default function S23Reviews() {
             </AnimatePresence>
           </div>
 
+          {/* No results */}
+          {displayed.length === 0 && (
+            <p
+              style={{
+                textAlign: "center",
+                color: "#666666",
+                padding: "2rem",
+                background: "#ffffff",
+                borderRadius: "8px",
+                border: "1px solid #e0e0e0",
+              }}
+            >
+              No reviews match this filter.
+            </p>
+          )}
+
           {/* Show more / show less */}
-          {S23_REVIEWS.length > 8 && (
-            <div className="text-center mt-8">
-              <button
-                onClick={() => setShowAll(!showAll)}
-                className="s23-btn-secondary"
-              >
-                {showAll
-                  ? `Show less (${S23_REVIEWS.length - 8} hidden)`
-                  : `Show all ${S23_REVIEWS.length} reviews`}
-              </button>
-            </div>
+          {filtered.length > 8 && (
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="s23-reviews-load-more"
+            >
+              {showAll ? "Show less" : `Show all ${filtered.length} reviews`}
+            </button>
           )}
         </motion.div>
       </div>
