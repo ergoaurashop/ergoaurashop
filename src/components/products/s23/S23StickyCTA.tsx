@@ -35,6 +35,7 @@ export default function S23StickyCTA() {
               alt="Samsung Galaxy S23 Ultra"
               width={48}
               height={48}
+              unoptimized
               className="object-cover"
             />
           </div>

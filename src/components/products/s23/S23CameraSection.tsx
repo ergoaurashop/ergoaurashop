@@ -134,6 +134,7 @@ export default function S23CameraSection() {
                     src={getImagePath(getCameraImage(i))}
                     alt={lens.label}
                     fill
+                    unoptimized
                     sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover"
                   />
@@ -176,6 +177,7 @@ export default function S23CameraSection() {
                     src={getImagePath(breakImage)}
                     alt="Samsung Galaxy S23 Ultra camera detail"
                     fill
+                    unoptimized
                     sizes="100vw"
                     className="object-cover"
                   />

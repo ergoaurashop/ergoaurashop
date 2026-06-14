@@ -26,6 +26,7 @@ export default function S23FullWidthImage() {
         alt="Samsung Galaxy S23 Ultra — Premium flagship experience"
         fill
         priority
+        unoptimized
         sizes="100vw"
         className="object-cover"
         onError={(e) => {

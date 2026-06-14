@@ -251,13 +251,15 @@
 /* ── Digital Round Seal ── */
 .s23-seal {
   position: absolute;
-  top: 20px;
+  top: 50%;
   right: 20px;
   width: 90px;
   height: 90px;
-  z-index: 5;
+  z-index: 1;
+  transform: translateY(-50%);
   animation: s23-seal-pulse 3s ease-in-out infinite;
   filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.4));
+  pointer-events: none;
 }
 
 .s23-seal svg {
@@ -283,8 +285,8 @@
   .s23-seal {
     width: 70px;
     height: 70px;
-    top: 10px;
-    right: 10px;
+    top: 50%;
+    right: 8px;
   }
 }
 
@@ -315,11 +317,62 @@
 
 /* ── Deal banner ── */
 .s23-deal-banner {
-  background: var(--s23-gradient-green);
+  background: linear-gradient(
+    90deg,
+    #1a3a2a,
+    #2a5a3a,
+    #4a7a3a,
+    #2a5a3a,
+    #1a3a2a
+  );
+  background-size: 300% 100%;
   padding: 0.75rem 1rem;
   text-align: center;
   overflow: hidden;
   position: relative;
+  animation: s23-banner-bg-shift 6s ease infinite;
+}
+
+.s23-deal-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 215, 0, 0.08) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: s23-banner-sweep 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.s23-deal-banner-highlight {
+  display: inline-block;
+  background: linear-gradient(90deg, #ffd700, #ff8c00, #ffd700);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: s23-banner-shimmer 2s ease infinite;
+  font-weight: 900;
+  margin: 0 0.5rem;
+}
+
+.s23-deal-banner-label {
+  display: inline-block;
+  background: rgba(255, 215, 0, 0.15);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 4px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #ffd700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0.35rem;
+  animation: s23-banner-glow 1.5s ease-in-out infinite;
 }
 
 .s23-deal-banner-text {
@@ -328,7 +381,10 @@
   color: #ffffff;
   letter-spacing: 0.05em;
   white-space: nowrap;
-  animation: s23-marquee 25s linear infinite;
+  animation: s23-marquee 12s linear infinite;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 @keyframes s23-marquee {
@@ -337,6 +393,45 @@
   }
   100% {
     transform: translateX(-100%);
+  }
+}
+
+@keyframes s23-banner-bg-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes s23-banner-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes s23-banner-shimmer {
+  0%,
+  100% {
+    background-position: -200% center;
+  }
+  50% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes s23-banner-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 4px rgba(255, 215, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.5);
   }
 }
 
@@ -1474,7 +1569,17 @@
   }
 
   .s23-sticky-pricing {
-    gap: 0.5rem;
+    flex-direction: column;
+    gap: 0.15rem;
+    align-items: flex-start;
+  }
+
+  .s23-sticky-price {
+    font-size: 1.15rem;
+  }
+
+  .s23-sticky-original {
+    font-size: 0.75rem;
   }
 
   .s23-sticky-btn {

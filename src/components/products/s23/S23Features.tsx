@@ -178,6 +178,7 @@ export default function S23Features() {
                     src={getImagePath(getFeatureImage(i))}
                     alt={feature.title}
                     fill
+                    unoptimized
                     sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover"
                   />
@@ -221,6 +222,7 @@ export default function S23Features() {
                     src={getImagePath(breakImage)}
                     alt="Samsung Galaxy S23 Ultra detail"
                     fill
+                    unoptimized
                     sizes="100vw"
                     className="object-cover"
                   />

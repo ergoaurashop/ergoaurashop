@@ -37,16 +37,19 @@ export default function S23DealBanner() {
           style={{
             display: "inline",
             verticalAlign: "middle",
-            marginRight: "6px",
+            marginRight: "4px",
+            flexShrink: 0,
           }}
         >
           <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
         </svg>
+        <span className="s23-deal-banner-label">🔔 STOCK CLEARANCE</span>
+        <span className="s23-deal-banner-highlight">Very Limited!</span>
         <LightningBoltIcon />
         MEGA DEAL
-        <LightningBoltIcon />— Samsung Galaxy S23 Ultra at 88% OFF — Only
-        ₹14,990 — Limited Stock — Buy Now Before It's Gone! —
-        {/* SVG flame icon at end */}
+        <LightningBoltIcon />— S23 Ultra 88% OFF — ₹14,990 —{" "}
+        <span className="s23-deal-banner-label">⚠️ HURRY!</span> Buy Now Before
+        It's Gone! —{/* SVG flame icon at end */}
         <svg
           width="14"
           height="14"
@@ -59,7 +62,8 @@ export default function S23DealBanner() {
           style={{
             display: "inline",
             verticalAlign: "middle",
-            marginLeft: "6px",
+            marginLeft: "4px",
+            flexShrink: 0,
           }}
         >
           <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />

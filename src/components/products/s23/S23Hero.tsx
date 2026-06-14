@@ -36,6 +36,7 @@ export default function S23Hero() {
             preload="auto"
             onError={() => setVideoError(true)}
             className="w-full h-full object-cover"
+            poster={`/images/products/${S23_FOLDER.split("/").map(encodeURIComponent).join("/")}/${encodeURIComponent("galaxy-s23-ultra-highlights-kv-1.jpg")}`}
           >
             <source
               src={`/images/products/${S23_FOLDER.split("/").map(encodeURIComponent).join("/")}/WhatsApp%20Video%202026-06-14%20at%201.59.31%20PM.mp4`}
@@ -51,6 +52,7 @@ export default function S23Hero() {
           alt="Samsung Galaxy S23 Ultra"
           fill
           priority
+          unoptimized
           sizes="100vw"
           className="s23-hero-fallback"
         />

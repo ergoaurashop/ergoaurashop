@@ -39,6 +39,7 @@ export default function S23VideoSection() {
           alt="Samsung Galaxy S23 Ultra"
           fill
           priority
+          unoptimized
           sizes="100vw"
           className="object-cover"
         />
