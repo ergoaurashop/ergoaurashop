@@ -111,7 +111,7 @@ export default function S23Reviews() {
               <div className="text-center">
                 <div
                   className="text-5xl font-bold"
-                  style={{ color: "var(--s23-accent)" }}
+                  style={{ color: "var(--s23-accent-text)" }}
                 >
                   {summary.averageRating.toFixed(1)}
                 </div>

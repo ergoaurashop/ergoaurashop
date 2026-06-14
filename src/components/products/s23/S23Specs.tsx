@@ -59,7 +59,7 @@ export default function S23Specs() {
                     className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
                     style={{
                       background: "var(--s23-accent-bg)",
-                      color: "var(--s23-accent)",
+                      color: "var(--s23-accent-text)",
                     }}
                   >
                     ✓

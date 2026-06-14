@@ -46,7 +46,7 @@ export default function S23Pricing({ id }: S23PricingProps) {
           <span className="s23-section-label">Ultra Mega Deal</span>
           <h2 className="s23-section-title">
             Own the Flagship at{" "}
-            <span style={{ color: "var(--s23-accent)" }}>88% Off</span>
+            <span style={{ color: "var(--s23-accent-text)" }}>88% Off</span>
           </h2>
           <p className="s23-section-subtitle mx-auto mb-8">
             This is not a refurbished unit. This is a brand new, factory-sealed
@@ -82,7 +82,9 @@ export default function S23Pricing({ id }: S23PricingProps) {
                 <span style={{ color: "var(--s23-text-secondary)" }}>
                   Only 15 units left
                 </span>
-                <span style={{ color: "var(--s23-accent)", fontWeight: 700 }}>
+                <span
+                  style={{ color: "var(--s23-accent-text)", fontWeight: 700 }}
+                >
                   Selling fast
                 </span>
               </div>
@@ -116,7 +118,7 @@ export default function S23Pricing({ id }: S23PricingProps) {
               {
                 label: "Your Mega Deal Price",
                 value: formatPrice(14990),
-                color: "var(--s23-accent)",
+                color: "var(--s23-accent-text)",
                 cross: false,
               },
               {
