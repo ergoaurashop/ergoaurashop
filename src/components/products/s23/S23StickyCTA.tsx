@@ -13,6 +13,10 @@ function getImagePath(filename: string): string {
 
 export default function S23StickyCTA() {
   const router = useRouter();
+  const cartIsOpen = useCartStore((s) => s.isOpen);
+
+  // Don't render when the cart sidebar is open
+  if (cartIsOpen) return null;
 
   const handleBuyNow = () => {
     useCartStore.getState().addItem(S23_PRODUCT, 1);
