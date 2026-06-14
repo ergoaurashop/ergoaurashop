@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { Nunito, Open_Sans } from "next/font/google";
 import { SITE_METADATA, GTM_ID } from "@/lib/constants";
 import "./globals.css";
 import TrustMarquee from "@/components/layout/TrustMarquee";
@@ -8,6 +9,22 @@ import Footer from "@/components/layout/Footer";
 import PageViewTracker from "@/components/analytics/PageViewTracker";
 import OrganizationSchema from "@/components/seo/OrganizationSchema";
 import WebSiteSchema from "@/components/seo/WebSiteSchema";
+
+/* ── S23 Ultra fonts (Nunito headings + Open Sans body) ──
+   These are scoped via CSS variables so they only apply within .s23-page. */
+const nunito = Nunito({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-nunito",
+  display: "swap",
+});
+
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-open-sans",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -96,7 +113,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           />
         )}
       </head>
-      <body className="min-h-screen flex flex-col">
+      <body
+        className={`min-h-screen flex flex-col ${nunito.variable} ${openSans.variable}`}
+      >
         {/* JSON-LD Structured Data — site-wide schemas */}
         <OrganizationSchema />
         <WebSiteSchema />

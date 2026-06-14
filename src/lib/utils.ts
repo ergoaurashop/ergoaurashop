@@ -2,6 +2,15 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { SLUG_TO_FOLDER, SLUG_TO_IMAGES } from "@/lib/products-data";
 
+/**
+ * Encode a file-system path safely, segment by segment.
+ * Handles nested paths like "Part-2/Samsung Galaxy S23 Ultra..."
+ * where each segment needs individual encodeURIComponent treatment.
+ */
+function encodePath(path: string): string {
+  return path.split("/").map(encodeURIComponent).join("/");
+}
+
 /** Merge Tailwind classes with conflict resolution */
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -69,7 +78,7 @@ export function getProductImageUrl(slug: string, image?: string): string {
   const images = SLUG_TO_IMAGES[slug];
   if (images && images.length > 0) {
     const folder = SLUG_TO_FOLDER[slug] || slug;
-    return `/images/products/${encodeURIComponent(folder)}/${encodeURIComponent(images[0])}`;
+    return `/images/products/${encodePath(folder)}/${encodeURIComponent(images[0])}`;
   }
   return `/images/products/${slug}/placeholder.jpg`;
 }
@@ -81,6 +90,6 @@ export function getProductImages(slug: string): string[] {
   const folder = SLUG_TO_FOLDER[slug] || slug;
   return images.map(
     (img) =>
-      `/images/products/${encodeURIComponent(folder)}/${encodeURIComponent(img)}`,
+      `/images/products/${encodePath(folder)}/${encodeURIComponent(img)}`,
   );
 }

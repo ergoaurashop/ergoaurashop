@@ -22,6 +22,8 @@ export const SLUG_TO_FOLDER: Record<string, string> = {
   "silicone-oil-splatter-guard": "Silicone oil splatter guard",
   "waterproof-phone-pouch": "Waterproof Phone Pouch",
   "waterproof-shoe-covers": "Waterproof shoe covers",
+  "samsung-galaxy-s23-ultra":
+    "Part-2/Samsung Galaxy S23 Ultra Dual SIM Smartphone 12GB RAM 512GB Storage - Internationa Version",
 };
 
 /**
@@ -132,6 +134,19 @@ export const SLUG_TO_IMAGES: Record<string, string[]> = {
     "51ZZLnvjhvL.jpg",
     "616sjI+bQ6L.jpg",
     "videoframe_8838.png",
+  ],
+  "samsung-galaxy-s23-ultra": [
+    "galaxy-s23-ultra-highlights-kv-1.jpg",
+    "galaxy-s23-ultra-highlights-camera-1.jpg",
+    "galaxy-s23-ultra-highlights-display-1.jpg",
+    "Samsung Galaxy S23 Ultra Dual SIM Smartphone 12GB RAM 512GB Storage.jpg",
+    "galaxy-s23-ultra-highlights-nightography-1.jpg",
+    "galaxy-s23-ultra-highlights-spec-camera-1.jpg",
+    "galaxy-s23-ultra-highlights-spen-more-1.jpg",
+    "galaxy-s23-ultra-highlights-accessories-1.jpg",
+    "galaxy-s23-ultra-highlights-one-ui-1.jpg",
+    "galaxy-s23-ultra-highlights-wallet-1.jpg",
+    "galaxy-s23-ultra-detail-press.jpg",
   ],
 };
 
@@ -465,5 +480,49 @@ export const LOCAL_PRODUCTS: Product[] = [
     is_active: true,
     created_at: "2025-01-11T00:00:00Z",
     updated_at: "2025-01-11T00:00:00Z",
+  },
+  {
+    id: "prod-samsung-galaxy-s23-ultra",
+    name: "Samsung Galaxy S23 Ultra",
+    slug: "samsung-galaxy-s23-ultra",
+    description:
+      "Samsung Galaxy S23 Ultra — 200MP camera, S Pen, Snapdragon 8 Gen 2 for Galaxy, 12GB RAM, 512GB Storage, 5000mAh battery, Dynamic AMOLED 2X 120Hz display. International Version with dual SIM support. Graphite colour.",
+    price: 14990,
+    original_price: 124999,
+    discount_percentage: 88,
+    category: "electronics",
+    images: [],
+    stock: 15,
+    features: [
+      "200MP Quad Camera with Space Zoom — capture stunning details even from afar",
+      "S Pen included — take notes, sketch, and control your phone with precision",
+      "Snapdragon 8 Gen 2 for Galaxy — fastest processor on any Android phone",
+      "12GB RAM + 512GB Storage — massive space for apps, photos, and videos",
+      "5000mAh battery with 45W fast charging — all-day power that lasts",
+      'Dynamic AMOLED 2X, 120Hz display — 6.8" immersive edge screen',
+    ],
+    specifications: {
+      Display: '6.8" Dynamic AMOLED 2X, 120Hz, 1440x3088',
+      Processor: "Snapdragon 8 Gen 2 for Galaxy (4nm)",
+      RAM: "12GB",
+      Storage: "512GB (non-expandable)",
+      "Rear Camera":
+        "200MP wide + 10MP periscope telephoto + 10MP telephoto + 12MP ultrawide",
+      "Front Camera": "12MP",
+      Battery: "5000mAh, 45W fast charging, 15W wireless",
+      OS: "Android 13, One UI 5.1 (upgradable to One UI 8.5)",
+      SIM: "Dual Nano-SIM (International Version)",
+      "5G Bands": "NSA/SA, Dual 5G support",
+      Weight: "234g",
+      Dimensions: "163.4 x 78.1 x 8.9 mm",
+      "Water Resistance": "IP68 (1.5m for 30 min)",
+      "S Pen": "Included, IP68 rated, Bluetooth Low Energy",
+      Sensors:
+        "Accelerometer, Barometer, Fingerprint (ultrasonic), Gyro, Geomagnetic, Hall, Light, Proximity",
+      Colour: "Graphite",
+    },
+    is_active: true,
+    created_at: "2025-12-01T00:00:00Z",
+    updated_at: "2025-12-01T00:00:00Z",
   },
 ];

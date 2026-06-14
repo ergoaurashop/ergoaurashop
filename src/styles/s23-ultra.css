@@ -1,0 +1,723 @@
+/* =====================================================================
+   Samsung Galaxy S23 Ultra — Scoped Styles
+   All styles are scoped under .s23-page to prevent bleed-through from
+   the existing Desert Luxury (gold/sand) theme.
+   ===================================================================== */
+
+/* ── CSS Custom Properties ── */
+.s23-page {
+  --s23-bg-primary: #0a0a0a;
+  --s23-bg-secondary: #111111;
+  --s23-bg-card: #1a1a1a;
+  --s23-bg-card-hover: #222222;
+
+  --s23-accent: #4a5d23;
+  --s23-accent-light: #5c7530;
+  --s23-accent-dark: #3a4a1c;
+  --s23-accent-glow: rgba(74, 93, 35, 0.3);
+  --s23-accent-bg: rgba(74, 93, 35, 0.1);
+  --s23-accent-border: rgba(74, 93, 35, 0.25);
+
+  --s23-text-primary: #ffffff;
+  --s23-text-secondary: #a0a0a0;
+  --s23-text-tertiary: #6b7280;
+
+  --s23-border: rgba(255, 255, 255, 0.08);
+  --s23-border-light: rgba(255, 255, 255, 0.12);
+
+  --s23-gradient-green: linear-gradient(
+    135deg,
+    #4a5d23 0%,
+    #5c7530 50%,
+    #6b8c36 100%
+  );
+  --s23-gradient-dark: linear-gradient(
+    180deg,
+    #0a0a0a 0%,
+    #111111 50%,
+    #0a0a0a 100%
+  );
+  --s23-gradient-card: linear-gradient(
+    180deg,
+    rgba(26, 26, 26, 0.8) 0%,
+    rgba(26, 26, 26, 0.4) 100%
+  );
+
+  --s23-radius: 12px;
+  --s23-radius-lg: 20px;
+  --s23-radius-xl: 28px;
+  --s23-radius-full: 9999px;
+
+  --s23-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --s23-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --s23-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --s23-shadow-glow: 0 0 20px rgba(74, 93, 35, 0.2);
+}
+
+/* ── Base reset for S23 context ── */
+.s23-page * {
+  box-sizing: border-box;
+}
+
+/* ── Typography ── */
+.s23-page h1,
+.s23-page h2,
+.s23-page h3,
+.s23-page h4,
+.s23-page h5,
+.s23-page h6 {
+  font-family: var(--font-nunito), "Nunito", sans-serif;
+  color: var(--s23-text-primary);
+}
+
+.s23-page body,
+.s23-page p,
+.s23-page span,
+.s23-page li,
+.s23-page a,
+.s23-page button,
+.s23-page input,
+.s23-page select,
+.s23-page textarea {
+  font-family: var(--font-open-sans), "Open Sans", sans-serif;
+  color: var(--s23-text-primary);
+}
+
+/* ── Hero section ── */
+.s23-hero {
+  position: relative;
+  width: 100%;
+  height: 75vh;
+  min-height: 500px;
+  max-height: 900px;
+  overflow: hidden;
+  background: var(--s23-bg-primary);
+}
+
+.s23-hero-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.s23-hero-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.s23-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 10, 0.3) 0%,
+    rgba(10, 10, 10, 0.1) 40%,
+    rgba(10, 10, 10, 0.7) 80%,
+    rgba(10, 10, 10, 0.95) 100%
+  );
+  z-index: 1;
+}
+
+.s23-hero-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding: 3rem 1.5rem 4rem;
+  text-align: center;
+}
+
+.s23-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  background: var(--s23-accent-bg);
+  border: 1px solid var(--s23-accent-border);
+  border-radius: var(--s23-radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--s23-accent);
+  margin-bottom: 1rem;
+  backdrop-filter: blur(8px);
+}
+
+.s23-hero-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+.s23-hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--s23-text-secondary);
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+}
+
+.s23-hero-dots {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.s23-hero-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.s23-hero-dot.active {
+  background: var(--s23-accent);
+  width: 24px;
+  border-radius: 4px;
+}
+
+/* ── Deal banner ── */
+.s23-deal-banner {
+  background: var(--s23-gradient-green);
+  padding: 0.75rem 1rem;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.s23-deal-banner-text {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  animation: s23-marquee 25s linear infinite;
+}
+
+@keyframes s23-marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* ── Section common ── */
+.s23-section {
+  padding: 4rem 1.5rem;
+}
+
+.s23-section-dark {
+  background: var(--s23-bg-secondary);
+}
+
+.s23-section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.s23-section-label {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--s23-accent);
+  margin-bottom: 0.75rem;
+}
+
+.s23-section-title {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.s23-section-subtitle {
+  font-size: 1rem;
+  color: var(--s23-text-secondary);
+  max-width: 650px;
+  line-height: 1.7;
+}
+
+/* ── Price display ── */
+.s23-price-original {
+  font-size: 1.5rem;
+  color: var(--s23-text-tertiary);
+  text-decoration: line-through;
+  margin-right: 0.75rem;
+}
+
+.s23-price-current {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--s23-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.s23-price-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 1rem;
+  background: var(--s23-accent-bg);
+  border: 1px solid var(--s23-accent-border);
+  border-radius: var(--s23-radius-full);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--s23-accent);
+}
+
+.s23-savings {
+  font-size: 0.95rem;
+  color: #22c55e;
+  font-weight: 600;
+}
+
+/* ── Buttons ── */
+.s23-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2.5rem;
+  background: var(--s23-gradient-green);
+  color: #ffffff;
+  font-family: var(--font-nunito), "Nunito", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--s23-radius-lg);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(74, 93, 35, 0.3);
+}
+
+.s23-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(74, 93, 35, 0.4);
+}
+
+.s23-btn-primary:active {
+  transform: translateY(0);
+}
+
+.s23-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  background: transparent;
+  color: var(--s23-text-primary);
+  font-family: var(--font-nunito), "Nunito", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 1px solid var(--s23-border);
+  border-radius: var(--s23-radius);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.s23-btn-secondary:hover {
+  background: var(--s23-bg-card);
+  border-color: var(--s23-accent-border);
+}
+
+/* ── Feature cards ── */
+.s23-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.s23-feature-card {
+  background: var(--s23-bg-card);
+  border: 1px solid var(--s23-border);
+  border-radius: var(--s23-radius-lg);
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.s23-feature-card:hover {
+  background: var(--s23-bg-card-hover);
+  border-color: var(--s23-accent-border);
+  transform: translateY(-4px);
+  box-shadow: var(--s23-shadow-glow);
+}
+
+.s23-feature-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.s23-feature-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.s23-feature-desc {
+  font-size: 0.9rem;
+  color: var(--s23-text-secondary);
+  line-height: 1.6;
+}
+
+/* ── Reviews ── */
+.s23-review-card {
+  background: var(--s23-bg-card);
+  border: 1px solid var(--s23-border);
+  border-radius: var(--s23-radius-lg);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.s23-review-card:hover {
+  border-color: var(--s23-accent-border);
+}
+
+.s23-review-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.s23-review-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--s23-accent-bg);
+  border: 1px solid var(--s23-accent-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--s23-accent);
+  flex-shrink: 0;
+}
+
+.s23-review-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.s23-review-city {
+  font-size: 0.8rem;
+  color: var(--s23-text-tertiary);
+}
+
+.s23-review-stars {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 0.5rem;
+}
+
+.s23-review-star {
+  color: #f59e0b;
+  font-size: 0.95rem;
+}
+
+.s23-review-star.empty {
+  color: var(--s23-text-tertiary);
+  opacity: 0.3;
+}
+
+.s23-review-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.s23-review-text {
+  font-size: 0.88rem;
+  color: var(--s23-text-secondary);
+  line-height: 1.7;
+}
+
+.s23-review-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  font-size: 0.78rem;
+  color: var(--s23-text-tertiary);
+}
+
+.s23-review-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #22c55e;
+  font-weight: 600;
+}
+
+/* ── Spec table ── */
+.s23-spec-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.s23-spec-row {
+  border-bottom: 1px solid var(--s23-border);
+}
+
+.s23-spec-row:last-child {
+  border-bottom: none;
+}
+
+.s23-spec-label {
+  padding: 0.85rem 1rem 0.85rem 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--s23-text-primary);
+  width: 35%;
+  vertical-align: top;
+}
+
+.s23-spec-value {
+  padding: 0.85rem 0;
+  font-size: 0.85rem;
+  color: var(--s23-text-secondary);
+  line-height: 1.6;
+}
+
+/* ── FAQ ── */
+.s23-faq-item {
+  border: 1px solid var(--s23-border);
+  border-radius: var(--s23-radius);
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.s23-faq-item:hover {
+  border-color: var(--s23-accent-border);
+}
+
+.s23-faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-nunito), "Nunito", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--s23-text-primary);
+  text-align: left;
+  transition: background 0.3s ease;
+}
+
+.s23-faq-question:hover {
+  background: var(--s23-bg-card);
+}
+
+.s23-faq-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  color: var(--s23-accent);
+}
+
+.s23-faq-item.open .s23-faq-icon {
+  transform: rotate(180deg);
+}
+
+.s23-faq-answer {
+  padding: 0 1.5rem 1.25rem;
+  font-size: 0.88rem;
+  color: var(--s23-text-secondary);
+  line-height: 1.7;
+}
+
+/* ── Sticky CTA ── */
+.s23-sticky-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--s23-border);
+  padding: 0.85rem 1.5rem;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.s23-sticky-cta.visible {
+  transform: translateY(0);
+}
+
+.s23-sticky-cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.s23-sticky-pricing {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.s23-sticky-price {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--s23-text-primary);
+}
+
+.s23-sticky-original {
+  font-size: 0.9rem;
+  color: var(--s23-text-tertiary);
+  text-decoration: line-through;
+}
+
+.s23-sticky-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--s23-accent);
+  background: var(--s23-accent-bg);
+  border: 1px solid var(--s23-accent-border);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--s23-radius-full);
+}
+
+.s23-sticky-btn {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+/* ── Divider ── */
+.s23-divider {
+  height: 1px;
+  background: var(--s23-border);
+  margin: 0;
+  border: none;
+}
+
+/* ── Timer / urgency ── */
+.s23-urgency-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--s23-text-secondary);
+}
+
+.s23-urgency-numbers {
+  font-weight: 700;
+  color: var(--s23-accent);
+  font-family: var(--font-nunito), "Nunito", sans-serif;
+}
+
+/* ── Stock indicator ── */
+.s23-stock-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--s23-bg-card);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.s23-stock-fill {
+  height: 100%;
+  background: var(--s23-gradient-green);
+  border-radius: 2px;
+  transition: width 1s ease;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .s23-hero {
+    height: 60vh;
+    min-height: 400px;
+    max-height: 700px;
+  }
+
+  .s23-hero-content {
+    padding: 2rem 1rem 3rem;
+  }
+
+  .s23-section {
+    padding: 3rem 1rem;
+  }
+
+  .s23-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .s23-price-current {
+    font-size: 2rem;
+  }
+
+  .s23-sticky-cta-inner {
+    flex-direction: row;
+    gap: 0.75rem;
+  }
+
+  .s23-sticky-pricing {
+    gap: 0.5rem;
+  }
+
+  .s23-sticky-btn {
+    padding: 0.65rem 1.25rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .s23-hero {
+    height: 50vh;
+    min-height: 350px;
+  }
+
+  .s23-section {
+    padding: 2rem 0.85rem;
+  }
+
+  .s23-price-current {
+    font-size: 1.75rem;
+  }
+
+  .s23-price-original {
+    font-size: 1.15rem;
+  }
+
+  .s23-btn-primary {
+    padding: 0.85rem 1.75rem;
+    font-size: 1rem;
+  }
+}

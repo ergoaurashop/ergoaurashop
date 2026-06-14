@@ -1,5 +1,7 @@
 "use client";
 
+import dynamic from "next/dynamic";
+
 import { trackViewItem } from "@/lib/analytics/events";
 
 import { useEffect, useState, useRef } from "react";
@@ -12,6 +14,12 @@ import Badge from "@/components/ui/Badge";
 import Card from "@/components/ui/Card";
 import { useCartStore } from "@/store/cartStore";
 import { getProductContent } from "@/lib/product-content";
+
+/* Lazy-load S23 section — only loaded when slug matches */
+const S23SamsungGalaxySection = dynamic(
+  () => import("@/components/products/s23/S23SamsungGalaxySection"),
+  { ssr: false },
+);
 import { LOCAL_PRODUCTS } from "@/lib/products-data";
 import { useProductReviews, type SortOption } from "@/hooks/useProductReviews";
 import StickyCartPanel from "@/components/products/StickyCartPanel";
@@ -183,6 +191,7 @@ function SectionHeader({
 export default function ProductDetailClient() {
   const params = useParams();
   const slug = params.slug as string;
+
   const router = useRouter();
   const heroRef = useRef<HTMLDivElement>(null);
 
@@ -252,6 +261,11 @@ export default function ProductDetailClient() {
       : product?.images?.length
         ? product.images
         : [getProductImageUrl(slug)];
+
+  /* ── S23 Ultra — fully self-contained page (hooks above are called unconditionally) ── */
+  if (slug === "samsung-galaxy-s23-ultra") {
+    return <S23SamsungGalaxySection />;
+  }
 
   /* ── Loading ── */
   if (loading) {
