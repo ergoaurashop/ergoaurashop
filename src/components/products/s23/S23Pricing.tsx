@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { S23_PRODUCT } from "@/lib/s23-ultra-data";
@@ -9,6 +9,32 @@ import { useCartStore } from "@/store/cartStore";
 
 interface S23PricingProps {
   id?: string;
+}
+
+function TimerDigit({ value, label }: { value: number; label: string }) {
+  const prevValue = useRef(value);
+  const [ticking, setTicking] = useState(false);
+
+  useEffect(() => {
+    if (prevValue.current !== value) {
+      setTicking(true);
+      prevValue.current = value;
+      const timer = setTimeout(() => setTicking(false), 150);
+      return () => clearTimeout(timer);
+    }
+  }, [value]);
+
+  return (
+    <div className="s23-timer-unit">
+      <div
+        className={`s23-timer-digit${ticking ? " ticking" : ""}`}
+        key={value}
+      >
+        {String(value).padStart(2, "0")}
+      </div>
+      <span className="s23-timer-label">{label}</span>
+    </div>
+  );
 }
 
 export default function S23Pricing({ id }: S23PricingProps) {
@@ -42,9 +68,27 @@ export default function S23Pricing({ id }: S23PricingProps) {
 
   const savings = S23_PRODUCT.original_price - S23_PRODUCT.price;
 
+  // Split title into words for individual animation
+  const titleWords = "Grab Yours Before It's Gone".split(" ");
+
   return (
-    <section className="s23-section s23-section-dark" id={id}>
-      <div className="s23-section-container">
+    <section className="s23-pricing-section" id={id}>
+      {/* Sparkle particles */}
+      <div className="s23-pricing-sparkles">
+        <div className="s23-sparkle" />
+        <div className="s23-sparkle" />
+        <div className="s23-sparkle" />
+        <div className="s23-sparkle" />
+        <div className="s23-sparkle" />
+        <div className="s23-sparkle" />
+        <div className="s23-sparkle" />
+        <div className="s23-sparkle" />
+      </div>
+
+      <div
+        className="s23-section-container"
+        style={{ position: "relative", zIndex: 1 }}
+      >
         <motion.div
           className="max-w-2xl mx-auto text-center"
           initial={{ opacity: 0, y: 30 }}
@@ -52,34 +96,56 @@ export default function S23Pricing({ id }: S23PricingProps) {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="s23-section-label">Limited Time Offer</span>
-          <h2 className="s23-section-title">Grab Yours Before It's Gone</h2>
+          {/* Animated label with diamond decorations */}
+          <span className="s23-pricing-label">Limited Time Offer</span>
+
+          {/* Title with word-by-word highlight effects */}
+          <h2 className="s23-pricing-title">
+            {titleWords.map((word, i) => (
+              <motion.span
+                key={i}
+                className={
+                  word === "Yours" || word === "Gone" ? "highlight" : ""
+                }
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 * i, duration: 0.5 }}
+              >
+                {word}{" "}
+              </motion.span>
+            ))}
+          </h2>
+
           <p className="s23-section-subtitle mx-auto mb-8">
             Only {S23_PRODUCT.stock} units remaining at this price. Once they're
             sold, this deal is gone forever.
           </p>
 
-          {/* Price display */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+          {/* Price display with glow and ring effects */}
+          <div className="s23-pricing-prices">
             <span className="s23-price-original">
               {formatPrice(S23_PRODUCT.original_price)}
             </span>
-            <span className="s23-price-current">
-              {formatPrice(S23_PRODUCT.price)}
+
+            <span className="s23-price-current-glow">
+              <span className="s23-price-current">
+                {formatPrice(S23_PRODUCT.price)}
+              </span>
+              <div className="s23-price-glow-ring" />
             </span>
-            <span className="s23-price-badge">
-              {S23_PRODUCT.discount_percentage}% OFF
+
+            <span className="s23-price-badge-ring">
+              <span className="s23-price-badge">
+                {S23_PRODUCT.discount_percentage}% OFF
+              </span>
+              <div className="ring-animation" />
             </span>
           </div>
 
-          <p className="s23-savings mb-8">You save {formatPrice(savings)}!</p>
-
-          {/* Countdown timer */}
-          <div className="s23-urgency-timer justify-center mb-8">
-            {/* Clock SVG icon */}
+          {/* Savings with arrow icon */}
+          <p className="s23-pricing-savings mb-8">
             <svg
-              width="18"
-              height="18"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -87,25 +153,46 @@ export default function S23Pricing({ id }: S23PricingProps) {
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-              <circle cx="12" cy="12" r="10" />
-              <polyline points="12 6 12 12 16 14" />
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+              <polyline points="17 6 23 6 23 12" />
             </svg>
-            <span>Offer ends in:</span>
-            <span className="s23-urgency-numbers">
-              {String(timeLeft.hours).padStart(2, "0")}:
-              {String(timeLeft.minutes).padStart(2, "0")}:
-              {String(timeLeft.seconds).padStart(2, "0")}
-            </span>
+            You save {formatPrice(savings)}!
+          </p>
+
+          {/* Enhanced flip-card countdown timer */}
+          <div className="s23-pricing-timer">
+            <div className="s23-pricing-timer-header">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              <span>Offer ends in:</span>
+            </div>
+            <div className="s23-timer-units">
+              <TimerDigit value={timeLeft.hours} label="Hours" />
+              <span className="s23-timer-separator">:</span>
+              <TimerDigit value={timeLeft.minutes} label="Mins" />
+              <span className="s23-timer-separator">:</span>
+              <TimerDigit value={timeLeft.seconds} label="Secs" />
+            </div>
           </div>
 
-          {/* Buy button — direct checkout */}
+          {/* Animated gradient CTA button */}
           <motion.button
             onClick={handleBuyNow}
-            className="s23-btn-primary text-lg"
+            className="s23-pricing-cta"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
           >
-            {/* Shopping cart SVG */}
             <svg
               width="20"
               height="20"
@@ -123,14 +210,15 @@ export default function S23Pricing({ id }: S23PricingProps) {
             Buy Now &mdash; {formatPrice(S23_PRODUCT.price)}
           </motion.button>
 
-          {/* Stock indicator */}
-          <div className="mt-8 max-w-md mx-auto">
-            <div className="flex justify-between text-sm mb-1">
-              <span className="text-[var(--s23-text-secondary)]">
-                Only {S23_PRODUCT.stock} left in stock
+          {/* Stock indicator with animated count */}
+          <div className="s23-pricing-stock">
+            <div className="stock-header">
+              <span className="stock-count">
+                Only <span className="count-number">{S23_PRODUCT.stock}</span>{" "}
+                left in stock
               </span>
-              <span className="text-[var(--s23-text-tertiary)]">
-                Selling fast
+              <span className="stock-status">
+                Selling fast<span className="dots">...</span>
               </span>
             </div>
             <div className="s23-stock-bar">
@@ -138,13 +226,15 @@ export default function S23Pricing({ id }: S23PricingProps) {
             </div>
           </div>
 
-          {/* EMI / Payment info */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-sm text-[var(--s23-text-tertiary)]">
-            {/* Shield SVG */}
-            <span className="inline-flex items-center gap-1.5">
+          {/* Trust badges */}
+          <div className="s23-pricing-trust">
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
               <svg
-                width="14"
-                height="14"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -155,12 +245,14 @@ export default function S23Pricing({ id }: S23PricingProps) {
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
               </svg>
               Secure Checkout
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              {/* Credit card SVG */}
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
               <svg
-                width="14"
-                height="14"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -172,12 +264,14 @@ export default function S23Pricing({ id }: S23PricingProps) {
                 <line x1="1" y1="10" x2="23" y2="10" />
               </svg>
               EMI Available
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              {/* Truck SVG */}
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+            >
               <svg
-                width="14"
-                height="14"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -191,7 +285,7 @@ export default function S23Pricing({ id }: S23PricingProps) {
                 <circle cx="18.5" cy="18.5" r="2.5" />
               </svg>
               Fast Delivery
-            </span>
+            </motion.span>
           </div>
         </motion.div>
       </div>

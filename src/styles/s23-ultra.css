@@ -1486,6 +1486,655 @@
   transition: width 1s ease;
 }
 
+/* ── Pricing / Limited Time Offer Section ── */
+.s23-pricing-section {
+  background: linear-gradient(
+    135deg,
+    #0a0a0a 0%,
+    #1a0a2e 25%,
+    #2d1b4e 50%,
+    #1a0a2e 75%,
+    #0a0a0a 100%
+  );
+  background-size: 400% 400%;
+  animation: s23-pricing-bg-shift 10s ease infinite;
+  position: relative;
+  overflow: hidden;
+  padding: 4rem 1.5rem;
+}
+
+/* Floating orbs */
+.s23-pricing-section::before,
+.s23-pricing-section::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.s23-pricing-section::before {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(
+    circle,
+    rgba(147, 51, 234, 0.08) 0%,
+    transparent 70%
+  );
+  top: -150px;
+  right: -150px;
+  animation: s23-orb-float 12s ease-in-out infinite;
+}
+
+.s23-pricing-section::after {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 215, 0, 0.06) 0%,
+    transparent 70%
+  );
+  bottom: -100px;
+  left: -100px;
+  animation: s23-orb-float 8s ease-in-out infinite reverse;
+}
+
+@keyframes s23-pricing-bg-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 100%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes s23-orb-float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -30px) scale(1.05);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
+}
+
+/* Pricing label with shimmer */
+.s23-pricing-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  background: linear-gradient(
+    90deg,
+    #ffd700,
+    #ff8c00,
+    #ffd700,
+    #ff8c00,
+    #ffd700
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: s23-label-shimmer 3s linear infinite;
+  position: relative;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(255, 215, 0, 0.15);
+  border-radius: var(--s23-radius-full);
+  background-color: rgba(255, 215, 0, 0.04);
+  margin-bottom: 1.5rem;
+}
+
+.s23-pricing-label::before {
+  content: "◇";
+  -webkit-text-fill-color: initial;
+  color: #ffd700;
+  font-size: 0.6rem;
+  opacity: 0.7;
+}
+
+.s23-pricing-label::after {
+  content: "◇";
+  -webkit-text-fill-color: initial;
+  color: #ffd700;
+  font-size: 0.6rem;
+  opacity: 0.7;
+}
+
+@keyframes s23-label-shimmer {
+  0% {
+    background-position: -300% center;
+  }
+  100% {
+    background-position: 300% center;
+  }
+}
+
+/* Pricing title */
+.s23-pricing-title {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.s23-pricing-title .highlight {
+  background: linear-gradient(90deg, #ffd700, #ff8c00, #ffd700);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: s23-label-shimmer 3s linear infinite;
+  display: inline-block;
+}
+
+/* Price glow */
+.s23-pricing-prices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.s23-price-current-glow {
+  position: relative;
+  display: inline-block;
+}
+
+.s23-price-current-glow .s23-price-current {
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(
+    135deg,
+    #ffd700 0%,
+    #ffaa00 40%,
+    #ffd700 70%,
+    #ffcc00 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: s23-label-shimmer 3s linear infinite;
+  letter-spacing: -0.02em;
+  position: relative;
+  z-index: 1;
+}
+
+.s23-price-current-glow .s23-price-glow-ring {
+  position: absolute;
+  inset: -8px;
+  border-radius: 12px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 215, 0, 0.15) 0%,
+    transparent 70%
+  );
+  animation: s23-price-pulse 2s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes s23-price-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+/* Discount badge with ring */
+.s23-price-badge-ring {
+  position: relative;
+}
+
+.s23-price-badge-ring .s23-price-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 1rem;
+  background: var(--s23-accent-bg);
+  border: 1px solid var(--s23-accent-border);
+  border-radius: var(--s23-radius-full);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--s23-accent-text);
+  position: relative;
+  z-index: 1;
+}
+
+.s23-price-badge-ring .ring-animation {
+  position: absolute;
+  inset: -4px;
+  border-radius: var(--s23-radius-full);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  animation: s23-ring-expand 2s ease-out infinite;
+  z-index: 0;
+}
+
+@keyframes s23-ring-expand {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+}
+
+/* Savings with count-up */
+.s23-pricing-savings {
+  font-size: 1.05rem;
+  color: #22c55e;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.s23-pricing-savings svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Enhanced countdown timer */
+.s23-pricing-timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.s23-pricing-timer-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--s23-text-secondary);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.s23-timer-units {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.s23-timer-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.s23-timer-digit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 70px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 215, 0, 0.15);
+  border-radius: var(--s23-radius);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #ffffff;
+  font-family: var(--font-nunito), "Nunito", sans-serif;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.1s ease;
+}
+
+.s23-timer-digit.ticking {
+  animation: s23-timer-tick 0.15s ease;
+}
+
+@keyframes s23-timer-tick {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.s23-timer-digit::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.s23-timer-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--s23-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.s23-timer-separator {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--s23-accent-text);
+  margin-top: -1.5rem;
+  opacity: 0.5;
+}
+
+/* Urgency pulse for timer */
+.s23-timer-urgent .s23-timer-digit {
+  border-color: rgba(255, 69, 0, 0.3);
+  animation: s23-urgency-pulse 1s ease-in-out infinite;
+}
+
+@keyframes s23-urgency-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(255, 69, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 69, 0, 0.4);
+  }
+}
+
+/* CTA Button with animated gradient */
+.s23-pricing-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.1rem 2.5rem;
+  background: linear-gradient(135deg, #4a5d23, #6b8f3a, #4a5d23);
+  background-size: 200% 100%;
+  color: #ffffff;
+  font-family: var(--font-nunito), "Nunito", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--s23-radius-lg);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 4px 25px rgba(74, 93, 35, 0.3);
+  animation: s23-cta-gradient 4s ease infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+.s23-pricing-cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: s23-cta-sweep 3s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.s23-pricing-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 35px rgba(74, 93, 35, 0.5);
+}
+
+.s23-pricing-cta:active {
+  transform: translateY(0);
+}
+
+@keyframes s23-cta-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes s23-cta-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Stock indicator */
+.s23-pricing-stock {
+  max-width: 400px;
+  margin: 1.5rem auto 0;
+}
+
+.s23-pricing-stock .stock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.s23-pricing-stock .stock-count {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--s23-text-secondary);
+}
+
+.s23-pricing-stock .stock-count .count-number {
+  color: #ffd700;
+  font-weight: 800;
+  display: inline-block;
+  animation: s23-stock-bounce 2s ease-in-out infinite;
+}
+
+@keyframes s23-stock-bounce {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+.s23-pricing-stock .stock-status {
+  font-size: 0.75rem;
+  color: var(--s23-text-tertiary);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.s23-pricing-stock .stock-status .dots {
+  animation: s23-dots 1.5s steps(3, end) infinite;
+  display: inline-block;
+  width: 1.2em;
+  text-align: left;
+}
+
+@keyframes s23-dots {
+  0% {
+    content: "";
+  }
+  33% {
+    content: ".";
+  }
+  66% {
+    content: "..";
+  }
+  100% {
+    content: "...";
+  }
+}
+
+/* Use existing .s23-stock-bar styles but add glow */
+.s23-pricing-stock .s23-stock-bar {
+  margin-top: 0;
+}
+
+.s23-pricing-stock .s23-stock-fill {
+  background: linear-gradient(90deg, #4a5d23, #6b8f3a, #4a5d23);
+  background-size: 200% 100%;
+  animation: s23-stock-fill-shift 3s ease infinite;
+  box-shadow: 0 0 10px rgba(74, 93, 35, 0.4);
+}
+
+@keyframes s23-stock-fill-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Trust badges */
+.s23-pricing-trust {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.s23-pricing-trust span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--s23-text-tertiary);
+  font-weight: 500;
+}
+
+.s23-pricing-trust svg {
+  width: 14px;
+  height: 14px;
+  color: var(--s23-accent-text);
+}
+
+/* Sparkle particles */
+.s23-pricing-sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.s23-sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #ffd700;
+  border-radius: 50%;
+  opacity: 0;
+  animation: s23-sparkle-rise 4s ease-in-out infinite;
+}
+
+.s23-sparkle:nth-child(1) {
+  left: 10%;
+  animation-delay: 0s;
+}
+.s23-sparkle:nth-child(2) {
+  left: 25%;
+  animation-delay: 1s;
+  width: 3px;
+  height: 3px;
+}
+.s23-sparkle:nth-child(3) {
+  left: 45%;
+  animation-delay: 2s;
+}
+.s23-sparkle:nth-child(4) {
+  left: 65%;
+  animation-delay: 0.5s;
+  width: 5px;
+  height: 5px;
+}
+.s23-sparkle:nth-child(5) {
+  left: 80%;
+  animation-delay: 1.5s;
+  width: 3px;
+  height: 3px;
+}
+.s23-sparkle:nth-child(6) {
+  left: 90%;
+  animation-delay: 3s;
+}
+.s23-sparkle:nth-child(7) {
+  left: 35%;
+  animation-delay: 2.5s;
+  width: 5px;
+  height: 5px;
+}
+.s23-sparkle:nth-child(8) {
+  left: 55%;
+  animation-delay: 3.5s;
+  width: 3px;
+  height: 3px;
+}
+
+@keyframes s23-sparkle-rise {
+  0% {
+    transform: translateY(100%) scale(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  80% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-100vh) scale(1);
+    opacity: 0;
+  }
+}
+
 /* ── Scroll-triggered fade-in ── */
 .s23-fade-in {
   opacity: 0;

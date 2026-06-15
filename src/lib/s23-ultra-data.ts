@@ -35,7 +35,7 @@ export const S23_PRODUCT_IMAGES: string[] = [
   "galaxy-s23-ultra-highlights-accessories-1.jpg",
   "galaxy-s23-ultra-highlights-one-ui-1.jpg",
   "galaxy-s23-ultra-highlights-wallet-1.jpg",
-  "galaxy-s23-ultra-detail-press.jpg",
+  "samsung-galaxy-s23-ultra-detail-press.jpg",
   "HD-wallpaper-samsung-galaxy-s23-ultra-smartphone-ultra-computers-hardware-galaxy-green-sams.jpg",
   "0e94d330dfe80ea93b050d30be99af31-hi.jpg",
   "2e0f66dc8d00cd9fb907e6eef58042bd-hi.jpg",
