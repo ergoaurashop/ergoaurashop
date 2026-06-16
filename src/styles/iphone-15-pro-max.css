@@ -133,18 +133,53 @@
   background: var(--iphone-bg-primary);
 }
 
-.iphone-hero-video {
+/* ── Hero image slideshow ── */
+.iphone-hero-slideshow {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.iphone-hero-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.iphone-hero-slide-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.iphone-hero-video video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+/* Slide indicators */
+.iphone-hero-indicators {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 3;
+}
+
+.iphone-hero-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.iphone-hero-dot.active {
+  width: 24px;
+  border-radius: 4px;
+  background: #ffffff;
 }
 
 .iphone-hero-overlay {
@@ -313,15 +348,6 @@
   line-height: 1.6;
 }
 
-/* ── Video fallback image ── */
-.iphone-hero-fallback {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 /* ── Deal banner (Apple-style glass) ── */
 .iphone-deal-banner {
   background: linear-gradient(
@@ -472,6 +498,11 @@
   line-height: 1.2;
   margin-bottom: 1rem;
   letter-spacing: -0.02em;
+}
+
+/* Reviews heading — light green for visual contrast */
+.iphone-reviews-section .iphone-section-title {
+  color: #2e7d32;
 }
 
 .iphone-section-subtitle {
@@ -1659,64 +1690,25 @@
   margin-top: 0.5rem;
 }
 
-/* Timer display */
-.iphone-timer-container {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
+/* Timer container */
+.iphone-pricing-timer {
+  text-align: center;
   margin: 1.5rem 0;
 }
 
-.iphone-timer-digit {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.iphone-timer-number {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: var(--iphone-radius);
-  padding: 0.5rem 1rem;
-  min-width: 60px;
-  text-align: center;
-  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
-  animation: iphone-timer-tick 1s ease infinite;
-}
-
-@keyframes iphone-timer-tick {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.9;
-  }
-}
-
-.iphone-timer-label {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--iphone-text-tertiary);
-  margin-top: 0.35rem;
-}
-
-/* Timer header */
-.iphone-timer-header {
+.iphone-pricing-timer-header {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   font-size: 0.85rem;
-  color: var(--iphone-text-tertiary);
-  margin-bottom: 0.75rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
-.iphone-timer-header svg {
+.iphone-pricing-timer-header svg {
   width: 16px;
   height: 16px;
   color: #ff3b30;
@@ -1731,6 +1723,63 @@
   50% {
     opacity: 0.5;
   }
+}
+
+/* Timer units row — single line */
+.iphone-timer-units {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Each digit unit */
+.iphone-timer-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* The digit number — improved contrast */
+.iphone-timer-digit {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--iphone-radius);
+  padding: 0.5rem 0.85rem;
+  min-width: 56px;
+  text-align: center;
+  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.iphone-timer-digit.ticking {
+  background: rgba(255, 59, 48, 0.2);
+  border-color: rgba(255, 59, 48, 0.4);
+}
+
+/* Timer separator */
+.iphone-timer-separator {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 1.5rem;
+  line-height: 1;
+  user-select: none;
+}
+
+/* Timer label */
+.iphone-timer-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
 }
 
 /* Buy button in pricing */
@@ -1789,53 +1838,72 @@
 /* ── Colour selector (Titanium colours) ── */
 .iphone-colour-selector {
   display: flex;
-  justify-content: center;
-  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
   margin: 1.5rem 0;
 }
 
-.iphone-colour-option {
+.iphone-colour-label {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.iphone-colour-options {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.iphone-colour-swatch {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
   cursor: pointer;
   background: none;
   border: none;
   padding: 0;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease;
   font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
 }
 
-.iphone-colour-swatch {
-  width: 40px;
-  height: 40px;
+.iphone-colour-swatch:hover {
+  transform: translateY(-2px);
+}
+
+.iphone-colour-circle {
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.2s ease;
+  border: 2.5px solid rgba(255, 255, 255, 0.25);
+  transition: all 0.25s ease;
   position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
-.iphone-colour-option.active .iphone-colour-swatch {
+.iphone-colour-swatch.active .iphone-colour-circle {
   border-color: #007aff;
-  box-shadow: 0 0 12px rgba(0, 122, 255, 0.4);
-}
-
-.iphone-colour-option.active .iphone-colour-swatch::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 2px solid #007aff;
+  box-shadow:
+    0 0 0 3px rgba(0, 122, 255, 0.25),
+    0 2px 12px rgba(0, 122, 255, 0.35);
+  transform: scale(1.08);
 }
 
 .iphone-colour-name {
-  font-size: 0.75rem;
-  color: var(--iphone-text-tertiary);
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.55);
   font-weight: 500;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  transition: color 0.2s ease;
 }
 
-.iphone-colour-option.active .iphone-colour-name {
+.iphone-colour-swatch.active .iphone-colour-name {
   color: #007aff;
   font-weight: 600;
 }
@@ -1930,14 +1998,15 @@
     font-size: clamp(2.5rem, 8vw, 3.5rem);
   }
 
-  .iphone-timer-container {
-    gap: 0.5rem;
-  }
-
-  .iphone-timer-number {
+  .iphone-timer-digit {
     font-size: 1.5rem;
     min-width: 45px;
-    padding: 0.4rem 0.75rem;
+    padding: 0.4rem 0.7rem;
+  }
+
+  .iphone-timer-separator {
+    font-size: 1.35rem;
+    margin-bottom: 1.25rem;
   }
 
   .iphone-review-card {
@@ -2026,19 +2095,28 @@
     font-size: 0.8rem;
   }
 
-  .iphone-timer-number {
+  .iphone-timer-digit {
     font-size: 1.2rem;
     min-width: 38px;
-    padding: 0.3rem 0.5rem;
+    padding: 0.3rem 0.55rem;
+  }
+
+  .iphone-timer-separator {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
   }
 
   .iphone-timer-label {
     font-size: 0.6rem;
   }
 
-  .iphone-colour-swatch {
-    width: 32px;
-    height: 32px;
+  .iphone-colour-circle {
+    width: 36px;
+    height: 36px;
+  }
+
+  .iphone-colour-options {
+    gap: 1rem;
   }
 
   .iphone-colour-name {

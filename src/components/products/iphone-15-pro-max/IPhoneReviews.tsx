@@ -451,9 +451,7 @@ export default function IPhoneReviews() {
         >
           {/* Section heading */}
           <div className="text-center mb-8">
-            <h2 className="iphone-section-title" style={{ color: "#1d1d1f" }}>
-              Customer Reviews
-            </h2>
+            <h2 className="iphone-section-title">Customer Reviews</h2>
             <p className="iphone-section-subtitle mx-auto">
               Real reviews from real buyers. We don't filter or edit feedback
               &mdash; honesty builds trust.

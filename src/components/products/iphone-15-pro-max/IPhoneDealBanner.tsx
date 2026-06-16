@@ -30,7 +30,7 @@ export default function IPhoneDealBanner() {
         <LightningBoltIcon />
         <span>7-Day Replacement</span>
         <LightningBoltIcon />
-        <span>Only 15 Units Left</span>
+        <span>Only 9 Units Left</span>
       </p>
     </div>
   );

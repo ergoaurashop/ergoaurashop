@@ -1,10 +1,14 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { IPHONE_FOLDER, IPHONE_PRODUCT } from "@/lib/iphone-15-pro-max-data";
+import {
+  IPHONE_FOLDER,
+  IPHONE_PRODUCT,
+  IPHONE_HERO_IMAGES,
+} from "@/lib/iphone-15-pro-max-data";
 import { formatPrice } from "@/lib/utils";
 import { useCartStore } from "@/store/cartStore";
 
@@ -14,8 +18,19 @@ function getImagePath(filename: string): string {
 
 export default function IPhoneHero() {
   const router = useRouter();
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoError, setVideoError] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % IPHONE_HERO_IMAGES.length);
+  }, []);
+
+  // Auto-advance slideshow every 5 seconds
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(nextSlide, 5000);
+    return () => clearInterval(interval);
+  }, [nextSlide, isPaused]);
 
   const handleBuyNow = () => {
     useCartStore.getState().addItem(IPHONE_PRODUCT, 1);
@@ -24,40 +39,45 @@ export default function IPhoneHero() {
 
   return (
     <section className="iphone-hero" id="iphone-hero">
-      {/* Video background */}
-      {!videoError ? (
-        <div className="iphone-hero-video">
-          <video
-            ref={videoRef}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            onError={() => setVideoError(true)}
-            className="w-full h-full object-cover"
-            poster={getImagePath(
-              "Apple-iPhone-15-Pro-lineup-hero-230912_Full-Bleed-Image.jpg.xlarge_2x.jpg",
-            )}
+      {/* Image slideshow background */}
+      <div
+        className="iphone-hero-slideshow"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex}
+            className="iphone-hero-slide"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
           >
-            <source src={getImagePath("large_2x.webm")} type="video/webm" />
-            Your browser does not support the video tag.
-          </video>
+            <Image
+              src={getImagePath(IPHONE_HERO_IMAGES[currentIndex])}
+              alt={`iPhone 15 Pro Max — ${currentIndex === 0 ? "Hero" : currentIndex === 1 ? "Design" : "Camera"}`}
+              fill
+              priority
+              unoptimized
+              sizes="100vw"
+              className="iphone-hero-slide-img"
+            />
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Slide indicators */}
+        <div className="iphone-hero-indicators">
+          {IPHONE_HERO_IMAGES.map((_, i) => (
+            <button
+              key={i}
+              className={`iphone-hero-dot${i === currentIndex ? " active" : ""}`}
+              onClick={() => setCurrentIndex(i)}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
         </div>
-      ) : (
-        /* Fallback image if video fails */
-        <Image
-          src={getImagePath(
-            "Apple-iPhone-15-Pro-lineup-hero-230912_Full-Bleed-Image.jpg.xlarge_2x.jpg",
-          )}
-          alt="iPhone 15 Pro Max"
-          fill
-          priority
-          unoptimized
-          sizes="100vw"
-          className="iphone-hero-fallback"
-        />
-      )}
+      </div>
 
       {/* Gradient overlay */}
       <div className="iphone-hero-overlay" />

@@ -57,7 +57,7 @@ export const IPHONE_PRODUCT: Product = {
   discount_percentage: 51,
   category: "electronics",
   images: [],
-  stock: 15,
+  stock: 9,
   features: [
     "A17 Pro Chip — desktop-class GPU performance with hardware-accelerated ray tracing",
     "48MP Pro Camera System — 5x optical zoom, 24MP default resolution, ProRAW & ProRes",
@@ -459,7 +459,7 @@ export const IPHONE_FAQS = [
   {
     question: "Why is the price so low? Is this a scam?",
     answer:
-      "We understand the concern — ₹46,990 for a ₹94,994 phone is an exceptional deal. This pricing is made possible through our direct sourcing from the Dubai market, where we individually procure devices at wholesale rates. By operating with lean margins and selling large volumes, we pass the savings to you. We've sold hundreds of units with a 4.8★ rating. Our limited stock of 15 units reflects genuine clearance pricing, not a gimmick. You're fully protected by our return policy and secure payment gateways.",
+      "We understand the concern — ₹46,990 for a ₹94,994 phone is an exceptional deal. This pricing is made possible through our direct sourcing from the Dubai market, where we individually procure devices at wholesale rates. By operating with lean margins and selling large volumes, we pass the savings to you. We've sold hundreds of units with a 4.8★ rating. Our limited stock of 9 units reflects genuine clearance pricing, not a gimmick. You're fully protected by our return policy and secure payment gateways.",
   },
   {
     question: "What does 'International Version' mean?",
@@ -578,6 +578,6 @@ export const IPHONE_STORY = {
     "When Apple unveiled the iPhone 15 Pro Max in September 2023, it represented a defining moment in smartphone design. The introduction of aerospace-grade titanium marked the first major material change since the iPhone X. Combined with the revolutionary A17 Pro chip — the industry's first 3nm processor — and the most advanced camera system ever fitted to an iPhone, it set a new standard for what a smartphone could be.",
     "Today, the iPhone 15 Pro Max remains one of the most capable devices on the market. The A17 Pro chip still outperforms the vast majority of competing processors. The 48MP camera system with 5x optical zoom rivals dedicated cameras. The titanium design is both lighter and more durable than any previous model. With the addition of USB-C, it integrates seamlessly into the modern digital ecosystem.",
     "We source our inventory directly from Dubai's wholesale market, securing individually procured units at competitive rates. This direct-to-consumer approach bypasses traditional retail markups, allowing us to offer genuine, factory-sealed iPhone 15 Pro Max units at a fraction of the MRP. Every unit is inspected, verified, and dispatched with the same quality assurance as any premium retailer.",
-    "Our stock is limited to just 15 units at this price. As a premium flagship nearing the end of its production cycle, availability is dwindling. If you've been waiting for the right moment to experience Apple's finest engineering without the flagship price tag — this is it.",
+    "Our stock is limited to just 9 units at this price. As a premium flagship nearing the end of its production cycle, availability is dwindling. If you've been waiting for the right moment to experience Apple's finest engineering without the flagship price tag — this is it.",
   ],
 };
