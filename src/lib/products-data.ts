@@ -507,9 +507,9 @@ export const LOCAL_PRODUCTS: Product[] = [
     slug: "samsung-galaxy-s23-ultra",
     description:
       "Samsung Galaxy S23 Ultra — 200MP camera, S Pen, Snapdragon 8 Gen 2 for Galaxy, 12GB RAM, 512GB Storage, 5000mAh battery, Dynamic AMOLED 2X 120Hz display. International Version with dual SIM support. Graphite colour.",
-    price: 14990,
+    price: 24990,
     original_price: 124999,
-    discount_percentage: 88,
+    discount_percentage: 80,
     category: "electronics",
     images: [],
     stock: 15,

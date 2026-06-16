@@ -57,9 +57,9 @@ export const S23_PRODUCT: Product = {
   slug: "samsung-galaxy-s23-ultra",
   description:
     "Samsung Galaxy S23 Ultra — 200MP camera, S Pen, Snapdragon 8 Gen 2 for Galaxy, 12GB RAM, 512GB Storage, 5000mAh battery, Dynamic AMOLED 2X 120Hz display. International Version with dual SIM support. Graphite colour.",
-  price: 14990,
+  price: 24990,
   original_price: 124999,
-  discount_percentage: 88,
+  discount_percentage: 80,
   category: "electronics",
   images: [],
   stock: 15,
@@ -117,7 +117,7 @@ export const S23_REVIEWS: ProductReviewDetail[] = [
     city: "Delhi",
     rating: 5,
     title: "Unbelievable value",
-    text: "I've been wanting the S23 Ultra since launch but couldn't justify ₹1.25L. Got it here for just ₹14,990 — that's literally less than what I'd pay for a mid-range phone. International version works perfectly with Jio 5G. Thank you so much!",
+    text: "I've been wanting the S23 Ultra since launch but couldn't justify ₹1.25L. Got it here for just ₹24,990/- — that's literally less than what I'd pay for a mid-range phone. International version works perfectly with Jio 5G. Thank you so much!",
     date: "2025-11-25",
     isVerified: true,
     helpfulCount: 38,
@@ -183,7 +183,7 @@ export const S23_REVIEWS: ProductReviewDetail[] = [
     city: "Ahmedabad",
     rating: 5,
     title: "Got at 88% off — best investment",
-    text: "My old phone was dying and I needed a replacement urgently. Spent weeks researching and almost bought a OnePlus for ₹40k. Then I found this deal. For ₹14,990 I got a phone that outperforms everything in the market. Thank you ErgoAura!",
+    text: "My old phone was dying and I needed a replacement urgently. Spent weeks researching and almost bought a OnePlus for ₹40k. Then I found this deal. For ₹24,990/- I got a phone that outperforms everything in the market. Thank you ErgoAura!",
     date: "2025-11-10",
     isVerified: true,
     helpfulCount: 33,
@@ -193,8 +193,8 @@ export const S23_REVIEWS: ProductReviewDetail[] = [
     name: "Rohan D.",
     city: "Jaipur",
     rating: 5,
-    title: "Original price ₹1,24,999 — I paid ₹14,990",
-    text: "Let me break it down for anyone confused: Original MRP ₹1,24,999. I paid ₹14,990. That's a saving of ₹1,10,009. The phone is 100% genuine. I checked the IMEI on Samsung's website. International version means no Indian warranty but at this price, I can get it repaired 5 times and still save money.",
+    title: "Original price ₹1,24,999 — I paid ₹24,990/-",
+    text: "Let me break it down for anyone confused: Original MRP ₹1,24,999. I paid ₹24,990/-. That's a saving of ₹1,00,009. The phone is 100% genuine. I checked the IMEI on Samsung's website. International version means no Indian warranty but at this price, I can get it repaired 5 times and still save money.",
     date: "2025-11-08",
     isVerified: true,
     helpfulCount: 61,
@@ -249,7 +249,7 @@ export const S23_REVIEWS: ProductReviewDetail[] = [
     city: "Coimbatore",
     rating: 5,
     title: "EMI made it even easier",
-    text: "₹14,990 upfront felt like a steal but EMI made it even more affordable. Paying around ₹1,250/month for 12 months. For a phone that originally costs ₹1.25 lakhs, this is insane value. Delivery was prompt and packaging was secure.",
+    text: "₹24,990/- upfront felt like a steal but EMI made it even more affordable. Paying around ₹1,250/month for 12 months. For a phone that originally costs ₹1.25 lakhs, this is insane value. Delivery was prompt and packaging was secure.",
     date: "2025-10-25",
     isVerified: true,
     helpfulCount: 18,
@@ -260,7 +260,7 @@ export const S23_REVIEWS: ProductReviewDetail[] = [
     city: "Nagpur",
     rating: 2,
     title: "Too good to be true? Maybe.",
-    text: "I received the phone and it works fine, but I can't shake the feeling that something's off. How can a ₹1.25 lakh phone sell for ₹14,990? The 88% discount makes me question authenticity. It's an international version with no Indian warranty. The store says it's stock clearance, but I'm still suspicious. Phone itself seems genuine based on IMEI check though.",
+    text: "I received the phone and it works fine, but I can't shake the feeling that something's off. How can a ₹1.25 lakh phone sell for ₹24,990/-? The 88% discount makes me question authenticity. It's an international version with no Indian warranty. The store says it's stock clearance, but I'm still suspicious. Phone itself seems genuine based on IMEI check though.",
     date: "2025-10-22",
     isVerified: true,
     helpfulCount: 73,
@@ -339,7 +339,7 @@ export const S23_FAQS = [
   {
     question: "Why is the price so low? Is this a scam?",
     answer:
-      "We understand the concern — ₹14,990 for a ₹1,24,999 phone sounds unbelievable. This is a legitimate stock-clearance event. Samsung discontinued the S23 Ultra after the S24 Ultra launch, and we acquired remaining inventory at deep bulk discounts. We've sold 500+ units and have a 4.8★ rating. The limited stock (only 15 units left) confirms this is a real clearance, not a scam. You're protected by our return policy and payment via secure gateways.",
+      "We understand the concern — ₹24,990/- for a ₹1,24,999 phone sounds unbelievable. This is a legitimate stock-clearance event. Samsung discontinued the S23 Ultra after the S24 Ultra launch, and we acquired remaining inventory at deep bulk discounts. We've sold 500+ units and have a 4.8★ rating. The limited stock (only 15 units left) confirms this is a real clearance, not a scam. You're protected by our return policy and payment via secure gateways.",
   },
   {
     question: "What does 'International Version' mean?",
@@ -354,7 +354,7 @@ export const S23_FAQS = [
   {
     question: "What warranty do I get?",
     answer:
-      "Being an International Version, Samsung India warranty is not applicable. However, we offer a 7-day replacement guarantee for any manufacturing defects or delivery issues. At this price point (₹14,990 vs ₹1,24,999), you save enough to cover any future repairs several times over. Many local repair shops service Samsung flagships at reasonable costs.",
+      "Being an International Version, Samsung India warranty is not applicable. However, we offer a 7-day replacement guarantee for any manufacturing defects or delivery issues. At this price point (₹24,990/- vs ₹1,24,999), you save enough to cover any future repairs several times over. Many local repair shops service Samsung flagships at reasonable costs.",
   },
   {
     question: "What's included in the box?",

@@ -50,9 +50,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   /* ── S23 Ultra — custom metadata ── */
   if (slug === "samsung-galaxy-s23-ultra") {
     const imageUrl = `/images/products/${encodePath(S23_FOLDER)}/${encodeURIComponent("galaxy-s23-ultra-highlights-kv-1.jpg")}`;
-    const title = `Samsung Galaxy S23 Ultra at ₹14,990 | 88% OFF Mega Deal | ${SITE_METADATA.title}`;
+    const title = `Samsung Galaxy S23 Ultra at ₹24,990/- | 80% OFF Mega Deal | ${SITE_METADATA.title}`;
     const description =
-      "Samsung Galaxy S23 Ultra — 200MP Camera, S Pen, Snapdragon 8 Gen 2, 12GB RAM, 512GB Storage. International Version. Get it at 88% OFF — ₹14,990 only! Limited stock clearance.";
+      "Samsung Galaxy S23 Ultra — 200MP Camera, S Pen, Snapdragon 8 Gen 2, 12GB RAM, 512GB Storage. International Version. Get it at 80% OFF — ₹24,990/- only! Limited stock clearance.";
     return {
       title,
       description,

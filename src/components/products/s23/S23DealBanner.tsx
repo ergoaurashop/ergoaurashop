@@ -47,7 +47,7 @@ export default function S23DealBanner() {
         <span className="s23-deal-banner-highlight">Very Limited!</span>
         <LightningBoltIcon />
         MEGA DEAL
-        <LightningBoltIcon />— S23 Ultra 88% OFF — ₹14,990 —{" "}
+        <LightningBoltIcon />— S23 Ultra 80% OFF — ₹24,990/- —{" "}
         <span className="s23-deal-banner-label">⚠️ HURRY!</span> Buy Now Before
         It's Gone! —{/* SVG flame icon at end */}
         <svg
