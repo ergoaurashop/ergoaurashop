@@ -43,14 +43,20 @@ export default function IPhoneBanner() {
     return () => clearInterval(interval);
   }, []);
 
-  const handleBuyNow = () => {
+  const handleBannerClick = () => {
+    router.push("/products/iphone-15-pro-max-512gb");
+  };
+
+  const handleBuyNow = (e: React.MouseEvent) => {
+    e.stopPropagation();
     useCartStore.getState().addItem(IPHONE_PRODUCT, 1);
     router.push("/checkout");
   };
 
   return (
     <section
-      className="relative w-full h-[220px] overflow-hidden rounded-[16px]"
+      onClick={handleBannerClick}
+      className="relative w-full h-[220px] overflow-hidden rounded-[16px] cursor-pointer"
       style={{ background: "#000" }}
     >
       {/* ── Background layers (z-index: 0) ── */}
