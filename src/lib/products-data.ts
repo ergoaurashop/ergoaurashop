@@ -24,6 +24,8 @@ export const SLUG_TO_FOLDER: Record<string, string> = {
   "waterproof-shoe-covers": "Waterproof shoe covers",
   "samsung-galaxy-s23-ultra":
     "Part-2/Samsung Galaxy S23 Ultra Dual SIM Smartphone 12GB RAM 512GB Storage - Internationa Version",
+  "iphone-15-pro-max-512gb":
+    "Part-2/iPhone-15-Pro-Max-512GB-Smart-Phone-Mega-Deal-Offer",
 };
 
 /**
@@ -147,6 +149,24 @@ export const SLUG_TO_IMAGES: Record<string, string[]> = {
     "galaxy-s23-ultra-highlights-one-ui-1.jpg",
     "galaxy-s23-ultra-highlights-wallet-1.jpg",
     "galaxy-s23-ultra-detail-press.jpg",
+  ],
+  "iphone-15-pro-max-512gb": [
+    "Apple-iPhone-15-Pro-lineup-hero-230912_Full-Bleed-Image.jpg.xlarge_2x.jpg",
+    "Apple-iPhone-15-Pro-lineup-design-230912_big.jpg.large_2x.jpg",
+    "Apple-iPhone-15-Pro-lineup-camera-system-230912_big.jpg.large_2x.jpg",
+    "iPhone-15-Pro-and-15-Pro-Max-1024x593.jpg",
+    "4cc8b667f46992d4f4b9b3616298c244.webp",
+    "9c676b63b6504d2bb7bf3b92d5fac4cd.webp",
+    "51vq0INE3QL._AC_SL1500_.jpg",
+    "61M+HNJhn6L._AC_SL1500_.jpg",
+    "71nimWkOyjL._AC_SL1500_.jpg",
+    "81y-tY6E9hL._AC_SL1500_.jpg",
+    "81YSmKnlijL._AC_SL1500_.jpg",
+    "718qqVErHNL._AC_SL1500_.jpg",
+    "H6c195da845164cdaada13760b9748329C.avif",
+    "iphone-15-pro-max-issues-scaled.webp",
+    "pexels-photo-16004744.jpg",
+    "storage_large_2x.webp",
   ],
 };
 
