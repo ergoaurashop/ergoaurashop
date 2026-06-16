@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { IPHONE_PRODUCT } from "@/lib/iphone-15-pro-max-data";
+import { IPHONE_PRODUCT, IPHONE_FOLDER } from "@/lib/iphone-15-pro-max-data";
 import { useCartStore } from "@/store/cartStore";
 import { formatPrice } from "@/lib/utils";
 
@@ -16,10 +16,32 @@ const STORAGE_OPTIONS: { label: string; value: StorageOption }[] = [
 
 const DOT_GRID_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='0.8' fill='rgba(255,255,255,0.04)'/%3E%3C/svg%3E`;
 
+function encodePath(path: string): string {
+  return path.split("/").map(encodeURIComponent).join("/");
+}
+
+const BANNER_SLIDE_IMAGES = [
+  "iphone-15-pro-max-issues-scaled.webp",
+  "718qqVErHNL._AC_SL1500_.jpg",
+  "Apple-iPhone-15-Pro-lineup-design-230912_big.jpg.large_2x.jpg",
+  "718qqVErHNL._AC_SL1500_.jpg",
+  "H6c195da845164cdaada13760b9748329C.avif",
+];
+
+const IMAGE_BASE_PATH = `/images/products/${encodePath(IPHONE_FOLDER)}/`;
+
 export default function IPhoneBanner() {
   const router = useRouter();
   const [activeStorage, setActiveStorage] = useState<StorageOption>("512GB");
   const [isHovered, setIsHovered] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % BANNER_SLIDE_IMAGES.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleBuyNow = () => {
     useCartStore.getState().addItem(IPHONE_PRODUCT, 1);
@@ -101,6 +123,25 @@ export default function IPhoneBanner() {
           background: "rgba(255,255,255,0.06)",
         }}
       />
+
+      {/* ── Image slideshow (z-index: 5) ── */}
+      <div
+        className="absolute top-0 right-0 h-full pointer-events-none overflow-hidden"
+        style={{ width: "50%", zIndex: 5 }}
+      >
+        {BANNER_SLIDE_IMAGES.map((filename, i) => (
+          <img
+            key={filename + i}
+            src={`${IMAGE_BASE_PATH}${encodeURIComponent(filename)}`}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{
+              opacity: currentSlide === i ? 1 : 0,
+              transition: "opacity 2s ease-in-out",
+            }}
+          />
+        ))}
+      </div>
 
       {/* ── Content layers (z-index: 10) ── */}
       <div className="relative z-10 flex items-center h-full">
