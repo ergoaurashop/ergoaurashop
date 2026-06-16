@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Nunito, Open_Sans } from "next/font/google";
+import { Nunito, Open_Sans, Plus_Jakarta_Sans } from "next/font/google";
 import { SITE_METADATA, GTM_ID } from "@/lib/constants";
 import "./globals.css";
 import TrustMarquee from "@/components/layout/TrustMarquee";
@@ -23,6 +23,13 @@ const openSans = Open_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-open-sans",
+  display: "swap",
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-plus-jakarta",
   display: "swap",
 });
 

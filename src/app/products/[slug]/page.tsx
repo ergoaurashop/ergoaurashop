@@ -11,6 +11,13 @@ import {
   S23_FAQS,
   S23_FOLDER,
 } from "@/lib/s23-ultra-data";
+import {
+  IPHONE_PRODUCT,
+  IPHONE_REVIEWS,
+  IPHONE_REVIEW_SUMMARY,
+  IPHONE_FAQS,
+  IPHONE_FOLDER,
+} from "@/lib/iphone-15-pro-max-data";
 import { SITE_METADATA, SITE_URL } from "@/lib/constants";
 import { PRODUCT_RICH_CONTENT } from "@/lib/product-content";
 import { PRODUCT_REVIEW_SUMMARIES, PRODUCT_REVIEWS } from "@/lib/reviews-data";
@@ -62,6 +69,34 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             width: 1200,
             height: 1200,
             alt: "Samsung Galaxy S23 Ultra",
+          },
+        ],
+      },
+    };
+  }
+
+  /* ── iPhone 15 Pro Max 512GB — custom metadata ── */
+  if (slug === "iphone-15-pro-max-512gb") {
+    const imageUrl = `/images/products/${encodePath(IPHONE_FOLDER)}/${encodeURIComponent("Apple-iPhone-15-Pro-lineup-hero-230912_Full-Bleed-Image.jpg.xlarge_2x.jpg")}`;
+    const title = `iPhone 15 Pro Max 512GB at ₹46,990 | 51% OFF Mega Deal | ${SITE_METADATA.title}`;
+    const description =
+      "iPhone 15 Pro Max 512GB — A17 Pro Chip, 48MP Camera System, Titanium Design, 8GB RAM. International Version. Get it at 51% OFF — ₹46,990 only! Limited stock clearance.";
+    return {
+      title,
+      description,
+      alternates: {
+        canonical: `${SITE_URL}/products/iphone-15-pro-max-512gb`,
+      },
+      openGraph: {
+        title,
+        description,
+        url: `${SITE_URL}/products/iphone-15-pro-max-512gb`,
+        images: [
+          {
+            url: imageUrl,
+            width: 1200,
+            height: 1200,
+            alt: "iPhone 15 Pro Max 512GB",
           },
         ],
       },
@@ -142,6 +177,39 @@ export default async function Page({ params }: Props) {
         />
         <BreadcrumbSchema items={breadcrumbItems} />
         {S23_FAQS.length > 0 && <FaqSchema faqs={S23_FAQS} />}
+        <ProductDetailClient />
+      </>
+    );
+  }
+
+  /* ── iPhone 15 Pro Max 512GB — standalone page with JSON-LD ── */
+  if (slug === "iphone-15-pro-max-512gb") {
+    const breadcrumbItems = [
+      { name: "Home", url: SITE_URL },
+      { name: "Products", url: `${SITE_URL}/products` },
+      {
+        name: "iPhone 15 Pro Max 512GB",
+        url: `${SITE_URL}/products/iphone-15-pro-max-512gb`,
+      },
+    ];
+
+    return (
+      <>
+        <ProductSchema
+          product={IPHONE_PRODUCT}
+          aggregateRating={{
+            ratingValue: IPHONE_REVIEW_SUMMARY.averageRating,
+            reviewCount: IPHONE_REVIEW_SUMMARY.totalReviews,
+          }}
+          reviews={IPHONE_REVIEWS.slice(0, 10).map((r) => ({
+            name: r.name,
+            rating: r.rating,
+            text: r.text,
+            date: r.date,
+          }))}
+        />
+        <BreadcrumbSchema items={breadcrumbItems} />
+        {IPHONE_FAQS.length > 0 && <FaqSchema faqs={IPHONE_FAQS} />}
         <ProductDetailClient />
       </>
     );

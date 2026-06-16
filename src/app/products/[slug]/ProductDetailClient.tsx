@@ -20,6 +20,12 @@ const S23SamsungGalaxySection = dynamic(
   () => import("@/components/products/s23/S23SamsungGalaxySection"),
   { ssr: false },
 );
+
+/* Lazy-load iPhone 15 Pro Max section — only loaded when slug matches */
+const IPhone15ProMaxSection = dynamic(
+  () => import("@/components/products/iphone-15-pro-max/IPhone15ProMaxSection"),
+  { ssr: false },
+);
 import { LOCAL_PRODUCTS } from "@/lib/products-data";
 import { useProductReviews, type SortOption } from "@/hooks/useProductReviews";
 import StickyCartPanel from "@/components/products/StickyCartPanel";
@@ -261,6 +267,11 @@ export default function ProductDetailClient() {
       : product?.images?.length
         ? product.images
         : [getProductImageUrl(slug)];
+
+  /* ── iPhone 15 Pro Max 512GB — fully self-contained page ── */
+  if (slug === "iphone-15-pro-max-512gb") {
+    return <IPhone15ProMaxSection />;
+  }
 
   /* ── S23 Ultra — fully self-contained page (hooks above are called unconditionally) ── */
   if (slug === "samsung-galaxy-s23-ultra") {
