@@ -456,14 +456,14 @@ export const IPHONE_REVIEWS: ProductReviewDetail[] = [
 // Review summary
 // -------------------------------------------------------------------
 export const IPHONE_REVIEW_SUMMARY = {
-  totalReviews: 31,
-  averageRating: 4.4,
+  totalReviews: 71,
+  averageRating: 4.7,
   ratingDistribution: {
-    5: 24,
-    4: 2,
-    3: 1,
+    5: 57,
+    4: 8,
+    3: 3,
     2: 2,
-    1: 2,
+    1: 1,
   },
 };
 
