@@ -4,6 +4,7 @@ import "@/styles/s23-ultra.css";
 import S23Hero from "./S23Hero";
 import S23DealBanner from "./S23DealBanner";
 import S23FullWidthImage from "./S23FullWidthImage";
+import S23Banner from "./S23Banner";
 import S23Story from "./S23Story";
 import S23Features from "./S23Features";
 import S23VideoSection from "./S23VideoSection";
@@ -30,6 +31,9 @@ export default function S23SamsungGalaxySection() {
 
       {/* 3. Full-Width Image — 50vh product hero shot with ad sentence */}
       <S23FullWidthImage />
+
+      {/* 3b. Promo Banner — above The Story */}
+      <S23Banner />
 
       {/* 4. Brand Story */}
       <S23Story />

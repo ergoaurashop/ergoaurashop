@@ -8,6 +8,7 @@ import type { Product } from "@/lib/types";
 import ProductGrid from "@/components/products/ProductGrid";
 import HeroProductShowcase from "@/components/products/HeroProductShowcase";
 import IPhoneBanner from "@/components/products/iphone-15-pro-max/IPhoneBanner";
+import S23Banner from "@/components/products/s23/S23Banner";
 import Button from "@/components/ui/Button";
 import { LOCAL_PRODUCTS } from "@/lib/products-data";
 import { trackViewItemList } from "@/lib/analytics/events";
@@ -66,6 +67,13 @@ export default function HomePage() {
       {/* ============================== */}
       <div className="section-container py-6">
         <IPhoneBanner />
+      </div>
+
+      {/* ============================== */}
+      {/* Samsung Galaxy S23 Ultra Banner */}
+      {/* ============================== */}
+      <div className="section-container py-6">
+        <S23Banner />
       </div>
 
       {/* ============================== */}
