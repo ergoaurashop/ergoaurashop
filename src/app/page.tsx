@@ -7,6 +7,7 @@ import { getSupabaseClient } from "@/lib/supabase/client";
 import type { Product } from "@/lib/types";
 import ProductGrid from "@/components/products/ProductGrid";
 import HeroProductShowcase from "@/components/products/HeroProductShowcase";
+import IPhoneBanner from "@/components/products/iphone-15-pro-max/IPhoneBanner";
 import Button from "@/components/ui/Button";
 import { LOCAL_PRODUCTS } from "@/lib/products-data";
 import { trackViewItemList } from "@/lib/analytics/events";
@@ -59,6 +60,13 @@ export default function HomePage() {
       {/* Hero Product Showcase (NEW) */}
       {/* ============================== */}
       <HeroProductShowcase />
+
+      {/* ============================== */}
+      {/* iPhone 15 Pro Max Promo Banner */}
+      {/* ============================== */}
+      <div className="section-container py-6">
+        <IPhoneBanner />
+      </div>
 
       {/* ============================== */}
       {/* Hero Section */}
