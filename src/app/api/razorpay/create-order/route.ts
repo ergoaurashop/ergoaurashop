@@ -46,30 +46,51 @@ export async function POST(request: Request) {
       currency: order.currency,
     });
   } catch (error: unknown) {
-    // Log the full error details for server-side debugging
+    // Log the full error details for server-side debugging (Vercel logs)
     console.error("=== Razorpay create-order error ===");
     console.error("Error type:", typeof error);
-    console.error(
-      "Full error:",
-      JSON.stringify(error, Object.getOwnPropertyNames(error), 2),
-    );
-    if (error instanceof Error) {
-      console.error("Error message:", error.message);
-      console.error("Error stack:", error.stack);
-    }
+    console.error("Is Error instance:", error instanceof Error);
 
-    // Extract the most descriptive error message available
-    let errorMessage = "Failed to create order";
+    // Capture every possible error representation
+    const errorDetails: Record<string, unknown> = {
+      type: typeof error,
+      isError: error instanceof Error,
+    };
+
     if (error instanceof Error) {
-      errorMessage = error.message;
+      errorDetails.message = error.message;
+      errorDetails.name = error.name;
+      errorDetails.stack = error.stack;
+      // Capture any custom properties on the error
+      try {
+        const proto = Object.getOwnPropertyNames(error);
+        errorDetails.ownProps = proto;
+        for (const key of proto) {
+          errorDetails[key] = (error as Record<string, unknown>)[key];
+        }
+      } catch {
+        // ignore serialization errors
+      }
     } else if (typeof error === "object" && error !== null) {
-      const errObj = error as Record<string, unknown>;
-      if (typeof errObj.message === "string") errorMessage = errObj.message;
-      else if (typeof errObj.error === "string") errorMessage = errObj.error;
-      else if (typeof errObj.description === "string")
-        errorMessage = errObj.description;
+      try {
+        const flat = JSON.parse(JSON.stringify(error));
+        errorDetails.raw = flat;
+      } catch {
+        errorDetails.raw = String(error);
+      }
+    } else {
+      errorDetails.raw = String(error);
     }
 
-    return NextResponse.json({ error: errorMessage }, { status: 500 });
+    console.error("Captured details:", JSON.stringify(errorDetails, null, 2));
+
+    // Return everything so the client-side can also see the real error
+    return NextResponse.json(
+      {
+        error: "Failed to create order",
+        details: errorDetails,
+      },
+      { status: 500 },
+    );
   }
 }
