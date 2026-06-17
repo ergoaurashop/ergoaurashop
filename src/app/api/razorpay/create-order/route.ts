@@ -66,7 +66,9 @@ export async function POST(request: Request) {
         const proto = Object.getOwnPropertyNames(error);
         errorDetails.ownProps = proto;
         for (const key of proto) {
-          errorDetails[key] = (error as Record<string, unknown>)[key];
+          errorDetails[key] = (error as unknown as Record<string, unknown>)[
+            key
+          ];
         }
       } catch {
         // ignore serialization errors

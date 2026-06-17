@@ -70,9 +70,9 @@ export default function CartSidebar() {
 
           {/* Sidebar */}
           <motion.div
-            initial={{ transform: "translateX(100%)" }}
-            animate={{ transform: "translateX(0)" }}
-            exit={{ transform: "translateX(100%)" }}
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
             className="fixed right-0 top-0 h-full w-full max-w-md z-50 shadow-2xl flex flex-col bg-gradient-to-br from-[#1A1614] via-[#2E2825] to-[#3D352F] bg-[length:400%_400%] animate-gradient-shift"
           >
