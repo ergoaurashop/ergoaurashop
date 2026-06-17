@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
+import crypto from "crypto";
 import { supabaseAdmin } from "@/lib/supabase/admin";
+import { RAZORPAY_KEY_SECRET } from "@/lib/constants";
 import type { OrderAddress, OrderProduct } from "@/lib/types";
 
 export async function POST(request: Request) {
@@ -17,6 +19,8 @@ export async function POST(request: Request) {
       shipping,
       total,
       payment_id,
+      razorpay_order_id,
+      razorpay_signature,
       payment_status,
       notes,
     } = body;
@@ -53,6 +57,23 @@ export async function POST(request: Request) {
         { error: "Invalid total amount" },
         { status: 400 },
       );
+    }
+
+    // ── Verify Razorpay payment signature ─────────────────────────
+    // This prevents fake orders where the caller fabricates a payment_id.
+    if (payment_id && razorpay_order_id && razorpay_signature) {
+      const expectedSignature = crypto
+        .createHmac("sha256", RAZORPAY_KEY_SECRET)
+        .update(`${razorpay_order_id}|${payment_id}`)
+        .digest("hex");
+
+      if (expectedSignature !== razorpay_signature) {
+        console.error("[Order Create] Payment signature mismatch");
+        return NextResponse.json(
+          { error: "Payment verification failed" },
+          { status: 403 },
+        );
+      }
     }
 
     // ── Insert order using service role (bypasses RLS) ────────────

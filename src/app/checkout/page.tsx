@@ -163,6 +163,8 @@ export default function CheckoutPage() {
         handler: async (response: RazorpayResponse) => {
           try {
             // 4. Payment successful – create order in Supabase
+            //    Send the Razorpay signature + order_id so the backend
+            //    can verify the payment before saving the order.
             const orderRes = await fetch("/api/orders/create", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -193,6 +195,8 @@ export default function CheckoutPage() {
                 shipping,
                 total,
                 payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature,
                 payment_status: "paid",
               }),
             });
