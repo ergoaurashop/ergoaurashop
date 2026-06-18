@@ -11,16 +11,16 @@ import BlogListingJsonLd from "./BlogListingJsonLd";
 import BreadcrumbSchema from "@/components/seo/BreadcrumbSchema";
 
 export const metadata: Metadata = {
-  title: "Blog — Wellness Tips, Guides & Lifestyle | ErgoAura Shop",
+  title: "Blog — Mega Deals, Tips & Buying Guides | ErgoAura Shop",
   description:
-    "Discover expert wellness tips, product guides, and lifestyle advice from ErgoAura. Learn about posture correction, period pain relief, foot care, travel essentials, and more.",
+    "Discover expert buying guides, mega deal tips, and product advice from ErgoAura. Find the best value for every purchase.",
   alternates: {
     canonical: `${SITE_URL}/blog`,
   },
   openGraph: {
-    title: "ErgoAura Blog — Wellness Tips & Product Guides",
+    title: "ErgoAura Blog — Mega Deals & Buying Guides",
     description:
-      "Expert advice on posture, sleep, foot care, travel essentials, and home wellness. Read the latest from ErgoAura.",
+      "Expert advice on finding the best deals, product comparisons, and smart shopping tips. Read the latest from ErgoAura.",
     url: `${SITE_URL}/blog`,
     siteName: "ErgoAura Shop",
     type: "website",
@@ -35,9 +35,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ErgoAura Blog — Wellness Tips & Product Guides",
+    title: "ErgoAura Blog — Mega Deals & Buying Guides",
     description:
-      "Expert advice on posture, sleep, foot care, travel essentials, and home wellness.",
+      "Smart shopping tips, product comparisons, and mega deal advice. Read the latest from ErgoAura.",
     images: [`${SITE_URL}/images/logo/ergoauralogo.webp`],
   },
   robots: {
@@ -85,8 +85,8 @@ export default function BlogPage() {
             ErgoAura Blog
           </h1>
           <p className="text-lg md:text-xl text-[#D8CFBF] max-w-2xl">
-            Expert wellness tips, product guides, and lifestyle advice to help
-            you live more comfortably every day.
+            Expert buying guides, mega deal tips, and product advice to help you
+            shop smarter and save more every day.
           </p>
         </div>
       </section>

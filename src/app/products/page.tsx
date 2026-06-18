@@ -17,7 +17,7 @@ const PAGE_SIZE = 12;
 
 const CATEGORIES = [
   { label: "All", value: "all" },
-  { label: "Wellness", value: "wellness" },
+  { label: "Mega Deals", value: "wellness" },
   { label: "Home & Kitchen", value: "kitchen" },
   { label: "Accessories", value: "accessories" },
   { label: "Personal Care", value: "personal-care" },
@@ -177,8 +177,8 @@ function ProductsContent() {
             </span>
             <h1 className="type-h1 text-[#F5F1EB] mt-2 mb-3">All Products</h1>
             <p className="type-body-lg text-[#D8CFBF] max-w-xl mx-auto">
-              Discover premium wellness products designed for your everyday
-              comfort and well-being
+              Discover unbeatable mega deals on premium products — hand-picked
+              and priced for maximum savings
             </p>
           </div>
         </section>

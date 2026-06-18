@@ -38,14 +38,15 @@ export const SOCIAL_LINKS = {
 /** Default metadata for all pages */
 export const SITE_METADATA = {
   title: "ErgoAura Shop",
-  description: "Premium wellness products for your everyday comfort.",
+  description:
+    "Unbeatable mega deals on premium hand-picked products — quality you love at prices you will love.",
   url: SITE_URL,
   logo: "/images/logo/ergoauralogo.webp",
 } as const;
 
 /** Site categories */
 export const CATEGORIES = [
-  { slug: "wellness", name: "Wellness" },
+  { slug: "wellness", name: "Mega Deals" },
   { slug: "kitchen", name: "Home & Kitchen" },
   { slug: "accessories", name: "Accessories" },
   { slug: "personal-care", name: "Personal Care" },

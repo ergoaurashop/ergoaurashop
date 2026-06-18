@@ -7,14 +7,14 @@ import BreadcrumbSchema from "@/components/seo/BreadcrumbSchema";
 export const metadata: Metadata = {
   title: "Categories",
   description:
-    "Browse all product categories at ErgoAura Shop — Wellness, Home & Kitchen, Accessories, and Personal Care.",
+    "Browse all product categories at ErgoAura Shop — Mega Deals, Home & Kitchen, Accessories, and Personal Care.",
   alternates: {
     canonical: `${SITE_URL}/categories`,
   },
   openGraph: {
     title: `Categories | ${SITE_METADATA.title}`,
     description:
-      "Browse all product categories at ErgoAura Shop — Wellness, Home & Kitchen, Accessories, and Personal Care.",
+      "Browse all product categories at ErgoAura Shop — Mega Deals, Home & Kitchen, Accessories, and Personal Care.",
     url: `${SITE_URL}/categories`,
   },
 };
@@ -51,8 +51,8 @@ export default function CategoriesPage() {
             </nav>
             <h1 className="type-h1 text-center">Categories</h1>
             <p className="text-center text-[#86868B] mt-3 max-w-2xl mx-auto">
-              Explore our curated collection of wellness, kitchen, accessories,
-              and personal care products designed for your everyday comfort.
+              Explore our curated collection of mega deals across kitchen,
+              accessories, personal care, and more — all at unbeatable prices.
             </p>
           </div>
         </section>

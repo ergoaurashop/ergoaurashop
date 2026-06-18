@@ -83,7 +83,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: SITE_METADATA.url,
   },
-  category: "wellness",
+  category: "mega-deals",
 };
 
 export default function RootLayout({

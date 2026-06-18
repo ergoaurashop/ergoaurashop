@@ -17,7 +17,7 @@ export default function BlogListingJsonLd() {
     "@type": "CollectionPage",
     name: "ErgoAura Blog — Wellness Tips & Product Guides",
     description:
-      "Expert wellness tips, product guides, and lifestyle advice from ErgoAura.",
+      "Expert buying guides, mega deal tips, and product advice from ErgoAura.",
     url: `${baseUrl}/blog`,
     isPartOf: {
       "@type": "WebSite",

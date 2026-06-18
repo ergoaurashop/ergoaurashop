@@ -53,7 +53,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Category pages
   const categories = [
-    { slug: "wellness", name: "Wellness" },
+    { slug: "wellness", name: "Mega Deals" },
     { slug: "kitchen", name: "Home & Kitchen" },
     { slug: "accessories", name: "Accessories" },
     { slug: "personal-care", name: "Personal Care" },

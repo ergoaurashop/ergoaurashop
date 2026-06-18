@@ -98,16 +98,16 @@ export default function HomePage() {
             transition={{ duration: 0.6 }}
           >
             <span className="type-overline-gold text-[#C9A962] tracking-[0.15em] uppercase">
-              Premium Wellness Collection
+              🔥 Mega Deals Collection
             </span>
             <h1 className="type-h1 text-[#1A1614] mt-4 mb-4 text-balance max-w-3xl mx-auto">
-              Premium Wellness for
+              Hand Picked Mega Deals
               <br />
-              <span className="text-[#C9A962]">Everyday Comfort</span>
+              <span className="text-[#C9A962]">Up to 50% Off</span>
             </h1>
             <p className="type-body-lg text-[#6B6560] max-w-2xl mx-auto mb-10 text-balance">
-              Discover thoughtfully designed products that make your daily life
-              more comfortable, healthier, and better.
+              Score massive savings on premium hand-picked products — curated
+              just for you at unbeatable prices.
             </p>
             <div className="flex items-center justify-center gap-4 flex-wrap">
               <Link href="/products">
@@ -223,7 +223,7 @@ export default function HomePage() {
               Featured Products
             </h2>
             <p className="type-body-lg text-[#86868B]">
-              Our most popular wellness essentials
+              Our bestselling mega deals — hand-picked for you
             </p>
           </div>
           <Link
@@ -261,7 +261,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {[
               {
-                name: "Wellness",
+                name: "Mega Deals",
                 slug: "wellness",
                 image: "/images/logo/ergoauralogo.webp",
               },

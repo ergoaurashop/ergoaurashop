@@ -30,8 +30,8 @@ export default function Footer() {
               className="h-8 w-auto brightness-0 invert mb-4"
             />
             <p className="text-sm text-white/60 leading-relaxed">
-              Premium wellness products designed for your everyday comfort and
-              well-being.
+              Premium products at unbeatable mega deal prices — hand-picked for
+              your everyday comfort and savings.
             </p>
             {/* Social Links */}
             <div className="flex items-center gap-4 mt-4">
