@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -202,7 +203,7 @@ export default function QuickViewModal({
                 "h-[40vh] md:h-auto",
               )}
             >
-              <img
+              <Image
                 key={product.slug}
                 src={
                   imgError || !images[0]
@@ -210,7 +211,9 @@ export default function QuickViewModal({
                     : images[0]
                 }
                 alt={product.name}
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 768px) 100vw, 45vw"
+                className="object-cover"
                 onError={() => setImgError(true)}
               />
 

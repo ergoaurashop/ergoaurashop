@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -140,11 +141,13 @@ export default function S23Banner() {
         style={{ width: "50%", zIndex: 5 }}
       >
         {BANNER_SLIDE_IMAGES.map((filename, i) => (
-          <img
+          <Image
             key={filename + i}
             src={`${IMAGE_BASE_PATH}${encodeURIComponent(filename)}`}
             alt=""
-            className="absolute inset-0 w-full h-full object-cover"
+            fill
+            sizes="50vw"
+            className="object-cover"
             style={{
               opacity: currentSlide === i ? 1 : 0,
               transition: "opacity 2s ease-in-out",

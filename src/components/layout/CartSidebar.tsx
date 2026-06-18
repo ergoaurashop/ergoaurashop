@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/store/cartStore";
 import { cn, formatPrice, getProductImageUrl } from "@/lib/utils";
@@ -138,12 +139,14 @@ export default function CartSidebar() {
                       <Link
                         href={`/products/${item.product.slug}`}
                         onClick={closeCart}
-                        className="w-20 h-20 rounded-apple-sm bg-white/10 overflow-hidden flex-shrink-0 group block"
+                        className="w-20 h-20 rounded-apple-sm bg-white/10 overflow-hidden flex-shrink-0 group block relative"
                       >
-                        <img
+                        <Image
                           src={getProductImageUrl(item.product.slug)}
                           alt={item.product.name}
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          fill
+                          sizes="80px"
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                       </Link>
 

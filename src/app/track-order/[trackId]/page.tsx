@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
@@ -356,11 +357,13 @@ export default function TrackOrderResultPage() {
                 <div className="space-y-3">
                   {order.products.map((p, i) => (
                     <div key={i} className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-apple-sm bg-apple-bg overflow-hidden shrink-0">
-                        <img
+                      <div className="w-12 h-12 rounded-apple-sm bg-apple-bg overflow-hidden shrink-0 relative">
+                        <Image
                           src={p.image}
                           alt={p.name}
-                          className="w-full h-full object-cover"
+                          fill
+                          sizes="48px"
+                          className="object-cover"
                         />
                       </div>
                       <div className="flex-1 min-w-0">

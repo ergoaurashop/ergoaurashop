@@ -4,6 +4,7 @@
 // =====================================================================
 
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBlogPost, BLOG_POSTS } from "@/lib/blog-data";
@@ -213,12 +214,14 @@ export default async function Page({ params }: Props) {
         <div className="bg-[#F5F1EB]">
           <div className="section-container py-8">
             <div className="max-w-4xl mx-auto">
-              <div className="aspect-[16/9] rounded-2xl overflow-hidden bg-[#EAE3D5]">
-                <img
+              <div className="aspect-[16/9] rounded-2xl overflow-hidden bg-[#EAE3D5] relative">
+                <Image
                   src={post.image}
                   alt={post.imageAlt}
-                  className="w-full h-full object-cover"
-                  fetchPriority="high"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 896px"
+                  className="object-cover"
+                  priority
                 />
               </div>
             </div>
@@ -272,11 +275,13 @@ export default async function Page({ params }: Props) {
                     href={`/products/${product.slug}`}
                     className="group flex items-center gap-4 p-4 bg-[#F5F1EB] rounded-xl hover:bg-[#EAE3D5] transition-colors duration-200"
                   >
-                    <div className="w-16 h-16 rounded-lg overflow-hidden bg-[#EAE3D5] shrink-0">
-                      <img
+                    <div className="w-16 h-16 rounded-lg overflow-hidden bg-[#EAE3D5] shrink-0 relative">
+                      <Image
                         src={`/images/products/${product.slug}/${product.images?.[0] || ""}`}
                         alt={product.name}
-                        className="w-full h-full object-cover"
+                        fill
+                        sizes="64px"
+                        className="object-cover"
                         loading="lazy"
                       />
                     </div>

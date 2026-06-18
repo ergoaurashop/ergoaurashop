@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 import Link from "next/link";
 import { CONTACT_EMAIL, COMPLAINT_EMAIL, SOCIAL_LINKS } from "@/lib/constants";
@@ -24,9 +25,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div>
-            <img
+            <Image
               src="/images/logo/ergoauralogo.webp"
               alt="ErgoAura Shop"
+              width={180}
+              height={32}
               className="h-8 w-auto brightness-0 invert mb-4"
             />
             <p className="text-sm text-white/60 leading-relaxed">

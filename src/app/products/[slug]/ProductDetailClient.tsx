@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
 
 import { trackViewItem } from "@/lib/analytics/events";
 
@@ -402,16 +403,18 @@ export default function ProductDetailClient() {
                   <button
                     key={i}
                     onClick={() => setSelectedImage(i)}
-                    className={`w-16 h-16 rounded-apple-sm overflow-hidden border-2 shrink-0 transition-colors ${
+                    className={`w-16 h-16 rounded-apple-sm overflow-hidden border-2 shrink-0 relative transition-colors ${
                       i === selectedImage
                         ? "border-apple-black"
                         : "border-transparent hover:border-apple-border"
                     }`}
                   >
-                    <img
+                    <Image
                       src={img}
                       alt={`${product.name} ${i + 1}`}
-                      className="w-full h-full object-cover"
+                      fill
+                      sizes="64px"
+                      className="object-cover"
                     />
                   </button>
                 ))}

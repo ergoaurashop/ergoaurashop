@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { getSupabaseClient } from "@/lib/supabase/client";
@@ -53,8 +53,11 @@ export default function HeroProductShowcase() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const gapMs = isDesktop ? DESKTOP_GAP_MS : MOBILE_GAP_MS;
-  const cycleMs = gapMs + TRANSITION_DURATION * 1000;
+  const cycleMs = useMemo(
+    () =>
+      (isDesktop ? DESKTOP_GAP_MS : MOBILE_GAP_MS) + TRANSITION_DURATION * 1000,
+    [isDesktop],
+  );
 
   /* ── Carousel state ────────────────────────────────────────── */
   const [currentSet, setCurrentSet] = useState(0);
@@ -116,7 +119,7 @@ export default function HeroProductShowcase() {
     if (intervalRef.current) clearInterval(intervalRef.current);
     if (loading || products.length === 0 || totalSets <= 1) return;
     intervalRef.current = setInterval(advance, cycleMs);
-  }, [loading, products.length, totalSets, advance]);
+  }, [loading, products.length, totalSets, advance, cycleMs]);
 
   useEffect(() => {
     startInterval();
@@ -139,7 +142,7 @@ export default function HeroProductShowcase() {
     if (!loading && products.length > 0 && totalSets > 1) {
       intervalRef.current = setInterval(advance, cycleMs);
     }
-  }, [loading, products.length, totalSets, advance]);
+  }, [loading, products.length, totalSets, advance, cycleMs]);
 
   /* ── Manual dot navigation ─────────────────────────────────── */
   const goToSet = useCallback(
@@ -153,7 +156,7 @@ export default function HeroProductShowcase() {
         intervalRef.current = setInterval(advance, cycleMs);
       }
     },
-    [isPaused, loading, products.length, totalSets, advance],
+    [isPaused, loading, products.length, totalSets, advance, cycleMs],
   );
 
   /* ═════════════════════════════════════════════════════════════ */

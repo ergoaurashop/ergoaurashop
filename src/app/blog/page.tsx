@@ -4,6 +4,7 @@
 // =====================================================================
 
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { BLOG_POSTS } from "@/lib/blog-data";
 import { SITE_URL } from "@/lib/constants";
@@ -103,10 +104,12 @@ export default function BlogPage() {
               >
                 {/* Featured Image */}
                 <div className="relative aspect-[16/9] overflow-hidden bg-[#EAE3D5]">
-                  <img
+                  <Image
                     src={post.image}
                     alt={post.imageAlt}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
                   <div className="absolute top-3 left-3">

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -420,15 +421,17 @@ export default function CheckoutPage() {
                 <div className="space-y-4 mb-6">
                   {items.map((item) => (
                     <div key={item.product.id} className="flex gap-3">
-                      <div className="w-16 h-16 rounded-lg bg-[#F5F1EB] overflow-hidden shrink-0">
-                        <img
+                      <div className="w-16 h-16 rounded-lg bg-[#F5F1EB] overflow-hidden shrink-0 relative">
+                        <Image
                           key={item.product.slug}
                           src={getProductImageUrl(
                             item.product.slug,
                             item.product.images?.[0],
                           )}
                           alt={item.product.name}
-                          className="w-full h-full object-cover"
+                          fill
+                          sizes="64px"
+                          className="object-cover"
                           onError={(e) => {
                             (e.target as HTMLImageElement).src =
                               "/images/logo/ergoauralogo.webp";

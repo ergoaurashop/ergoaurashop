@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { getProductImageAltText } from "@/lib/seo/product-alt-text";
@@ -99,17 +100,18 @@ export default function ProductImage({
     <div className="relative aspect-[4/3] overflow-hidden bg-[#F5F1EB]">
       {/* Stacked images */}
       {Array.from({ length: maxImages }).map((_, i) => (
-        <img
+        <Image
           key={i}
           src={images[i]}
           alt={getProductImageAltText(slug, productName, i)}
           loading={priority && i === 0 ? "eager" : "lazy"}
+          fill
+          sizes={sizes}
           className={cn(
-            "absolute inset-0 w-full h-full object-cover",
+            "object-cover",
             "transition-opacity duration-500 ease-in-out",
             i === activeIndex ? "opacity-100" : "opacity-0",
           )}
-          sizes={sizes}
         />
       ))}
 

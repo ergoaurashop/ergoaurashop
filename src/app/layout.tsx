@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Suspense } from "react";
-import { Nunito, Open_Sans, Plus_Jakarta_Sans } from "next/font/google";
+import {
+  Nunito,
+  Open_Sans,
+  Plus_Jakarta_Sans,
+  Inter,
+  Playfair_Display,
+} from "next/font/google";
 import { SITE_METADATA, GTM_ID } from "@/lib/constants";
 import "./globals.css";
 import TrustMarquee from "@/components/layout/TrustMarquee";
@@ -12,6 +19,20 @@ import WebSiteSchema from "@/components/seo/WebSiteSchema";
 
 /* ── S23 Ultra fonts (Nunito headings + Open Sans body) ──
    These are scoped via CSS variables so they only apply within .s23-page. */
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-playfair-display",
+  display: "swap",
+});
 const nunito = Nunito({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
@@ -94,21 +115,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Playfair Display for headings */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-
         {/* Google Tag Manager */}
         {GTM_ID && (
-          <script
+          <Script
+            id="gtm-script"
+            strategy="afterInteractive"
             dangerouslySetInnerHTML={{
               __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -120,7 +131,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         )}
       </head>
       <body
-        className={`min-h-screen flex flex-col ${nunito.variable} ${openSans.variable}`}
+        className={`min-h-screen flex flex-col ${nunito.variable} ${openSans.variable} ${inter.variable} ${playfairDisplay.variable}`}
       >
         {/* JSON-LD Structured Data — site-wide schemas */}
         <OrganizationSchema />
