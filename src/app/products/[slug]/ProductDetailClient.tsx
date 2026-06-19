@@ -33,6 +33,12 @@ const WorldCup2026Section = dynamic(
   () => import("@/components/products/worldcup2026/WorldCup2026Section"),
   { ssr: false },
 );
+
+/* Lazy-load ErgoSlug test section — payment check page, not indexed */
+const ErgoSlugTestSection = dynamic(
+  () => import("@/components/products/ergoslug-test/ErgoSlugTestSection"),
+  { ssr: false },
+);
 import { LOCAL_PRODUCTS } from "@/lib/products-data";
 import { useProductReviews, type SortOption } from "@/hooks/useProductReviews";
 import StickyCartPanel from "@/components/products/StickyCartPanel";
@@ -283,6 +289,11 @@ export default function ProductDetailClient() {
   /* ── S23 Ultra — fully self-contained page (hooks above are called unconditionally) ── */
   if (slug === "samsung-galaxy-s23-ultra") {
     return <S23SamsungGalaxySection />;
+  }
+
+  /* ── ErgoSlug Test — payment check page ── */
+  if (slug === "ergoslug-test-test") {
+    return <ErgoSlugTestSection />;
   }
 
   /* ── WorldCup 2026 — fully self-contained page ── */

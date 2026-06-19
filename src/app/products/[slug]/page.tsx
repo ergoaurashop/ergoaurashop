@@ -25,6 +25,12 @@ import {
   WC2026_FAQS,
   WC2026_FOLDER,
 } from "@/lib/worldcup-2026-data";
+import {
+  ERGO_TEST_PRODUCT,
+  ERGO_TEST_REVIEWS,
+  ERGO_TEST_REVIEW_SUMMARY,
+  ERGO_TEST_FAQS,
+} from "@/lib/ergoslug-test-data";
 import { SITE_METADATA, SITE_URL } from "@/lib/constants";
 import { PRODUCT_RICH_CONTENT } from "@/lib/product-content";
 import { PRODUCT_REVIEW_SUMMARIES, PRODUCT_REVIEWS } from "@/lib/reviews-data";
@@ -106,6 +112,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             alt: "iPhone 15 Pro Max 512GB",
           },
         ],
+      },
+    };
+  }
+
+  /* ── ErgoSlug Test — payment check page (noindex, nofollow) ── */
+  if (slug === "ergoslug-test-test") {
+    return {
+      title: "Payment Check — Test Product",
+      description: "Internal payment testing page. Not for public use.",
+      robots: {
+        index: false,
+        follow: false,
+        googleBot: {
+          index: false,
+          follow: false,
+        },
+      },
+      alternates: {
+        canonical: `${SITE_URL}/products/ergoslug-test-test`,
       },
     };
   }
@@ -245,6 +270,25 @@ export default async function Page({ params }: Props) {
         />
         <BreadcrumbSchema items={breadcrumbItems} />
         {IPHONE_FAQS.length > 0 && <FaqSchema faqs={IPHONE_FAQS} />}
+        <ProductDetailClient />
+      </>
+    );
+  }
+
+  /* ── ErgoSlug Test — payment check page (no JSON-LD, no indexing) ── */
+  if (slug === "ergoslug-test-test") {
+    const breadcrumbItems = [
+      { name: "Home", url: SITE_URL },
+      { name: "Products", url: `${SITE_URL}/products` },
+      {
+        name: "Payment Check — Test Product",
+        url: `${SITE_URL}/products/ergoslug-test-test`,
+      },
+    ];
+
+    return (
+      <>
+        <BreadcrumbSchema items={breadcrumbItems} />
         <ProductDetailClient />
       </>
     );
