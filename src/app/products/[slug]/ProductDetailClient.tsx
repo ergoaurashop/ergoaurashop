@@ -27,6 +27,12 @@ const IPhone15ProMaxSection = dynamic(
   () => import("@/components/products/iphone-15-pro-max/IPhone15ProMaxSection"),
   { ssr: false },
 );
+
+/* Lazy-load WorldCup 2026 section — only loaded when slug matches */
+const WorldCup2026Section = dynamic(
+  () => import("@/components/products/worldcup2026/WorldCup2026Section"),
+  { ssr: false },
+);
 import { LOCAL_PRODUCTS } from "@/lib/products-data";
 import { useProductReviews, type SortOption } from "@/hooks/useProductReviews";
 import StickyCartPanel from "@/components/products/StickyCartPanel";
@@ -277,6 +283,11 @@ export default function ProductDetailClient() {
   /* ── S23 Ultra — fully self-contained page (hooks above are called unconditionally) ── */
   if (slug === "samsung-galaxy-s23-ultra") {
     return <S23SamsungGalaxySection />;
+  }
+
+  /* ── WorldCup 2026 — fully self-contained page ── */
+  if (slug === "messi-argentina-2026-jersey") {
+    return <WorldCup2026Section />;
   }
 
   /* ── Loading ── */

@@ -18,6 +18,13 @@ import {
   IPHONE_FAQS,
   IPHONE_FOLDER,
 } from "@/lib/iphone-15-pro-max-data";
+import {
+  WC2026_PRODUCT,
+  WC2026_REVIEWS,
+  WC2026_REVIEW_SUMMARY,
+  WC2026_FAQS,
+  WC2026_FOLDER,
+} from "@/lib/worldcup-2026-data";
 import { SITE_METADATA, SITE_URL } from "@/lib/constants";
 import { PRODUCT_RICH_CONTENT } from "@/lib/product-content";
 import { PRODUCT_REVIEW_SUMMARIES, PRODUCT_REVIEWS } from "@/lib/reviews-data";
@@ -97,6 +104,34 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             width: 1200,
             height: 1200,
             alt: "iPhone 15 Pro Max 512GB",
+          },
+        ],
+      },
+    };
+  }
+
+  /* ── Messi Argentina 2026 Jersey — custom metadata ── */
+  if (slug === "messi-argentina-2026-jersey") {
+    const imageUrl = `/images/products/${encodePath(WC2026_FOLDER)}/${encodeURIComponent("Home/71DbIUtPvCL._AC_SX569_.jpg")}`;
+    const title = `Messi Argentina 2026 World Cup Jersey at ₹499 | 50% OFF | ${SITE_METADATA.title}`;
+    const description =
+      "Dress like a champion with Messi's exact replica jersey for Argentina. ADIDAS original replica, breathable fabric, available in S-XXL. Buy 3 Get 1 Free! Limited stock.";
+    return {
+      title,
+      description,
+      alternates: {
+        canonical: `${SITE_URL}/products/messi-argentina-2026-jersey`,
+      },
+      openGraph: {
+        title,
+        description,
+        url: `${SITE_URL}/products/messi-argentina-2026-jersey`,
+        images: [
+          {
+            url: imageUrl,
+            width: 1200,
+            height: 1200,
+            alt: "Messi Argentina 2026 World Cup Jersey",
           },
         ],
       },
@@ -210,6 +245,39 @@ export default async function Page({ params }: Props) {
         />
         <BreadcrumbSchema items={breadcrumbItems} />
         {IPHONE_FAQS.length > 0 && <FaqSchema faqs={IPHONE_FAQS} />}
+        <ProductDetailClient />
+      </>
+    );
+  }
+
+  /* ── Messi Argentina 2026 Jersey — standalone page with JSON-LD ── */
+  if (slug === "messi-argentina-2026-jersey") {
+    const breadcrumbItems = [
+      { name: "Home", url: SITE_URL },
+      { name: "Products", url: `${SITE_URL}/products` },
+      {
+        name: "Messi Argentina 2026 Jersey",
+        url: `${SITE_URL}/products/messi-argentina-2026-jersey`,
+      },
+    ];
+
+    return (
+      <>
+        <ProductSchema
+          product={WC2026_PRODUCT}
+          aggregateRating={{
+            ratingValue: WC2026_REVIEW_SUMMARY.averageRating,
+            reviewCount: WC2026_REVIEW_SUMMARY.totalReviews,
+          }}
+          reviews={WC2026_REVIEWS.slice(0, 10).map((r) => ({
+            name: r.name,
+            rating: r.rating,
+            text: r.text,
+            date: r.date,
+          }))}
+        />
+        <BreadcrumbSchema items={breadcrumbItems} />
+        {WC2026_FAQS.length > 0 && <FaqSchema faqs={WC2026_FAQS} />}
         <ProductDetailClient />
       </>
     );

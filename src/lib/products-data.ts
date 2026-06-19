@@ -26,6 +26,8 @@ export const SLUG_TO_FOLDER: Record<string, string> = {
     "Part-2/Samsung Galaxy S23 Ultra Dual SIM Smartphone 12GB RAM 512GB Storage - Internationa Version",
   "iphone-15-pro-max-512gb":
     "Part-2/iPhone-15-Pro-Max-512GB-Smart-Phone-Mega-Deal-Offer",
+  "messi-argentina-2026-jersey":
+    "Part-2/Messi 10 Jersy Argentina world cup 2026",
 };
 
 /**
@@ -167,6 +169,15 @@ export const SLUG_TO_IMAGES: Record<string, string[]> = {
     "iphone-15-pro-max-issues-scaled.webp",
     "pexels-photo-16004744.jpg",
     "storage_large_2x.webp",
+  ],
+  "messi-argentina-2026-jersey": [
+    "Home/71DbIUtPvCL._AC_SX569_.jpg",
+    "Home/71h9Len6zzL._AC_SX569_.jpg",
+    "Home/71iX74mi2kL._AC_SX569_.jpg",
+    "Home/71jKpmVS7VL._AC_SY606_.jpg",
+    "Home/71lpsKaeG7L._AC_SX569_.jpg",
+    "Home/71S5WdLyYpL._AC_SX569_.jpg",
+    "Home/911VxI6UNHL._AC_SX569_.jpg",
   ],
 };
 
