@@ -50,6 +50,8 @@ export const CATEGORIES = [
   { slug: "kitchen", name: "Home & Kitchen" },
   { slug: "accessories", name: "Accessories" },
   { slug: "personal-care", name: "Personal Care" },
+  { slug: "electronics", name: "Electronics & Gadgets" },
+  { slug: "worldcup-2026", name: "Fifa Worldcup 2026" },
 ] as const;
 
 // =====================================================================

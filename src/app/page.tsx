@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { getSupabaseClient } from "@/lib/supabase/client";
 import type { Product } from "@/lib/types";
@@ -10,7 +11,9 @@ import HeroProductShowcase from "@/components/products/HeroProductShowcase";
 import IPhoneBanner from "@/components/products/iphone-15-pro-max/IPhoneBanner";
 import S23Banner from "@/components/products/s23/S23Banner";
 import Button from "@/components/ui/Button";
+import { CATEGORIES } from "@/lib/constants";
 import { LOCAL_PRODUCTS } from "@/lib/products-data";
+import { getProductImages } from "@/lib/utils";
 import { trackViewItemList } from "@/lib/analytics/events";
 import { useScrollDepth } from "@/hooks/useScrollDepth";
 
@@ -259,311 +262,123 @@ export default function HomePage() {
             <h2 className="type-h2 text-[#1A1614] mt-1">Shop by Category</h2>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {[
-              {
-                name: "Mega Deals",
-                slug: "wellness",
-                image: "/images/logo/ergoauralogo.webp",
-              },
-              {
-                name: "Home & Kitchen",
-                slug: "kitchen",
-                image: "/images/logo/ergoauralogo.webp",
-              },
-              {
-                name: "Accessories",
-                slug: "accessories",
-                image: "/images/logo/ergoauralogo.webp",
-              },
-              {
-                name: "Personal Care",
-                slug: "personal-care",
-                image: "/images/logo/ergoauralogo.webp",
-              },
-            ].map((category) => (
-              <Link
-                key={category.slug}
-                href={`/products?category=${category.slug}`}
-                className="group rounded-2xl overflow-hidden bg-white shadow-base hover:shadow-xl
-                           transition-all duration-300 hover:-translate-y-1"
-              >
-                <div className="aspect-[4/3] bg-[#F5F1EB] overflow-hidden flex items-center justify-center">
-                  {category.slug === "wellness" && (
-                    <motion.svg
-                      viewBox="0 0 120 120"
-                      className="w-20 h-20 sm:w-24 sm:h-24"
-                      fill="none"
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ duration: 0.6 }}
-                    >
-                      {/* Lotus petals */}
-                      {[0, 72, 144, 216, 288].map((rotation, i) => (
-                        <motion.path
-                          key={i}
-                          d="M60 90 C40 70 30 50 40 30 C50 20 58 25 60 35 C62 25 70 20 80 30 C90 50 80 70 60 90Z"
-                          fill="#C9A962"
-                          fillOpacity="0.3"
-                          transform={`rotate(${rotation} 60 55)`}
-                          animate={{
-                            scale: [1, 1.08, 1],
-                            opacity: [0.3, 0.6, 0.3],
-                          }}
-                          transition={{
-                            duration: 3 + i * 0.3,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                          }}
-                        />
-                      ))}
-                      {/* Center circle */}
-                      <motion.circle
-                        cx="60"
-                        cy="55"
-                        r="8"
-                        fill="#C9A962"
-                        animate={{ r: [8, 10, 8] }}
-                        transition={{
-                          duration: 2.5,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                        }}
-                      />
-                    </motion.svg>
-                  )}
-                  {category.slug === "kitchen" && (
-                    <motion.svg
-                      viewBox="0 0 120 120"
-                      className="w-20 h-20 sm:w-24 sm:h-24"
-                      fill="none"
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ duration: 0.6 }}
-                    >
-                      {/* House */}
-                      <motion.path
-                        d="M20 60 L60 20 L100 60"
-                        stroke="#C9A962"
-                        strokeWidth="3"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 1.5, delay: 0.2 }}
-                      />
-                      <motion.rect
-                        x="40"
-                        y="60"
-                        width="40"
-                        height="35"
-                        rx="3"
-                        stroke="#C9A962"
-                        strokeWidth="2.5"
-                        fill="#C9A962"
-                        fillOpacity="0.15"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5, delay: 0.8 }}
-                      />
-                      {/* Chimney steam */}
-                      <motion.circle
-                        cx="80"
-                        cy="25"
-                        r="5"
-                        fill="#C9A962"
-                        fillOpacity="0.3"
-                        animate={{ cy: [25, 15, 25], opacity: [0.3, 0.1, 0.3] }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                        }}
-                      />
-                      <motion.circle
-                        cx="85"
-                        cy="18"
-                        r="4"
-                        fill="#C9A962"
-                        fillOpacity="0.2"
-                        animate={{ cy: [18, 8, 18], opacity: [0.2, 0.05, 0.2] }}
-                        transition={{
-                          duration: 2.5,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                          delay: 0.3,
-                        }}
-                      />
-                    </motion.svg>
-                  )}
-                  {category.slug === "accessories" && (
-                    <motion.svg
-                      viewBox="0 0 120 120"
-                      className="w-20 h-20 sm:w-24 sm:h-24"
-                      fill="none"
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ duration: 0.6 }}
-                    >
-                      {/* Shopping bag */}
-                      <motion.path
-                        d="M35 45 L35 35 C35 20 85 20 85 35 L85 45"
-                        stroke="#C9A962"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        fill="#C9A962"
-                        fillOpacity="0.1"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 1.2 }}
-                      />
-                      <motion.rect
-                        x="30"
-                        y="42"
-                        width="60"
-                        height="50"
-                        rx="6"
-                        stroke="#C9A962"
-                        strokeWidth="2.5"
-                        fill="#C9A962"
-                        fillOpacity="0.1"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5, delay: 0.6 }}
-                      />
-                      {/* Sparkle */}
-                      <motion.circle
-                        cx="60"
-                        cy="55"
-                        r="2"
-                        fill="#C9A962"
-                        animate={{ opacity: [0, 1, 0], scale: [0, 1.5, 0] }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                        }}
-                      />
-                      <motion.circle
-                        cx="50"
-                        cy="65"
-                        r="1.5"
-                        fill="#C9A962"
-                        animate={{ opacity: [0, 1, 0], scale: [0, 1.5, 0] }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                          delay: 0.5,
-                        }}
-                      />
-                      <motion.circle
-                        cx="70"
-                        cy="65"
-                        r="1.5"
-                        fill="#C9A962"
-                        animate={{ opacity: [0, 1, 0], scale: [0, 1.5, 0] }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                          delay: 1,
-                        }}
-                      />
-                    </motion.svg>
-                  )}
-                  {category.slug === "personal-care" && (
-                    <motion.svg
-                      viewBox="0 0 120 120"
-                      className="w-20 h-20 sm:w-24 sm:h-24"
-                      fill="none"
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ duration: 0.6 }}
-                    >
-                      {/* Leaf */}
-                      <motion.path
-                        d="M60 95 C60 95 25 75 30 35 C35 15 55 10 60 15 C65 10 85 15 90 35 C95 75 60 95 60 95Z"
-                        stroke="#C9A962"
-                        strokeWidth="2.5"
-                        fill="#C9A962"
-                        fillOpacity="0.15"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 1.5 }}
-                      />
-                      {/* Leaf vein */}
-                      <motion.line
-                        x1="60"
-                        y1="90"
-                        x2="60"
-                        y2="25"
-                        stroke="#C9A962"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 1, delay: 0.8 }}
-                      />
-                      {/* Side veins */}
-                      {[40, 50, 65, 75].map((y, i) => (
-                        <motion.line
-                          key={i}
-                          x1="60"
-                          y1={y}
-                          x2={i < 2 ? 45 : 75}
-                          y2={y - 8}
-                          stroke="#C9A962"
-                          strokeWidth="1"
-                          strokeLinecap="round"
-                          initial={{ pathLength: 0 }}
-                          animate={{ pathLength: 1 }}
-                          transition={{ duration: 0.5, delay: 1.2 + i * 0.15 }}
-                        />
-                      ))}
-                      {/* Floating dots */}
-                      <motion.circle
-                        cx="35"
-                        cy="30"
-                        r="2.5"
-                        fill="#C9A962"
-                        fillOpacity="0.4"
-                        animate={{ y: [-5, 5, -5], opacity: [0.4, 0.8, 0.4] }}
-                        transition={{
-                          duration: 3,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                        }}
-                      />
-                      <motion.circle
-                        cx="85"
-                        cy="40"
-                        r="2"
-                        fill="#C9A962"
-                        fillOpacity="0.3"
-                        animate={{ y: [5, -5, 5], opacity: [0.3, 0.7, 0.3] }}
-                        transition={{
-                          duration: 2.5,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                          delay: 0.5,
-                        }}
-                      />
-                    </motion.svg>
-                  )}
-                </div>
-                <div className="p-4">
-                  <h3 className="text-base font-semibold text-[#1A1614] group-hover:text-[#C9A962] transition-colors duration-200">
-                    {category.name}
-                  </h3>
-                  <p className="text-sm text-[#86868B] mt-0.5">
-                    Shop {category.name.toLowerCase()} &rarr;
-                  </p>
-                </div>
-              </Link>
-            ))}
+            {CATEGORIES.map((category) => {
+              // Collect up to 3 product images from this category
+              const catProducts = LOCAL_PRODUCTS.filter(
+                (p) => p.category === category.slug,
+              );
+              const catImages: string[] = [];
+              for (const product of catProducts) {
+                const imgs = getProductImages(product.slug);
+                if (imgs.length > 0) {
+                  catImages.push(imgs[0]);
+                }
+                if (catImages.length >= 3) break;
+              }
+
+              return (
+                <CategoryCard
+                  key={category.slug}
+                  category={category}
+                  images={catImages}
+                />
+              );
+            })}
           </div>
         </div>
       </section>
     </div>
+  );
+}
+
+/**
+ * CategoryCard — Renders a category card with a product image slider.
+ * Auto-rotates through up to 3 product images with a crossfade effect.
+ * Falls back to a placeholder icon when no product images are available.
+ */
+function CategoryCard({
+  category,
+  images,
+}: {
+  category: { slug: string; name: string };
+  images: string[];
+}) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const hasImages = images.length > 0;
+
+  // Auto-rotate images every 3.5 seconds
+  useEffect(() => {
+    if (!hasImages || images.length <= 1) return;
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % images.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, [hasImages, images.length]);
+
+  return (
+    <Link
+      href={`/products?category=${category.slug}`}
+      className="group rounded-2xl overflow-hidden bg-white shadow-base hover:shadow-xl
+                 transition-all duration-300 hover:-translate-y-1"
+    >
+      <div className="aspect-[4/3] bg-[#F5F1EB] overflow-hidden relative flex items-center justify-center">
+        {hasImages ? (
+          /* Image slider */
+          <>
+            {images.map((img, i) => (
+              <div
+                key={i}
+                className="absolute inset-0 transition-opacity duration-700 ease-in-out"
+                style={{ opacity: i === activeIndex ? 1 : 0 }}
+              >
+                <Image
+                  src={img}
+                  alt={`${category.name} product ${i + 1}`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                />
+              </div>
+            ))}
+            {/* Dot indicators */}
+            {images.length > 1 && (
+              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                {images.map((_, i) => (
+                  <span
+                    key={i}
+                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                      i === activeIndex ? "bg-white w-3" : "bg-white/50"
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
+          </>
+        ) : (
+          /* Fallback placeholder icon */
+          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#EAE3D5] flex items-center justify-center">
+            <svg
+              viewBox="0 0 24 24"
+              className="w-10 h-10 text-[#C9A962]"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <circle cx="8.5" cy="8.5" r="1.5" />
+              <path d="M21 15l-5-5L5 21" />
+            </svg>
+          </div>
+        )}
+      </div>
+      <div className="p-4">
+        <h3 className="text-base font-semibold text-[#1A1614] group-hover:text-[#C9A962] transition-colors duration-200">
+          {category.name}
+        </h3>
+        <p className="text-sm text-[#86868B] mt-0.5">
+          Shop {category.name.toLowerCase()} &rarr;
+        </p>
+      </div>
+    </Link>
   );
 }

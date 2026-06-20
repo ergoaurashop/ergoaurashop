@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { CATEGORIES } from "@/lib/constants";
 import { LOCAL_PRODUCTS } from "@/lib/products-data";
 import { BLOG_POSTS } from "@/lib/blog-data";
 
@@ -51,15 +52,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Category pages
-  const categories = [
-    { slug: "wellness", name: "Mega Deals" },
-    { slug: "kitchen", name: "Home & Kitchen" },
-    { slug: "accessories", name: "Accessories" },
-    { slug: "personal-care", name: "Personal Care" },
-  ];
-
-  const categoryPages: MetadataRoute.Sitemap = categories.map((cat) => ({
+  // Category pages — dynamically generated from CATEGORIES constant
+  const categoryPages: MetadataRoute.Sitemap = CATEGORIES.map((cat) => ({
     url: `${baseUrl}/categories/${cat.slug}`,
     lastModified: new Date(),
     changeFrequency: "weekly",

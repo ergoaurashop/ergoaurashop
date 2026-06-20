@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SITE_METADATA, SITE_URL, CATEGORIES } from "@/lib/constants";
 import { LOCAL_PRODUCTS } from "@/lib/products-data";
+import { getProductImages } from "@/lib/utils";
 import CategoryProducts from "./CategoryProducts";
 import BreadcrumbSchema from "@/components/seo/BreadcrumbSchema";
 
@@ -20,6 +21,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!category) return { title: "Category Not Found" };
 
   const count = LOCAL_PRODUCTS.filter((p) => p.category === slug).length;
+  const categoryProducts = LOCAL_PRODUCTS.filter((p) => p.category === slug);
+  const ogImage =
+    categoryProducts.length > 0
+      ? getProductImages(categoryProducts[0].slug)?.[0]
+      : undefined;
 
   return {
     title: category.name,
@@ -31,6 +37,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${category.name} | ${SITE_METADATA.title}`,
       description: `Shop ${category.name.toLowerCase()} products at ErgoAura Shop — ${count} premium products for your everyday comfort and well-being.`,
       url: `${SITE_URL}/categories/${slug}`,
+      ...(ogImage && {
+        images: [{ url: ogImage, width: 1200, height: 900 }],
+      }),
     },
   };
 }
