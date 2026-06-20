@@ -8,6 +8,7 @@ import {
   Inter,
   Playfair_Display,
 } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SITE_METADATA, GTM_ID } from "@/lib/constants";
 import "./globals.css";
 import TrustMarquee from "@/components/layout/TrustMarquee";
@@ -163,6 +164,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <Suspense fallback={null}>
           <PageViewTracker />
         </Suspense>
+        <SpeedInsights />
       </body>
     </html>
   );
