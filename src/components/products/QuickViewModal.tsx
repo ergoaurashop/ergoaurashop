@@ -6,7 +6,12 @@ import Link from "next/link";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Product } from "@/lib/types";
-import { cn, getProductImageUrl, getProductImages } from "@/lib/utils";
+import {
+  cn,
+  getProductImageUrl,
+  getProductImages,
+  isB2G1Eligible,
+} from "@/lib/utils";
 import Badge from "@/components/ui/Badge";
 import ProductPrice from "./ProductPrice";
 import StarRating from "./StarRating";
@@ -245,12 +250,14 @@ export default function QuickViewModal({
 
             {/* ===== Right: Product Info ===== */}
             <div className="flex-1 flex flex-col p-5 md:p-6 md:overflow-y-auto gap-4">
-              {/* Trust badge strip */}
-              <div className="flex flex-wrap gap-1.5">
-                <Badge variant="b2g1" size="sm">
-                  Buy 2 Get 1 Free
-                </Badge>
-              </div>
+              {/* Trust badge strip — only for eligible categories */}
+              {isB2G1Eligible(product) && (
+                <div className="flex flex-wrap gap-1.5">
+                  <Badge variant="b2g1" size="sm">
+                    Buy 2 Get 1 Free
+                  </Badge>
+                </div>
+              )}
 
               {/* Title + Vendor */}
               <div>

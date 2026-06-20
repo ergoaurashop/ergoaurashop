@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { SLUG_TO_FOLDER, SLUG_TO_IMAGES } from "@/lib/products-data";
+import { B2G1_EXCLUDED_CATEGORIES } from "@/lib/constants";
 
 /**
  * Encode a file-system path safely, segment by segment.
@@ -91,5 +92,15 @@ export function getProductImages(slug: string): string[] {
   return images.map(
     (img) =>
       `/images/products/${encodePath(folder)}/${encodeURIComponent(img)}`,
+  );
+}
+
+/**
+ * Check if a product is eligible for the B2G1 (Buy 2 Get 1 Free) offer.
+ * Products in excluded categories (e.g. Electronics) are not eligible.
+ */
+export function isB2G1Eligible(product: { category: string }): boolean {
+  return !(B2G1_EXCLUDED_CATEGORIES as readonly string[]).includes(
+    product.category,
   );
 }

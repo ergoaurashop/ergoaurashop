@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/store/cartStore";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, isB2G1Eligible } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import type { Product } from "@/lib/types";
 import { useRouter } from "next/navigation";
@@ -152,13 +152,16 @@ export default function StickyCartPanel({
             </div>
           )}
 
-          {/* B2G1 promo callout */}
-          <div className="flex items-center gap-2 px-3 py-2.5 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-apple-sm">
-            <span className="text-lg shrink-0">🎁</span>
-            <p className="text-xs text-amber-800 font-medium leading-snug">
-              Buy 2 Get 1 Free! Add 3 of this item, get 1 <strong>free</strong>.
-            </p>
-          </div>
+          {/* B2G1 promo callout — only for eligible categories */}
+          {isB2G1Eligible(product) && (
+            <div className="flex items-center gap-2 px-3 py-2.5 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-apple-sm">
+              <span className="text-lg shrink-0">🎁</span>
+              <p className="text-xs text-amber-800 font-medium leading-snug">
+                Buy 2 Get 1 Free! Add 3 of this item, get 1{" "}
+                <strong>free</strong>.
+              </p>
+            </div>
+          )}
 
           {/* Qty selector */}
           <div>

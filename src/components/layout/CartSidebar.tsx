@@ -4,7 +4,12 @@ import { useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/store/cartStore";
-import { cn, formatPrice, getProductImageUrl } from "@/lib/utils";
+import {
+  cn,
+  formatPrice,
+  getProductImageUrl,
+  isB2G1Eligible,
+} from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 import { trackViewCart, trackRemoveFromCart } from "@/lib/analytics/events";
@@ -44,9 +49,9 @@ export default function CartSidebar() {
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
 
-  /* ── Buy 2 Get 1 Free discount ── */
+  /* ── Buy 2 Get 1 Free discount (excludes ineligible categories) ── */
   const b2g1Discount = items.reduce((discount, item) => {
-    if (item.quantity >= 3) {
+    if (isB2G1Eligible(item.product) && item.quantity >= 3) {
       const freeItems = Math.floor(item.quantity / 3);
       return discount + item.product.price * freeItems;
     }
@@ -172,10 +177,12 @@ export default function CartSidebar() {
                               {formatPrice(item.product.original_price)}
                             </span>
                           )}
-                          {/* Buy 2 Get 1 badge — always visible */}
-                          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 bg-[length:200%_100%] animate-gradient-shift px-2 py-0.5 rounded-full whitespace-nowrap shadow-sm">
-                            🎁 Buy 2 Get 1
-                          </span>
+                          {/* Buy 2 Get 1 badge — only for eligible categories */}
+                          {isB2G1Eligible(item.product) && (
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 bg-[length:200%_100%] animate-gradient-shift px-2 py-0.5 rounded-full whitespace-nowrap shadow-sm">
+                              🎁 Buy 2 Get 1
+                            </span>
+                          )}
                         </p>
 
                         {/* Quantity controls */}

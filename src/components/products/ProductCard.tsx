@@ -4,7 +4,11 @@ import { useState, useCallback } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import type { Product } from "@/lib/types";
-import { getProductImageUrl, getProductImages } from "@/lib/utils";
+import {
+  getProductImageUrl,
+  getProductImages,
+  isB2G1Eligible,
+} from "@/lib/utils";
 import Badge from "@/components/ui/Badge";
 import ProductImage from "./ProductImage";
 import ProductPrice from "./ProductPrice";
@@ -204,9 +208,11 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
 
           {/* Feature Badges Strip */}
           <div className="flex flex-wrap gap-1.5 mt-0.5">
-            <Badge variant="b2g1" size="sm">
-              Buy 2 Get 1 Free
-            </Badge>
+            {isB2G1Eligible(product) && (
+              <Badge variant="b2g1" size="sm">
+                Buy 2 Get 1 Free
+              </Badge>
+            )}
             {product.category === "kitchen" && (
               <Badge variant="installation_included" size="sm">
                 Easy to use

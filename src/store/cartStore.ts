@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Product, CartItem } from "@/lib/types";
+import { isB2G1Eligible } from "@/lib/utils";
 
 interface CartStore {
   items: CartItem[];
@@ -90,7 +91,7 @@ export const useCartStore = create<CartStore>()(
 
       getBuy2Get1Discount: () => {
         return get().items.reduce((discount, item) => {
-          if (item.quantity >= 3) {
+          if (isB2G1Eligible(item.product) && item.quantity >= 3) {
             const freeItems = Math.floor(item.quantity / 3);
             return discount + item.product.price * freeItems;
           }

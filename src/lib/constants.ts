@@ -54,6 +54,9 @@ export const CATEGORIES = [
   { slug: "worldcup-2026", name: "Fifa Worldcup 2026" },
 ] as const;
 
+/** Categories that should NOT be eligible for Buy 2 Get 1 Free offer */
+export const B2G1_EXCLUDED_CATEGORIES = ["electronics"] as const;
+
 // =====================================================================
 // DeepSeek AI
 // =====================================================================
