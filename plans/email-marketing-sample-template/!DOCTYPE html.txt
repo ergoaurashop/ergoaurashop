@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Wasleen Interior — Our Services</title>
+<!--[if mso]>
+<noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript>
+<![endif]-->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap');
+body,table,td,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
+table,td{mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;}
+img{-ms-interpolation-mode:bicubic;border:0;outline:none;text-decoration:none;display:block;max-width:100%;height:auto;}
+body{margin:0!important;padding:0!important;background-color:#F0EDE6;width:100%!important;}
+@media screen and (max-width:600px){
+  .w600{width:100%!important;}
+  .mob-pad{padding-left:20px!important;padding-right:20px!important;}
+  .mob-h1{font-size:36px!important;line-height:1.1!important;}
+  .mob-block{display:block!important;width:100%!important;padding-right:0!important;padding-left:0!important;margin-bottom:3px!important;}
+  .mob-hide{display:none!important;max-height:0!important;overflow:hidden!important;}
+  .mob-full{width:100%!important;max-width:100%!important;}
+  .mob-img{width:100%!important;height:auto!important;}
+}
+</style>
+</head>
+
+<body style="margin:0;padding:0;background-color:#F0EDE6;">
+
+<!-- PREHEADER — shows in inbox preview before opening -->
+<div style="display:none;font-size:1px;color:#F0EDE6;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">
+  Residential · Commercial · Pergolas · Home Cinema · Kitchen · Furniture · Media Walls — every service Wasleen offers. Watch our latest transformation. &#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;&#8203;&nbsp;
+</div>
+
+<!-- OUTER TABLE -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F0EDE6;">
+<tr><td align="center" style="padding:0;">
+
+<!-- EMAIL CONTAINER 600px -->
+<table width="600" cellpadding="0" cellspacing="0" border="0" class="w600" style="max-width:600px;width:100%;">
+
+
+<!-- ══════════════════════════════════
+     TOP COLOUR RIBBON
+══════════════════════════════════ -->
+<tr>
+  <td style="height:4px;background:linear-gradient(90deg,#E8401C 0%,#C87818 22%,#1A6B4A 44%,#1C3A8C 66%,#6B1A4A 88%,#E8401C 100%);font-size:0;line-height:0;">&nbsp;</td>
+</tr>
+
+
+<!-- ══════════════════════════════════
+     HEADER
+══════════════════════════════════ -->
+<tr>
+  <td style="background-color:#FAFAF8;padding:24px 48px;" class="mob-pad">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td style="vertical-align:middle;">
+          <span style="font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:900;color:#0A0A0A;letter-spacing:-0.5px;">Wasleen<span style="color:#C87818;">.</span></span>
+          <div style="font-family:'DM Mono',monospace,Arial;font-size:7px;letter-spacing:4px;text-transform:uppercase;color:#950991;margin-top:3px;">Interior &amp; Fitout · DUBAI </div>
+        </td>
+        <td style="vertical-align:middle;text-align:right;" class="mob-hide">
+          <a href="https://www.wasleen.com/gallery/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1" style="font-family:'DM Sans',Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#950991;text-decoration:none;margin-left:18px;">Gallery</a>
+          <a href="https://www.wasleen.com/services/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1" style="font-family:'DM Sans',Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#950991;text-decoration:none;margin-left:18px;">Services</a>
+          <a href="https://www.wasleen.com/free-quote/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1" style="font-family:'DM Sans',Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:#0A0A0A;color:#FAFAF8;text-decoration:none;padding:7px 14px;margin-left:18px;">Quote →</a>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr><td style="height:1px;background:#E5E2DB;font-size:0;line-height:0;">&nbsp;</td></tr>
+
+
+<!-- ══════════════════════════════════
+     HERO TEXT
+══════════════════════════════════ -->
+<!-- █████ HERO TEXT WITH BACKGROUND IMAGE █████ -->
+<tr>
+  <td style="padding:0; background-color:#0A0A0A;" class="mob-pad">
+    <!--[if (gte mso 9)|(IE)]>
+      <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:600px;">
+        <v:fill type="tile" src="https://www.wasleen.com/assets/images/emails/hero504-320/email-template-1-hero.webp" color="#0A0A0A" />
+        <v:textbox style="mso-fit-shape-to-text:true" inset="0,0,0,0">
+    <![endif]-->
+    <div style="background: linear-gradient(0deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 100%), url('https://www.wasleen.com/assets/images/hero/professional-fit-out-company-dubai-2026-02.webp') no-repeat center center / cover; background-color:#0A0A0A; padding:52px 48px 36px;">
+      <!-- YOUR EXISTING HERO CONTENT (unchanged) -->
+      <div style="display:inline-block;background:#0A0A0A;color:#FAFAF8;font-family:'DM Mono',monospace,Arial;font-size:8px;font-weight:500;letter-spacing:3px;text-transform:uppercase;padding:7px 16px;margin-bottom:24px;">Our Services — 2026</div>
+
+      <div style="font-family:'Playfair Display',Georgia,serif;font-size:56px;font-weight:900;color:#FAFAF8;line-height:0.95;letter-spacing:-2.5px;margin-bottom:4px;" class="mob-h1">
+        Every Space.
+      </div>
+      <div style="font-family:'Playfair Display',Georgia,serif;font-size:56px;font-weight:900;font-style:italic;color:#C87818;line-height:0.95;letter-spacing:-2.5px;margin-bottom:28px;" class="mob-h1">
+        Perfected.
+      </div>
+
+      <p style="font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:300;color:rgba(255,255,255,0.8);line-height:1.85;margin:0 0 32px;max-width:400px;">
+        From a dream kitchen to a full villa fitout — we deliver every service under one roof. Explore what we do best.
+      </p>
+
+      <!-- CTA buttons (unchanged, but ensure text colour is visible) -->
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td style="padding-right:10px;">
+            <a href="https://www.wasleen.com/free-quote/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1"
+               style="display:inline-block;background:#FAFAF8;color:#0A0A0A;font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:14px 26px;text-decoration:none;">
+              Get Free Quote →
+            </a>
+          </td>
+          <td>
+            <a href="https://wa.me/971542330837?text=Hi%20Wasleen!%20I%20saw%20your%20services%20email%20and%20I%27d%20love%20to%20discuss%20my%20project!%20%F0%9F%8F%A0&utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1"
+               style="display:inline-block;background:linear-gradient(135deg,#128c7e 0%,#25d366 100%);color:#fff;font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px 20px;text-decoration:none;">
+              &#128172; WhatsApp
+            </a>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!--[if (gte mso 9)|(IE)]>
+        </v:textbox>
+      </v:rect>
+    <![endif]-->
+  </td>
+</tr>
+
+
+<!-- ══════════════════════════════════
+     HERO IMAGE — Real project photo
+══════════════════════════════════ -->
+<tr>
+  <td style="padding:0 48px;" class="mob-pad">
+    <a href="https://www.wasleen.com/gallery/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1" style="display:block;text-decoration:none;line-height:0;font-size:0;">
+      <img
+        src="https://www.wasleen.com/assets/images/interior-by-wasleen-interiors/minimalist-bedroom-decor-wasleen-interiors-dubai.webp"
+        width="504"
+        alt="Luxury Interior Design &amp; Fitout — Wasleen UAE"
+        style="width:100%;max-width:504px;display:block;border:0;border-left:4px solid #C87818;"
+        class="mob-img"
+      >
+    </a>
+  </td>
+</tr>
+
+
+<!-- ══════════════════════════════════
+     STATS BAR — Black background
+══════════════════════════════════ -->
+<tr>
+  <td style="padding:4px 48px 0;" class="mob-pad">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0A0A0A;">
+      <tr>
+        <td width="25%" style="padding:20px 12px;text-align:center;border-right:1px solid rgba(255,255,255,0.07);">
+          <div style="font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:700;color:#C87818;line-height:1;margin-bottom:4px;">273+</div>
+          <div style="font-family:'DM Mono',monospace,Arial;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25);">Projects</div>
+        </td>
+        <td width="25%" style="padding:20px 12px;text-align:center;border-right:1px solid rgba(255,255,255,0.07);">
+          <div style="font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:700;color:#C87818;line-height:1;margin-bottom:4px;">12+</div>
+          <div style="font-family:'DM Mono',monospace,Arial;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25);">Years UAE</div>
+        </td>
+        <td width="25%" style="padding:20px 12px;text-align:center;border-right:1px solid rgba(255,255,255,0.07);">
+          <div style="font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:700;color:#C87818;line-height:1;margin-bottom:4px;">98%</div>
+          <div style="font-family:'DM Mono',monospace,Arial;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25);">Satisfaction</div>
+        </td>
+        <td width="25%" style="padding:20px 12px;text-align:center;">
+          <div style="font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:700;color:#C87818;line-height:1;margin-bottom:4px;">4.8★</div>
+          <div style="font-family:'DM Mono',monospace,Arial;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25);">Google</div>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+
+
+<!-- ══════════════════════════════════════════════════
+     YOUTUBE SHORTS VIDEO SECTION
+     Full portrait 9:16 layout — Video ID: -ZM-4J1SdZc
+══════════════════════════════════════════════════ -->
+<tr>
+  <td style="padding:48px 48px 0;" class="mob-pad">
+
+    <!-- Section label -->
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:18px;">
+      <tr>
+        <td style="vertical-align:middle;">
+          <div style="font-family:'DM Mono',monospace,Arial;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(10,10,10,0.3);">&#9654; &nbsp; Follow us</div>
+        </td>
+        <td style="vertical-align:middle;text-align:right;">
+          <!-- YouTube Shorts red badge -->
+          <div style="display:inline-block;background:#FF0000;color:#fff;font-family:'DM Mono',monospace,Arial;font-size:7px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;">
+            &#9654; WASLEEN DUBAI
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- ─── OUTER CARD — dark bg wraps everything ─── -->
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0A0A0A;">
+      <tr>
+        <td style="padding:0;">
+
+          <!-- Gradient top accent line -->
+          <div style="height:3px;background:linear-gradient(90deg,#E8401C,#C87818,#E8401C);font-size:0;line-height:0;">&nbsp;</div>
+
+          <!-- ── TOP TEXT ROW ── -->
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td style="padding:22px 28px 18px;">
+                <div style="font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:700;color:#FAFAF8;line-height:1.2;letter-spacing:-0.5px;">
+                  Watch the <span style="font-style:italic;color:#C87818;">full transformation</span><br>in 60 seconds
+                </div>
+                <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;font-weight:300;color:rgba(255,255,255,0.38);margin-top:8px;line-height:1.6;">
+                  Villa fitout — concept to completion. Dubai, 2026.
+                </div>
+              </td>
+            </tr>
+          </table>
+
+          <!-- ── PORTRAIT VIDEO THUMBNAIL — Full 9:16 ── -->
+          <!--
+            This is a 504px wide × 896px tall portrait container
+            matching exact YouTube Shorts 1080×1920 (9:16) ratio.
+            The thumbnail is displayed full width inside the card.
+            Clicking anywhere opens the Short on YouTube.
+          -->
+          <a href="https://www.youtube.com/shorts/-ZM-4J1SdZc?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1"
+             target="_blank"
+             style="display:block;text-decoration:none;line-height:0;font-size:0;position:relative;">
+
+            <!-- PORTRAIT THUMBNAIL IMAGE — 504×896px display -->
+            <img
+              src="https://img.youtube.com/vi/-ZM-4J1SdZc/maxresdefault.jpg"
+              width="504"
+              height="896"
+              alt="Watch: Wasleen Interior Transformation — YouTube Shorts"
+              style="width:100%;max-width:504px;height:auto;min-height:500px;display:block;border:0;object-fit:cover;object-position:center;"
+              class="mob-img"
+            >
+
+            <!--
+              NOTE ON THUMBNAIL HEIGHT:
+              YouTube's maxresdefault.jpg for Shorts is 1280×720 landscape
+              by default. To force portrait display, we set height:auto
+              and let the browser scale it. For a true 9:16 crop,
+              create a custom 504×896px portrait thumbnail in Canva using
+              a screenshot from your Short, add a play button overlay,
+              upload to wasleen.com/assets/images/emails/ and replace the
+              src above with your custom image URL.
+
+              CUSTOM THUMBNAIL EXAMPLE:
+              src="https://www.wasleen.com/assets/images/emails/
+              shorts-thumb-portrait.jpg"
+              width="504" height="896"
+            -->
+
+            <!-- PLAY BUTTON OVERLAY — centered using table trick -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0"
+                   style="position:absolute;top:0;left:0;width:100%;height:100%;">
+              <tr>
+                <td style="text-align:center;vertical-align:middle;padding:200px 0;">
+                  <!-- Outer glow ring -->
+                  <div style="display:inline-block;width:80px;height:80px;border-radius:50%;background:rgba(0,0,0,0.55);border:2px solid rgba(255,255,255,0.25);">
+                    <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#E8401C 0%,#C87818 100%);text-align:center;line-height:80px;box-shadow:0 0 0 10px rgba(232,64,28,0.18),0 0 40px rgba(232,64,28,0.35);">
+                      <span style="font-size:28px;color:#fff;padding-left:6px;line-height:80px;">&#9654;</span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+
+          </a>
+
+          <!-- ── BOTTOM CTA ROW ── -->
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td style="padding:20px 28px 24px;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td style="vertical-align:middle;">
+                      <div style="font-family:'DM Mono',monospace,Arial;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.22);">
+                        @wasleen &nbsp;·&nbsp; youtube.com/shorts
+                      </div>
+                    </td>
+                    <td style="vertical-align:middle;text-align:right;">
+                      <a href="https://www.youtube.com/shorts/-ZM-4J1SdZc?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1"
+                         target="_blank"
+                         style="display:inline-block;background:linear-gradient(135deg,#E8401C 0%,#C87818 100%);color:#fff;font-family:'DM Sans',Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;padding:10px 20px;text-decoration:none;">
+                        &#9654; &nbsp;Watch Now
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+
+          <!-- Bottom accent line -->
+          <div style="height:3px;background:linear-gradient(90deg,#E8401C,#C87818,#E8401C);font-size:0;line-height:0;">&nbsp;</div>
+
+        </td>
+      </tr>
+    </table>
+
+  </td>
+</tr>
+
+
+<!-- ══════════════════════════════════
+     SERVICES SECTION HEADER
+══════════════════════════════════ -->
+<tr>
+  <td style="padding:52px 48px 0;" class="mob-pad">
+    <div style="font-family:'DM Mono',monospace,Arial;font-size:8px;letter-spacing:4px;text-transform:uppercase;color:rgba(10,10,10,0.3);margin-bottom:14px;">What We Offer</div>
+    <div style="font-family:'Playfair Display',Georgia,serif;font-size:34px;font-weight:900;color:#0A0A0A;line-height:1.05;letter-spacing:-1px;margin-bottom:14px;">
+      All Ways We <span style="font-style:italic;color:#C87818;">Transform</span> Spaces
+    </div>
+    <div style="height:3px;width:44px;background:linear-gradient(90deg,#E8401C,#C87818);margin-bottom:24px;font-size:0;line-height:0;">&nbsp;</div>
+    <p style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;font-weight:300;color:rgba(10,10,10,0.5);line-height:1.85;margin:0 0 8px;max-width:380px;">
+      Every service designed with precision, built with premium materials, delivered on time across UAE.
+    </p>
+  </td>
+</tr>
+
+
+<!-- ══════════════════════════════════
+     SERVICE CARDS — 2 column grid
+     Each card has unique brand colour
+══════════════════════════════════ -->
+
+<!-- ROW 1: Residential + Commercial -->
+<tr>
+  <td style="padding:24px 48px 0;" class="mob-pad">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <!-- 01 RESIDENTIAL — Terracotta -->
+        <td width="50%" class="mob-block" style="padding-right:3px;vertical-align:top;">
+          <div style="background:#C8441C;padding:26px 22px 22px;">
+            <div style="font-family:'DM Mono',monospace,Arial;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:12px;">01 — Residential</div>
+            <div style="font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:700;color:#FAFAF8;line-height:1.2;letter-spacing:-0.3px;margin-bottom:9px;">Residential<br>Interiors</div>
+            <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;font-weight:300;color:rgba(255,255,255,0.6);line-height:1.7;margin-bottom:14px;">Villas, apartments &amp; homes — luxury living spaces designed around your lifestyle.</div>
+            <a href="https://www.wasleen.com/interior-design-fit-out/residential/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1" style="font-family:'DM Sans',Arial,sans-serif;font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.85);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:2px;">Explore →</a>
+          </div>
+        </td>
+        <!-- 02 COMMERCIAL — Royal Navy -->
+        <td width="50%" class="mob-block" style="padding-left:3px;vertical-align:top;">
+          <div style="background:#1C3580;padding:26px 22px 22px;">
+            <div style="font-family:'DM Mono',monospace,Arial;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:12px;">02 — Commercial</div>
+            <div style="font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:700;color:#FAFAF8;line-height:1.2;letter-spacing:-0.3px;margin-bottom:9px;">Commercial<br>Fit-Out</div>
+            <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;font-weight:300;color:rgba(255,255,255,0.6);line-height:1.7;margin-bottom:14px;">Retail, restaurants &amp; commercial spaces built to impress clients and drive results.</div>
+            <a href="https://www.wasleen.com/interior-design-fit-out/commercial/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1" style="font-family:'DM Sans',Arial,sans-serif;font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.85);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:2px;">Explore →</a>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+
+<!-- ROW 2: Office Renovation + Landscaping -->
+<tr>
+  <td style="padding:3px 48px 0;" class="mob-pad">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <!-- 03 OFFICE — Forest Green -->
+        <td width="50%" class="mob-block" style="padding-right:3px;vertical-align:top;">
+          <div style="background:#185C3A;padding:26px 22px 22px;">
+            <div style="font-family:'DM Mono',monospace,Arial;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:12px;">03 — Office</div>
+            <div style="font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:700;color:#FAFAF8;line-height:1.2;letter-spacing:-0.3px;margin-bottom:9px;">Office<br>Renovation</div>
+            <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;font-weight:300;color:rgba(255,255,255,0.6);line-height:1.7;margin-bottom:14px;">Modern office environments that boost productivity, reflect your brand &amp; inspire your team.</div>
+            <a href="https://www.wasleen.com/interior-design-fit-out/commercial/office-fit-out/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1" style="font-family:'DM Sans',Arial,sans-serif;font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.85);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:2px;">Explore →</a>
+          </div>
+        </td>
+        <!-- 04 LANDSCAPING — Olive Green -->
+        <td width="50%" class="mob-block" style="padding-left:3px;vertical-align:top;">
+          <div style="background:#4A7A28;padding:26px 22px 22px;">
+            <div style="font-family:'DM Mono',monospace,Arial;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:12px;">04 — Outdoor</div>
+            <div style="font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:700;color:#FAFAF8;line-height:1.2;letter-spacing:-0.3px;margin-bottom:9px;">Landscaping<br>&amp; Outdoor</div>
+            <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;font-weight:300;color:rgba(255,255,255,0.6);line-height:1.7;margin-bottom:14px;">Gardens, terraces &amp; outdoor living — lush landscapes designed for UAE climate.</div>
+            <a href="https://www.wasleen.com/landscaping-outdoor/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1" style="font-family:'DM Sans',Arial,sans-serif;font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.85);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:2px;">Explore →</a>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+
+<!-- ROW 3: Pergolas + Home Cinema -->
+<tr>
+  <td style="padding:3px 48px 0;" class="mob-pad">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <!-- 05 PERGOLAS — Amber Gold -->
+        <td width="50%" class="mob-block" style="padding-right:3px;vertical-align:top;">
+          <div style="background:#B87218;padding:26px 22px 22px;">
+            <div style="font-family:'DM Mono',monospace,Arial;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:12px;">05 — Outdoor</div>
+            <div style="font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:700;color:#FAFAF8;line-height:1.2;letter-spacing:-0.3px;margin-bottom:9px;">Premium<br>Pergolas</div>
+            <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;font-weight:300;color:rgba(255,255,255,0.6);line-height:1.7;margin-bottom:14px;">Aluminum &amp; steel pergola systems — elegant shade structures for UAE outdoor living.</div>
+            <a href="https://www.wasleen.com/aluminum-glass-fabrication/aluminum-works/pergola-installation/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1" style="font-family:'DM Sans',Arial,sans-serif;font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.85);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:2px;">Explore →</a>
+          </div>
+        </td>
+        <!-- 06 HOME CINEMA — Deep Indigo -->
+        <td width="50%" class="mob-block" style="padding-left:3px;vertical-align:top;">
+          <div style="background:#1A1A4A;padding:26px 22px 22px;">
+            <div style="font-family:'DM Mono',monospace,Arial;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:12px;">06 — Luxury</div>
+            <div style="font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:700;color:#FAFAF8;line-height:1.2;letter-spacing:-0.3px;margin-bottom:9px;">Home<br>Cinemas</div>
+            <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;font-weight:300;color:rgba(255,255,255,0.6);line-height:1.7;margin-bottom:14px;">Private screening rooms with acoustic design, premium AV &amp; total luxury atmosphere.</div>
+            <a href="https://www.wasleen.com/interior-design-fit-out/residential/home-cinema-theater/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1" style="font-family:'DM Sans',Arial,sans-serif;font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.85);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:2px;">Explore →</a>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+
+<!-- ROW 4: Kitchen Cabinets + Furniture -->
+<tr>
+  <td style="padding:3px 48px 0;" class="mob-pad">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <!-- 07 KITCHEN — Rich Sienna -->
+        <td width="50%" class="mob-block" style="padding-right:3px;vertical-align:top;">
+          <div style="background:#7A3418;padding:26px 22px 22px;">
+            <div style="font-family:'DM Mono',monospace,Arial;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:12px;">07 — Joinery</div>
+            <div style="font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:700;color:#FAFAF8;line-height:1.2;letter-spacing:-0.3px;margin-bottom:9px;">Kitchen<br>Cabinets</div>
+            <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;font-weight:300;color:rgba(255,255,255,0.6);line-height:1.7;margin-bottom:14px;">Custom-built kitchen cabinetry — Italian-inspired designs with premium hardware &amp; finishes.</div>
+            <a href="https://www.wasleen.com/joinery-carpentry/kitchen-cabinets/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1" style="font-family:'DM Sans',Arial,sans-serif;font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.85);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:2px;">Explore →</a>
+          </div>
+        </td>
+        <!-- 08 FURNITURE — Deep Berry -->
+        <td width="50%" class="mob-block" style="padding-left:3px;vertical-align:top;">
+          <div style="background:#6B1A48;padding:26px 22px 22px;">
+            <div style="font-family:'DM Mono',monospace,Arial;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:12px;">08 — Bespoke</div>
+            <div style="font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:700;color:#FAFAF8;line-height:1.2;letter-spacing:-0.3px;margin-bottom:9px;">Custom<br>Furniture</div>
+            <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;font-weight:300;color:rgba(255,255,255,0.6);line-height:1.7;margin-bottom:14px;">Bespoke sofas, beds, wardrobes &amp; statement pieces — crafted to your exact specifications.</div>
+            <a href="https://www.wasleen.com/joinery-carpentry/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1" style="font-family:'DM Sans',Arial,sans-serif;font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.85);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:2px;">Explore →</a>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+
+<!-- ROW 5: Media Walls — FULL WIDTH -->
+<tr>
+  <td style="padding:3px 48px 0;" class="mob-pad">
+    <div style="background:linear-gradient(135deg,#0F4A5C 0%,#1A6878 50%,#0A3848 100%);padding:30px 28px 26px;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td style="vertical-align:middle;" width="65%">
+            <div style="font-family:'DM Mono',monospace,Arial;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:10px;">09 — Feature</div>
+            <div style="font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:700;color:#FAFAF8;line-height:1.15;letter-spacing:-0.5px;margin-bottom:9px;">
+              Media Walls &amp;<br><span style="font-style:italic;color:#7EC8D8;">Feature Pieces</span>
+            </div>
+            <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;font-weight:300;color:rgba(255,255,255,0.55);line-height:1.7;margin-bottom:16px;max-width:270px;">
+              Stunning TV feature walls, joinery panels &amp; focal statement pieces that anchor your living space.
+            </div>
+            <a href="https://www.wasleen.com/joinery-carpentry/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1"
+               style="display:inline-block;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.22);color:#FAFAF8;font-family:'DM Sans',Arial,sans-serif;font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;padding:10px 18px;text-decoration:none;">
+              Explore →
+            </a>
+          </td>
+          <td style="vertical-align:middle;text-align:right;" width="35%">
+            <!-- Decorative TV frame element -->
+            <div style="display:inline-block;border:2px solid rgba(255,255,255,0.12);padding:16px 20px;text-align:center;">
+              <div style="font-family:'Playfair Display',Georgia,serif;font-size:32px;font-weight:900;color:rgba(255,255,255,0.08);letter-spacing:-2px;line-height:1;">MEDIA<br>WALL</div>
+              <div style="width:40px;height:2px;background:linear-gradient(90deg,#E8401C,#C87818);margin:10px auto 0;font-size:0;">&nbsp;</div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </td>
+</tr>
+
+
+<!-- ══════════════════════════════════
+     ALL SERVICES CTA
+══════════════════════════════════ -->
+<tr>
+  <td style="padding:36px 48px 0;text-align:center;" class="mob-pad">
+    <a href="https://www.wasleen.com/services/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1"
+       style="display:inline-block;background:#0A0A0A;color:#FAFAF8;font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:16px 44px;text-decoration:none;">
+      Browse All Services →
+    </a>
+  </td>
+</tr>
+
+
+<!-- ══════════════════════════════════
+     TESTIMONIAL
+══════════════════════════════════ -->
+<tr>
+  <td style="padding:52px 48px 0;" class="mob-pad">
+    <!-- Multicolour divider -->
+    <div style="height:2px;background:linear-gradient(90deg,#E8401C,#C87818,#1A6B4A,#1C3A8C,#6B1A4A);margin-bottom:36px;font-size:0;line-height:0;">&nbsp;</div>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td style="vertical-align:top;width:4px;background:#C87818;">&nbsp;</td>
+        <td style="padding-left:20px;vertical-align:top;">
+          <div style="font-family:'Playfair Display',Georgia,serif;font-size:50px;font-weight:900;color:#C87818;line-height:0.5;opacity:0.35;margin-bottom:14px;">"</div>
+          <p style="font-family:'Playfair Display',Georgia,serif;font-size:16px;font-weight:700;font-style:italic;color:#0A0A0A;line-height:1.7;margin:0 0 14px;">
+            Wasleen delivered everything — interiors, kitchen, pergola, media wall. One team, flawless results. The only call you need to make.
+          </p>
+          <div style="font-family:'DM Mono',monospace,Arial;font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(10,10,10,0.4);">
+            <span style="color:#C87818;">Ahmed Al Rashidi</span> &nbsp;·&nbsp; Villa Project — Dubai Hills
+          </div>
+          <div style="color:#C87818;font-size:13px;letter-spacing:3px;margin-top:8px;">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+
+
+<!-- ══════════════════════════════════
+     OFFER / CTA BLOCK
+══════════════════════════════════ -->
+<tr>
+  <td style="padding:48px 48px 0;" class="mob-pad">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td style="background:#0A0A0A;padding:38px 34px;text-align:center;">
+          <!-- Top multicolour line -->
+          <div style="height:3px;background:linear-gradient(90deg,#E8401C,#C87818,#1A6B4A,#1C3A8C,#6B1A4A);margin:-38px -34px 30px;font-size:0;line-height:0;">&nbsp;</div>
+
+          <div style="font-family:'DM Mono',monospace,Arial;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:14px;">Limited — March 2026</div>
+
+          <div style="font-family:'Playfair Display',Georgia,serif;font-size:30px;font-weight:900;color:#FAFAF8;line-height:1.05;letter-spacing:-1px;margin-bottom:14px;">
+            25% OFF on <span style="font-style:italic;color:#C87818;">3D Design</span><br>Visualization
+          </div>
+
+          <!-- Value anchor -->
+          <div style="display:inline-block;background:rgba(200,120,24,0.1);border:1px solid rgba(200,120,24,0.28);padding:8px 20px;margin-bottom:24px;">
+            <span style="font-family:'DM Mono',monospace,Arial;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);">Worth</span>
+            &nbsp;
+            <span style="font-family:'Playfair Display',Georgia,serif;font-size:18px;font-weight:700;color:#C87818;">AED 3,500</span>
+            &nbsp;
+            <span style="font-family:'DM Mono',monospace,Arial;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);">— Offer</span>
+          </div>
+
+          <div style="margin-bottom:10px;">
+            <a href="https://www.wasleen.com/free-quote/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1"
+               style="display:inline-block;background:linear-gradient(135deg,#E8401C 0%,#C87818 100%);color:#ffffff;font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:16px 38px;text-decoration:none;">
+              Claim Free Render →
+            </a>
+          </div>
+          <div style="margin-bottom:18px;">
+            <a href="https://wa.me/971542330837?text=Hi%20Wasleen!%20I%20saw%20your%20services%20email%20and%20I%27d%20like%20to%20claim%20the%20free%203D%20design%20offer!%20%F0%9F%8F%A0&utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1"
+               style="display:inline-block;background:linear-gradient(135deg,#128c7e 0%,#25d366 100%);color:#fff;font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;padding:14px 30px;text-decoration:none;">
+              &#128172; WhatsApp Us
+            </a>
+          </div>
+
+          <div style="font-family:'DM Mono',monospace,Arial;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:rgba(103, 204, 20, 0.57);">
+            ⏳ &nbsp;On your First Project &nbsp;·&nbsp; Only 11 slots remaining
+          </div>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+
+
+<!-- ══════════════════════════════════
+     CONTACT BAR
+══════════════════════════════════ -->
+<tr>
+  <td style="padding:30px 48px;" class="mob-pad">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td style="vertical-align:middle;">
+          <div style="font-family:'DM Mono',monospace,Arial;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:rgba(0, 0, 0, 0.93);margin-bottom:5px;">Call or WhatsApp</div>
+          <a href="tel:+971542330837" style="font-family:'Playfair Display',Georgia,serif;font-size:20px;font-weight:700;color:#0A0A0A;text-decoration:none;letter-spacing:-0.5px;">+971 54 233 0837</a>
+        </td>
+        <td style="vertical-align:middle;text-align:right;">
+          <a href="https://www.wasleen.com/contact-us/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1"
+             style="display:inline-block;background:transparent;color:#0A0A0A;font-family:'DM Sans',Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;padding:11px 18px;text-decoration:none;border:1.5px solid #0A0A0A;">
+            Contact Us
+          </a>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+
+
+<!-- ══════════════════════════════════
+     FOOTER
+══════════════════════════════════ -->
+<tr><td style="height:1px;background:#E5E2DB;font-size:0;line-height:0;">&nbsp;</td></tr>
+<tr>
+  <td style="background-color:#FAFAF8;padding:30px 48px 34px;" class="mob-pad">
+
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:18px;">
+      <tr>
+        <td>
+          <span style="font-family:'Playfair Display',Georgia,serif;font-size:18px;font-weight:900;color:#0A0A0A;letter-spacing:-0.5px;">Wasleen<span style="color:#C87818;">.</span></span>
+          <div style="font-family:'DM Mono',monospace,Arial;font-size:7px;letter-spacing:4px;text-transform:uppercase;color:rgb(154, 2, 249);margin-top:3px;">Interior &amp; Fitout · DUBAI · UAE</div>
+        </td>
+      </tr>
+    </table>
+
+    <div style="margin-bottom:16px;">
+      <a href="https://www.wasleen.com/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1" style="font-family:'DM Sans',Arial,sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgb(10, 10, 10);text-decoration:none;margin-right:14px;">Home</a>
+      <a href="https://www.wasleen.com/services/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1" style="font-family:'DM Sans',Arial,sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgb(10, 10, 10);text-decoration:none;margin-right:14px;">Services</a>
+      <a href="https://www.wasleen.com/gallery/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1" style="font-family:'DM Sans',Arial,sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgb(10, 10, 10);text-decoration:none;margin-right:14px;">Gallery</a>
+      <a href="https://www.wasleen.com/projects/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1" style="font-family:'DM Sans',Arial,sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgb(10, 10, 10);text-decoration:none;margin-right:14px;">Projects</a>
+      <a href="https://www.wasleen.com/blog/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1" style="font-family:'DM Sans',Arial,sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgb(10, 10, 10);text-decoration:none;margin-right:14px;">Blog</a>
+      <a href="https://www.wasleen.com/contact-us/?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1" style="font-family:'DM Sans',Arial,sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgb(10, 10, 10);text-decoration:none;">Contact</a>
+    </div>
+
+    <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;font-weight:300;color:rgba(10,10,10,0.3);line-height:1.7;margin-bottom:16px;">
+      &#128205; Dubai &amp; Ajman, UAE &nbsp;·&nbsp;
+      <a href="tel:+971542330837" style="color:#C87818;text-decoration:none;">+971 54 233 0837</a>
+      &nbsp;·&nbsp;
+      <a href="https://www.wasleen.com?utm_source=brevo&utm_campaign=Interior Services Temp&utm_medium=email&utm_id=1" style="color:rgba(10,10,10,0.4);text-decoration:none;">wasleen.com</a>
+    </div>
+
+    <div style="height:1px;background:#E5E2DB;margin-bottom:14px;font-size:0;line-height:0;">&nbsp;</div>
+
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td><span style="font-family:'DM Sans',Arial,sans-serif;font-size:8px;letter-spacing:1px;color:rgba(10,10,10,0.22);">&#169; 2026 Wasleen Interior &amp; Fitout. All rights reserved.</span></td>
+        <td style="text-align:right;"><a href="#" style="font-family:'DM Sans',Arial,sans-serif;font-size:8px;color:rgba(10,10,10,0.25);text-decoration:underline;">Unsubscribe</a></td>
+      </tr>
+    </table>
+
+  </td>
+</tr>
+
+<!-- BOTTOM COLOUR RIBBON -->
+<tr>
+  <td style="height:4px;background:linear-gradient(90deg,#E8401C 0%,#C87818 22%,#1A6B4A 44%,#1C3A8C 66%,#6B1A4A 88%,#E8401C 100%);font-size:0;line-height:0;">&nbsp;</td>
+</tr>
+
+
+</table><!-- end email container -->
+</td></tr>
+</table><!-- end outer -->
+</body>
+</html>

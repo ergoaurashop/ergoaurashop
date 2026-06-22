@@ -134,10 +134,40 @@ export default function CheckoutPage() {
 
     try {
       // 1. Create a Razorpay order via our API route
+      //    Pass customer+order data so it's stored in Razorpay notes as a
+      //    fallback – the webhook can auto-create the order if the browser
+      //    fails to redirect after payment.
       const orderRes = await fetch("/api/razorpay/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: total, currency: "INR" }),
+        body: JSON.stringify({
+          amount: total,
+          currency: "INR",
+          customer_name: form.name,
+          customer_email: form.email,
+          customer_phone: form.phone,
+          address: {
+            line1: form.addressLine1,
+            line2: form.addressLine2 || undefined,
+            city: form.city,
+            state: form.state,
+            pincode: form.pincode,
+          },
+          products: items.map((item) => ({
+            product_id: item.product.id,
+            name: item.product.name,
+            price: item.product.price,
+            quantity: item.quantity,
+            image: getProductImageUrl(
+              item.product.slug,
+              item.product.images?.[0],
+            ),
+          })),
+          subtotal,
+          discount: b2g1Discount,
+          shipping,
+          total,
+        }),
       });
 
       if (!orderRes.ok) {

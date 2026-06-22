@@ -1,7 +1,79 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
+import Razorpay from "razorpay";
 import { supabaseAdmin } from "@/lib/supabase/admin";
-import { RAZORPAY_WEBHOOK_SECRET } from "@/lib/constants";
+import {
+  RAZORPAY_KEY_ID,
+  RAZORPAY_KEY_SECRET,
+  RAZORPAY_WEBHOOK_SECRET,
+} from "@/lib/constants";
+import type { DbOrderStatus } from "@/lib/types";
+
+// Initialize Razorpay SDK so we can fetch order details (with notes)
+// when auto-creating missing orders from webhook events.
+const razorpay = new Razorpay({
+  key_id: RAZORPAY_KEY_ID,
+  key_secret: RAZORPAY_KEY_SECRET,
+});
+
+// ── Helper: create a Supabase order from Razorpay order notes ──────────────
+// When the webhook receives a payment.captured or payment.failed event but no
+// order exists in our DB (browser failed to redirect), we fetch the Razorpay
+// order to retrieve the notes that were stored at order-creation time and
+// reconstruct the order record.
+async function createOrderFromRazorpayNotes(
+  razorpayOrderId: string,
+  paymentId: string,
+  paymentStatus: DbOrderStatus | "paid" | "failed",
+) {
+  try {
+    const razorpayOrder = await razorpay.orders.fetch(razorpayOrderId);
+    const notes = (razorpayOrder.notes as Record<string, string>) || {};
+
+    const orderData: Record<string, unknown> = {
+      customer_name: notes.customer_name || "Unknown",
+      customer_email: notes.customer_email || "unknown@email.com",
+      customer_phone: notes.customer_phone || "0000000000",
+      address: notes.address
+        ? JSON.parse(notes.address)
+        : { line1: "N/A", city: "N/A", state: "N/A", pincode: "000000" },
+      products: notes.products ? JSON.parse(notes.products) : [],
+      subtotal: notes.subtotal ? parseInt(notes.subtotal, 10) : 0,
+      discount: notes.discount ? parseInt(notes.discount, 10) : 0,
+      shipping: notes.shipping ? parseInt(notes.shipping, 10) : 0,
+      total: notes.total
+        ? parseInt(notes.total, 10)
+        : Math.round((razorpayOrder.amount_paid || 0) / 100),
+      payment_id: paymentId,
+      payment_status: paymentStatus,
+      order_status: "placed" as DbOrderStatus,
+    };
+
+    const { data, error } = await supabaseAdmin
+      .from("orders")
+      .insert(orderData)
+      .select()
+      .single();
+
+    if (error) {
+      console.error(
+        `[Webhook] Failed to create order from Razorpay notes: ${error.message}`,
+      );
+      return null;
+    }
+
+    console.log(
+      `[Webhook] ✅ Auto-created order ${data.order_id} (track: ${data.track_id}) from razorpay_order ${razorpayOrderId}`,
+    );
+    return data;
+  } catch (err) {
+    console.error(
+      `[Webhook] Error fetching Razorpay order ${razorpayOrderId} or creating from notes:`,
+      err,
+    );
+    return null;
+  }
+}
 
 /**
  * POST /api/razorpay/webhook
@@ -66,12 +138,27 @@ export async function POST(request: Request) {
           return NextResponse.json({ status: "already_exists" });
         }
 
-        // Order doesn't exist yet — this means the customer's browser
-        // failed to redirect after payment. We try to find the order
-        // by razorpay_order_id stored in notes or find via Razorpay API.
-        // For now, log it — manual reconciliation needed.
+        // Order doesn't exist — the customer's browser likely failed to
+        // redirect after payment. Try to auto-create the order from the
+        // Razorpay order notes (stored at order-creation time).
+        const newOrder = await createOrderFromRazorpayNotes(
+          razorpayOrderId,
+          razorpayPaymentId,
+          "paid",
+        );
+
+        if (newOrder) {
+          return NextResponse.json({
+            status: "created",
+            order_id: newOrder.order_id,
+            track_id: newOrder.track_id,
+          });
+        }
+
+        // If we get here, notes were missing (e.g. old checkout page that
+        // didn't send them) or the Razorpay API call failed. Log for review.
         console.warn(
-          `[Webhook] ⚠️ Payment captured but no order found in DB. Payment: ${razorpayPaymentId}, Razorpay Order: ${razorpayOrderId}`,
+          `[Webhook] ⚠️ Payment captured but could not auto-create order. Payment: ${razorpayPaymentId}, Razorpay Order: ${razorpayOrderId}`,
         );
 
         return NextResponse.json({ status: "logged" });
@@ -79,18 +166,52 @@ export async function POST(request: Request) {
 
       case "payment.failed": {
         const payment = event.payload.payment.entity;
+        const razorpayPaymentId = payment.id;
+        const razorpayOrderId = payment.order_id;
+
         console.error(
-          `[Webhook] Payment failed: ${payment.id}, error: ${payment.error_description}`,
+          `[Webhook] Payment failed: ${razorpayPaymentId}, order: ${razorpayOrderId}, error: ${payment.error_description}`,
         );
 
-        // Update the order's payment_status to "failed" if we have a record
-        if (payment.order_id) {
+        // Try to update existing order's payment_status to "failed"
+        const { data: existingOrder } = await supabaseAdmin
+          .from("orders")
+          .select("id")
+          .eq("payment_id", razorpayPaymentId)
+          .maybeSingle();
+
+        if (existingOrder) {
           await supabaseAdmin
             .from("orders")
             .update({ payment_status: "failed" })
-            .eq("payment_id", payment.id);
+            .eq("payment_id", razorpayPaymentId);
+          console.log(
+            `[Webhook] Updated order ${existingOrder.id} payment_status to failed`,
+          );
+          return NextResponse.json({ status: "updated" });
         }
 
+        // No existing order — try to create a failed order record from notes
+        // so we have visibility into the failed transaction.
+        if (razorpayOrderId) {
+          const failedOrder = await createOrderFromRazorpayNotes(
+            razorpayOrderId,
+            razorpayPaymentId,
+            "failed",
+          );
+          if (failedOrder) {
+            return NextResponse.json({
+              status: "created_failed",
+              order_id: failedOrder.order_id,
+              track_id: failedOrder.track_id,
+            });
+          }
+        }
+
+        // Could not create a record — log for manual review
+        console.warn(
+          `[Webhook] ⚠️ Payment failed but no order found/created. Payment: ${razorpayPaymentId}`,
+        );
         return NextResponse.json({ status: "logged" });
       }
 

@@ -16,7 +16,20 @@ const razorpay = new Razorpay({
 
 export async function POST(request: Request) {
   try {
-    const { amount, currency } = await request.json();
+    const {
+      amount,
+      currency,
+      // Optional customer+order data stored in Razorpay notes as webhook fallback
+      customer_name,
+      customer_email,
+      customer_phone,
+      address,
+      products,
+      subtotal,
+      discount,
+      shipping,
+      total,
+    } = await request.json();
 
     if (!amount || amount <= 0) {
       return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
@@ -32,10 +45,24 @@ export async function POST(request: Request) {
       );
     }
 
+    // Store customer+order data in Razorpay notes so the webhook can
+    // auto-create the order if the browser fails to redirect after payment.
+    const notes: Record<string, string> = {};
+    if (customer_name) notes.customer_name = customer_name;
+    if (customer_email) notes.customer_email = customer_email;
+    if (customer_phone) notes.customer_phone = customer_phone;
+    if (address) notes.address = JSON.stringify(address);
+    if (products) notes.products = JSON.stringify(products);
+    if (subtotal != null) notes.subtotal = String(subtotal);
+    if (discount != null) notes.discount = String(discount);
+    if (shipping != null) notes.shipping = String(shipping);
+    if (total != null) notes.total = String(total);
+
     const options = {
       amount: Math.round(amount * 100), // Razorpay expects paise
       currency: currency || "INR",
       receipt: `receipt_${Date.now()}`,
+      ...(Object.keys(notes).length > 0 && { notes }),
     };
 
     const order = await razorpay.orders.create(options);
