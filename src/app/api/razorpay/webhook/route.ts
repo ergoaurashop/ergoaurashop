@@ -8,6 +8,11 @@ import {
   RAZORPAY_WEBHOOK_SECRET,
 } from "@/lib/constants";
 import type { DbOrderStatus } from "@/lib/types";
+import { sendEmail } from "@/lib/email/send";
+import {
+  paymentFailedEmail,
+  buildPaymentFailedData,
+} from "@/lib/email/templates/payment-failed";
 
 // Initialize Razorpay SDK so we can fetch order details (with notes)
 // when auto-creating missing orders from webhook events.
@@ -188,6 +193,50 @@ export async function POST(request: Request) {
           console.log(
             `[Webhook] Updated order ${existingOrder.id} payment_status to failed`,
           );
+
+          // ── Fire-and-forget: send payment-failed recovery email ──
+          (async () => {
+            try {
+              const { data: order, error: fetchError } = await supabaseAdmin
+                .from("orders")
+                .select("*")
+                .eq("payment_id", razorpayPaymentId)
+                .single();
+
+              if (fetchError || !order) {
+                console.error(
+                  `[Webhook] Failed to fetch order for email: ${fetchError?.message}`,
+                );
+                return;
+              }
+
+              const emailData = buildPaymentFailedData(order, {
+                failureReason: payment.error_description,
+              });
+              const html = paymentFailedEmail(emailData);
+              const result = await sendEmail({
+                to: order.customer_email,
+                subject: `Complete Your Purchase — ${emailData.product.name} at ErgoAura`,
+                html,
+              });
+
+              if (result.success) {
+                console.log(
+                  `[Webhook] ✅ Payment-failed email sent to ${order.customer_email} (id: ${result.id})`,
+                );
+              } else {
+                console.error(
+                  `[Webhook] ❌ Failed to send payment-failed email: ${result.error}`,
+                );
+              }
+            } catch (err) {
+              console.error(
+                "[Webhook] Email send error:",
+                err instanceof Error ? err.message : err,
+              );
+            }
+          })();
+
           return NextResponse.json({ status: "updated" });
         }
 
@@ -200,6 +249,27 @@ export async function POST(request: Request) {
             "failed",
           );
           if (failedOrder) {
+            // ── Fire-and-forget: send payment-failed recovery email ──
+            const emailData = buildPaymentFailedData(failedOrder, {
+              failureReason: payment.error_description,
+            });
+            const html = paymentFailedEmail(emailData);
+            sendEmail({
+              to: failedOrder.customer_email,
+              subject: `Complete Your Purchase — ${emailData.product.name} at ErgoAura`,
+              html,
+            }).then((result) => {
+              if (result.success) {
+                console.log(
+                  `[Webhook] ✅ Payment-failed email sent to ${failedOrder.customer_email} (id: ${result.id})`,
+                );
+              } else {
+                console.error(
+                  `[Webhook] ❌ Failed to send payment-failed email: ${result.error}`,
+                );
+              }
+            });
+
             return NextResponse.json({
               status: "created_failed",
               order_id: failedOrder.order_id,

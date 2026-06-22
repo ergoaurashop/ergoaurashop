@@ -69,6 +69,13 @@ export const KLAVIYO_CLIENT_ID = process.env.KLAVIYO_CLIENT_ID!;
 export const KLAVIYO_CLIENT_SECRET = process.env.KLAVIYO_CLIENT_SECRET!;
 
 // =====================================================================
+// Resend (Transactional Email)
+// =====================================================================
+export const RESEND_API_KEY = process.env.RESEND_API_KEY!;
+export const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL!;
+export const RESEND_AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID!;
+
+// =====================================================================
 // Admin Dashboard Credentials (server-only — never exposed to the browser)
 // =====================================================================
 export const ADMIN_USERNAME = process.env.ADMIN_USERNAME!;
@@ -92,6 +99,8 @@ const REQUIRED_SERVER_VARS = [
   "RAZORPAY_KEY_SECRET",
   "RAZORPAY_WEBHOOK_SECRET",
   "DEEPSEEK_API_KEY",
+  "RESEND_API_KEY",
+  "RESEND_FROM_EMAIL",
   "ADMIN_USERNAME",
   "ADMIN_PASSWORD",
   "GA4_MEASUREMENT_PROTOCOL_SECRET",
