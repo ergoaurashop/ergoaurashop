@@ -35,7 +35,7 @@ const DARK_HEADER = (brandLogoUrl: string) => `
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="560">
         <tr>
           <td align="center">
-           <a href="{{SITE_URL}}" target="_blank" style="text-decoration:none;">
+           <a href="https://ergoaurashop.com" target="_blank" style="text-decoration:none;">
               <img src="${brandLogoUrl}" alt="ErgoAura" width="140" height="auto" style="display:block;border:0;outline:none;max-width:140px;height:auto;" />
             </a>
             <p style="margin:8px 0 0;font-family:${FONTS.body};font-size:13px;color:${BRAND_COLORS.gold};letter-spacing:2px;text-transform:uppercase;mso-line-height-alt:18px;line-height:18px;">
@@ -91,7 +91,7 @@ const FOOTER = `
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="560">
         <tr>
           <td align="center" style="padding-bottom:16px;">
-            <a href="{{SITE_URL}}" target="_blank" style="font-family:${FONTS.heading};font-size:22px;color:${BRAND_COLORS.gold};text-decoration:none;font-weight:700;letter-spacing:1px;">ErgoAura</a>
+            <a href="https://ergoaurashop.com" target="_blank" style="font-family:${FONTS.heading};font-size:22px;color:${BRAND_COLORS.gold};text-decoration:none;font-weight:700;letter-spacing:1px;">ErgoAura</a>
           </td>
         </tr>
         <tr>

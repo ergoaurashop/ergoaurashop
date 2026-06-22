@@ -13,6 +13,8 @@ import {
   paymentFailedEmail,
   buildPaymentFailedData,
 } from "@/lib/email/templates/payment-failed";
+import { paymentCapturedEmail } from "@/lib/email/templates/payment-captured";
+import { refundProcessedEmail } from "@/lib/email/templates/refund-processed";
 
 // Initialize Razorpay SDK so we can fetch order details (with notes)
 // when auto-creating missing orders from webhook events.
@@ -153,6 +155,38 @@ export async function POST(request: Request) {
         );
 
         if (newOrder) {
+          // ── Fire-and-forget: send payment-captured confirmation email ──
+          (async () => {
+            try {
+              const html = paymentCapturedEmail({
+                customerName: newOrder.customer_name,
+                orderId: newOrder.order_id,
+                trackId: newOrder.track_id,
+                products: newOrder.products || [],
+                total: newOrder.total || 0,
+              });
+              const result = await sendEmail({
+                to: newOrder.customer_email,
+                subject: `Payment Received — Order ${newOrder.order_id} at ErgoAura`,
+                html,
+              });
+              if (result.success) {
+                console.log(
+                  `[Webhook] ✅ Payment-captured email sent to ${newOrder.customer_email} (id: ${result.id})`,
+                );
+              } else {
+                console.error(
+                  `[Webhook] ❌ Failed to send payment-captured email: ${result.error}`,
+                );
+              }
+            } catch (err) {
+              console.error(
+                "[Webhook] Payment-captured email error:",
+                err instanceof Error ? err.message : err,
+              );
+            }
+          })();
+
           return NextResponse.json({
             status: "created",
             order_id: newOrder.order_id,
@@ -283,6 +317,67 @@ export async function POST(request: Request) {
           `[Webhook] ⚠️ Payment failed but no order found/created. Payment: ${razorpayPaymentId}`,
         );
         return NextResponse.json({ status: "logged" });
+      }
+
+      case "refund.processed": {
+        const refund = event.payload.refund.entity;
+        const payment = event.payload.payment.entity;
+        const razorpayPaymentId = payment.id;
+
+        // Fetch the order associated with this payment
+        const { data: order } = await supabaseAdmin
+          .from("orders")
+          .select("*")
+          .eq("payment_id", razorpayPaymentId)
+          .single();
+
+        if (!order) {
+          console.warn(
+            `[Webhook] ⚠️ Refund processed but no order found for payment ${razorpayPaymentId}`,
+          );
+          return NextResponse.json({ status: "order_not_found" });
+        }
+
+        // Update order status to "refunded"
+        await supabaseAdmin
+          .from("orders")
+          .update({ order_status: "refunded", payment_status: "refunded" })
+          .eq("payment_id", razorpayPaymentId);
+
+        // ── Fire-and-forget: send refund notification email ──
+        (async () => {
+          try {
+            const html = refundProcessedEmail({
+              customerName: order.customer_name,
+              orderId: order.order_id,
+              refundAmount: refund.amount
+                ? Math.round(refund.amount / 100)
+                : order.total,
+              refundReason: refund.notes?.reason || undefined,
+            });
+            const result = await sendEmail({
+              to: order.customer_email,
+              subject: `Refund Processed — Order ${order.order_id} at ErgoAura`,
+              html,
+            });
+            if (result.success) {
+              console.log(
+                `[Webhook] ✅ Refund email sent to ${order.customer_email} (id: ${result.id})`,
+              );
+            } else {
+              console.error(
+                `[Webhook] ❌ Failed to send refund email: ${result.error}`,
+              );
+            }
+          } catch (err) {
+            console.error(
+              "[Webhook] Refund email error:",
+              err instanceof Error ? err.message : err,
+            );
+          }
+        })();
+
+        return NextResponse.json({ status: "refunded" });
       }
 
       default:

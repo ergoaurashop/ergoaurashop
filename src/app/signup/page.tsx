@@ -63,6 +63,15 @@ export default function SignupPage() {
       // Track successful sign-up
       trackSignUp("email");
 
+      // 3. Send welcome email (fire-and-forget — don't block the response)
+      fetch("/api/email/welcome", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: form.email, name: form.name }),
+      }).catch((err) =>
+        console.error("[Signup] Welcome email fetch error:", err),
+      );
+
       setSuccess(
         "Account created! Please check your email to confirm your account.",
       );
