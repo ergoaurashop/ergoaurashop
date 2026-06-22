@@ -34,7 +34,6 @@ export async function sendEmail({
 
     const audience = audienceId ?? RESEND_AUDIENCE_ID;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data, error }: any = await resend.emails.send({
       from: RESEND_FROM_EMAIL,
       to: Array.isArray(to) ? to : [to],

@@ -34,7 +34,6 @@ export async function syncContactToAudience(
   try {
     const resend = getResendClient();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { error } = await (resend.contacts as any).create({
       email: params.email,
       first_name: params.firstName,
@@ -70,7 +69,6 @@ export async function removeContactFromAudience(email: string): Promise<void> {
 
   try {
     const resend = getResendClient();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { error } = await (resend.contacts as any).remove({
       email,
       audience_id: RESEND_AUDIENCE_ID,
