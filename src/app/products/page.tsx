@@ -8,19 +8,16 @@ import type { Product } from "@/lib/types";
 import ProductGrid from "@/components/products/ProductGrid";
 import { cn } from "@/lib/utils";
 import { LOCAL_PRODUCTS } from "@/lib/products-data";
-import { SITE_URL } from "@/lib/constants";
+import { SITE_URL, CATEGORIES as CATEGORIES_CONST } from "@/lib/constants";
 import { trackViewItemList, trackSearch } from "@/lib/analytics/events";
 import { useScrollDepth } from "@/hooks/useScrollDepth";
 import BreadcrumbSchemaClient from "@/components/seo/BreadcrumbSchemaClient";
 
 const PAGE_SIZE = 12;
 
-const CATEGORIES = [
+const FILTER_CATEGORIES = [
   { label: "All", value: "all" },
-  { label: "Mega Deals", value: "wellness" },
-  { label: "Home & Kitchen", value: "kitchen" },
-  { label: "Accessories", value: "accessories" },
-  { label: "Personal Care", value: "personal-care" },
+  ...CATEGORIES_CONST.map((c) => ({ label: c.name, value: c.slug })),
 ];
 
 const SORT_OPTIONS = [
@@ -188,7 +185,7 @@ function ProductsContent() {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-[#D8CFBF]/50">
             {/* Category pills */}
             <div className="flex gap-2 overflow-x-auto w-full sm:w-auto pb-2 sm:pb-0">
-              {CATEGORIES.map((cat) => (
+              {FILTER_CATEGORIES.map((cat) => (
                 <button
                   key={cat.value}
                   onClick={() => setActiveCategory(cat.value)}
@@ -235,7 +232,7 @@ function ProductsContent() {
               {allProducts.length}{" "}
               {allProducts.length === 1 ? "product" : "products"}
               {activeCategory !== "all" &&
-                ` in ${CATEGORIES.find((c) => c.value === activeCategory)?.label}`}
+                ` in ${FILTER_CATEGORIES.find((c) => c.value === activeCategory)?.label}`}
             </p>
           )}
 

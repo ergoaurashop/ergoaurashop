@@ -5,6 +5,7 @@
 // =====================================================================
 
 import type { Product } from "@/lib/types";
+import { IPHONE_PRODUCT } from "@/lib/iphone-15-pro-max-data";
 
 /**
  * Maps product slugs to their actual folder names on disk.
@@ -521,7 +522,7 @@ export const LOCAL_PRODUCTS: Product[] = [
     price: 24990,
     original_price: 124999,
     discount_percentage: 80,
-    category: "electronics",
+    category: "phones",
     images: [],
     stock: 15,
     features: [
@@ -555,6 +556,13 @@ export const LOCAL_PRODUCTS: Product[] = [
     is_active: true,
     created_at: "2025-12-01T00:00:00Z",
     updated_at: "2025-12-01T00:00:00Z",
+  },
+  {
+    ...IPHONE_PRODUCT,
+    id: "prod-apple-iphone-15-pro-max-512gb",
+    name: "Apple iPhone 15 Pro Max 512GB",
+    slug: "iphone-15-pro-max-512gb",
+    category: "phones",
   },
   {
     id: "prod-messi-argentina-2026-jersey",
