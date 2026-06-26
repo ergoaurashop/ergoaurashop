@@ -15,6 +15,7 @@ import {
 } from "@/lib/email/templates/payment-failed";
 import { paymentCapturedEmail } from "@/lib/email/templates/payment-captured";
 import { refundProcessedEmail } from "@/lib/email/templates/refund-processed";
+import { sendCAPIEvent } from "@/lib/meta/capi";
 
 // Initialize Razorpay SDK so we can fetch order details (with notes)
 // when auto-creating missing orders from webhook events.
@@ -54,6 +55,10 @@ async function createOrderFromRazorpayNotes(
       payment_id: paymentId,
       payment_status: paymentStatus,
       order_status: "placed" as DbOrderStatus,
+      // Meta CAPI fields extracted from Razorpay notes
+      capi_event_id: notes.capi_event_id || null,
+      fbp: notes.fbp || null,
+      fbc: notes.fbc || null,
     };
 
     const { data, error } = await supabaseAdmin
@@ -186,6 +191,52 @@ export async function POST(request: Request) {
               );
             }
           })();
+
+          // ── Fire-and-forget: send Meta CAPI Purchase event ──
+          if (
+            newOrder.capi_event_id &&
+            process.env.META_CAPI_ENABLED === "true"
+          ) {
+            (async () => {
+              try {
+                const address = newOrder.address || {};
+                await sendCAPIEvent({
+                  eventName: "Purchase",
+                  eventId: newOrder.capi_event_id,
+                  userData: {
+                    email: newOrder.customer_email,
+                    phone: newOrder.customer_phone,
+                    firstName: newOrder.customer_name?.split(" ")[0] || "",
+                    lastName:
+                      newOrder.customer_name?.split(" ").slice(1).join(" ") ||
+                      "",
+                    city: address.city,
+                    state: address.state,
+                    pincode: address.pincode,
+                    fbp: newOrder.fbp || undefined,
+                    fbc: newOrder.fbc || undefined,
+                  },
+                  customData: {
+                    value: newOrder.total || 0,
+                    currency: "INR",
+                    content_ids: (
+                      (newOrder.products || []) as { product_id: string }[]
+                    ).map((p) => p.product_id),
+                    content_type: "product",
+                  },
+                  eventSourceUrl: "https://ergoaurashop.com/checkout",
+                });
+                console.log(
+                  `[Webhook] ✅ Meta Purchase event sent for webhook-created order ${newOrder.order_id}`,
+                );
+              } catch (err) {
+                console.error(
+                  "[Webhook] Meta Purchase event error:",
+                  err instanceof Error ? err.message : err,
+                );
+              }
+            })();
+          }
 
           return NextResponse.json({
             status: "created",

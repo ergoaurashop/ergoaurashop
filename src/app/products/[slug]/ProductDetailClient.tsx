@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 
 import { trackViewItem } from "@/lib/analytics/events";
+import { trackEvent } from "@/lib/meta/pixel";
 
 import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -248,11 +249,25 @@ export default function ProductDetailClient() {
     if (slug) fetchProduct();
   }, [slug]);
 
-  // Track view_item once product is loaded
+  // Track view_item once product is loaded (GA4)
   useEffect(() => {
     if (!loading && product && !hasTrackedView.current) {
       hasTrackedView.current = true;
       trackViewItem(product);
+    }
+  }, [loading, product]);
+
+  // Meta ViewContent (CAPI + Pixel)
+  useEffect(() => {
+    if (!loading && product) {
+      trackEvent("ViewContent", {
+        content_category: product.slug,
+        content_name: product.name,
+        content_ids: [product.id],
+        content_type: "product",
+        value: product.price,
+        currency: "INR",
+      });
     }
   }, [loading, product]);
 

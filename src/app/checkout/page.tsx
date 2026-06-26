@@ -13,6 +13,8 @@ import Input from "@/components/ui/Input";
 import Card from "@/components/ui/Card";
 import Link from "next/link";
 import { trackBeginCheckout, trackPurchase } from "@/lib/analytics/events";
+import { trackEvent } from "@/lib/meta/pixel";
+import { getClientData } from "@/lib/meta/cookies";
 
 // ── Razorpay global type ────────────────────────────────────────
 declare global {
@@ -81,6 +83,7 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const hasTrackedCheckout = useRef(false);
+  const capiEventIdRef = useRef<string | null>(null);
 
   const subtotal = getSubtotal();
   const b2g1Discount = getBuy2Get1Discount();
@@ -96,15 +99,33 @@ export default function CheckoutPage() {
   );
   const dealSavings = Math.max(0, totalOriginalPrice - subtotal);
 
-  // Track begin_checkout
+  // Track begin_checkout (GA4) + InitiateCheckout (Meta CAPI + Pixel)
   useEffect(() => {
     if (items.length > 0 && !hasTrackedCheckout.current) {
       hasTrackedCheckout.current = true;
+
+      // GA4
       trackBeginCheckout(
         items.map((item) => ({
           product: item.product,
           quantity: item.quantity,
         })),
+      );
+
+      // Meta InitiateCheckout — generate event_id for dedup with Purchase later
+      const eventId = crypto.randomUUID();
+      capiEventIdRef.current = eventId;
+
+      trackEvent(
+        "InitiateCheckout",
+        {
+          content_ids: items.map((item) => item.product.id),
+          content_type: "product",
+          value: discountedSubtotal,
+          currency: "INR",
+          num_items: items.reduce((sum, item) => sum + item.quantity, 0),
+        },
+        {},
       );
     }
   }, [items]);
@@ -131,6 +152,10 @@ export default function CheckoutPage() {
     e.preventDefault();
     setSubmitting(true);
     setError("");
+
+    // Get Meta client data for CAPI (fire-and-forget, stored in notes + order)
+    const { fbp, fbc } = getClientData();
+    const capiEventId = capiEventIdRef.current || crypto.randomUUID();
 
     try {
       // 1. Create a Razorpay order via our API route
@@ -167,6 +192,10 @@ export default function CheckoutPage() {
           discount: b2g1Discount,
           shipping,
           total,
+          // Meta CAPI fields — stored in Razorpay notes for webhook fallback
+          capi_event_id: capiEventId,
+          fbp: fbp || undefined,
+          fbc: fbc || undefined,
         }),
       });
 
@@ -229,6 +258,10 @@ export default function CheckoutPage() {
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_signature: response.razorpay_signature,
                 payment_status: "paid",
+                // Meta CAPI fields — stored in order for webhook Purchase dedup
+                capi_event_id: capiEventId,
+                fbp: fbp || undefined,
+                fbc: fbc || undefined,
               }),
             });
 

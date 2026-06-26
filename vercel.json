@@ -3,6 +3,10 @@
     {
       "path": "/api/cart/abandoned",
       "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/meta-retry",
+      "schedule": "*/15 * * * *"
     }
   ]
 }

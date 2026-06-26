@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Product, CartItem } from "@/lib/types";
 import { isB2G1Eligible } from "@/lib/utils";
+import { trackEvent } from "@/lib/meta/pixel";
 
 interface CartStore {
   items: CartItem[];
@@ -47,6 +48,16 @@ export const useCartStore = create<CartStore>()(
             items: [...state.items, { product, quantity }],
             isOpen: true,
           };
+        });
+
+        // Fire Meta AddToCart event (CAPI + Pixel)
+        trackEvent("AddToCart", {
+          content_category: product.slug,
+          content_name: product.name,
+          content_ids: [product.id],
+          content_type: "product",
+          value: product.price * quantity,
+          currency: "INR",
         });
       },
 

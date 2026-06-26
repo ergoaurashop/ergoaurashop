@@ -5,6 +5,7 @@ import { RAZORPAY_KEY_SECRET } from "@/lib/constants";
 import type { OrderAddress, OrderProduct } from "@/lib/types";
 import { sendEmail } from "@/lib/email/send";
 import { orderConfirmationEmail } from "@/lib/email/templates/order-confirmation";
+import { sendCAPIEvent } from "@/lib/meta/capi";
 
 export async function POST(request: Request) {
   try {
@@ -25,6 +26,10 @@ export async function POST(request: Request) {
       razorpay_signature,
       payment_status,
       notes,
+      // Meta CAPI fields for Purchase deduplication
+      capi_event_id,
+      fbp,
+      fbc,
     } = body;
 
     // ── Validation ────────────────────────────────────────────────
@@ -96,6 +101,9 @@ export async function POST(request: Request) {
         payment_status: payment_status || "pending",
         order_status: "placed",
         notes: notes || null,
+        capi_event_id: capi_event_id || null,
+        fbp: fbp || null,
+        fbc: fbc || null,
       })
       .select()
       .single();
@@ -146,6 +154,50 @@ export async function POST(request: Request) {
         );
       }
     })();
+
+    // ── Fire Meta CAPI Purchase event (fire-and-forget) ────────────
+    if (capi_event_id && process.env.META_CAPI_ENABLED === "true") {
+      (async () => {
+        try {
+          await sendCAPIEvent({
+            eventName: "Purchase",
+            eventId: capi_event_id,
+            userData: {
+              email: customer_email,
+              phone: customer_phone,
+              firstName: customer_name?.split(" ")[0] || "",
+              lastName: customer_name?.split(" ").slice(1).join(" ") || "",
+              city: address?.city,
+              state: address?.state,
+              pincode: address?.pincode,
+              fbp: fbp || undefined,
+              fbc: fbc || undefined,
+            },
+            customData: {
+              value: total,
+              currency: "INR",
+              content_ids: (products as OrderProduct[]).map(
+                (p) => p.product_id,
+              ),
+              content_type: "product",
+              num_items: (products as OrderProduct[]).reduce(
+                (sum, p) => sum + p.quantity,
+                0,
+              ),
+            },
+            eventSourceUrl: "https://ergoaurashop.com/checkout",
+          });
+          console.log(
+            `[OrderCreate] ✅ Meta Purchase event sent for order ${data.order_id}`,
+          );
+        } catch (err) {
+          console.error(
+            "[OrderCreate] Meta Purchase event error:",
+            err instanceof Error ? err.message : err,
+          );
+        }
+      })();
+    }
 
     return NextResponse.json({ order: data }, { status: 201 });
   } catch (error) {

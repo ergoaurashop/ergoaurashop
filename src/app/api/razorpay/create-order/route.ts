@@ -29,6 +29,10 @@ export async function POST(request: Request) {
       discount,
       shipping,
       total,
+      // Meta CAPI fields — stored in notes for webhook fallback
+      capi_event_id,
+      fbp,
+      fbc,
     } = await request.json();
 
     if (!amount || amount <= 0) {
@@ -57,6 +61,9 @@ export async function POST(request: Request) {
     if (discount != null) notes.discount = String(discount);
     if (shipping != null) notes.shipping = String(shipping);
     if (total != null) notes.total = String(total);
+    if (capi_event_id) notes.capi_event_id = capi_event_id;
+    if (fbp) notes.fbp = fbp;
+    if (fbc) notes.fbc = fbc;
 
     const options = {
       amount: Math.round(amount * 100), // Razorpay expects paise
