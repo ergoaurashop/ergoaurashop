@@ -34,6 +34,7 @@ import {
 import { SITE_METADATA, SITE_URL } from "@/lib/constants";
 import { PRODUCT_RICH_CONTENT } from "@/lib/product-content";
 import { PRODUCT_REVIEW_SUMMARIES, PRODUCT_REVIEWS } from "@/lib/reviews-data";
+import { formatPrice } from "@/lib/utils";
 import ProductDetailClient from "./ProductDetailClient";
 import ProductSchema from "@/components/seo/ProductSchema";
 import BreadcrumbSchema from "@/components/seo/BreadcrumbSchema";
@@ -55,6 +56,32 @@ type Props = {
  */
 function encodePath(path: string): string {
   return path.split("/").map(encodeURIComponent).join("/");
+}
+
+/**
+ * Pre-render ALL product pages as static HTML at build time.
+ * This ensures Googlebot receives fully rendered content,
+ * not client-side loading skeletons.
+ * Any new product added to LOCAL_PRODUCTS is automatically included.
+ */
+export async function generateStaticParams() {
+  const regularSlugs = LOCAL_PRODUCTS.map((p) => p.slug);
+  const specialSlugs = [
+    "samsung-galaxy-s23-ultra",
+    "iphone-15-pro-max-512gb",
+    "messi-argentina-2026-jersey",
+  ];
+  // ergoslug-test-test is excluded — it has noindex
+
+  const seen = new Set<string>();
+  const allSlugs: string[] = [];
+  for (const slug of [...regularSlugs, ...specialSlugs]) {
+    if (!seen.has(slug)) {
+      seen.add(slug);
+      allSlugs.push(slug);
+    }
+  }
+  return allSlugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -237,6 +264,71 @@ export default async function Page({ params }: Props) {
         />
         <BreadcrumbSchema items={breadcrumbItems} />
         {S23_FAQS.length > 0 && <FaqSchema faqs={S23_FAQS} />}
+        {/* Server-rendered content for Googlebot — visible until JS hydrates */}
+        <div id="ssr-product-root" data-slug="samsung-galaxy-s23-ultra">
+          <div className="pt-28 sm:pt-32 pb-16 lg:pb-24">
+            <div className="section-container">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mb-16">
+                <div className="lg:col-span-2 space-y-4">
+                  <div className="aspect-square bg-apple-bg rounded-apple overflow-hidden flex items-center justify-center p-4">
+                    <span className="text-apple-text-secondary">
+                      Samsung Galaxy S23 Ultra
+                    </span>
+                  </div>
+                </div>
+                <div className="space-y-6">
+                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-apple-text-primary">
+                    {S23_PRODUCT.name}
+                  </h1>
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-3xl font-semibold text-apple-text-primary">
+                      {formatPrice(S23_PRODUCT.price)}
+                    </span>
+                    {S23_PRODUCT.original_price > S23_PRODUCT.price && (
+                      <>
+                        <span className="text-lg text-apple-text-secondary line-through">
+                          {formatPrice(S23_PRODUCT.original_price)}
+                        </span>
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800">
+                          -{S23_PRODUCT.discount_percentage}%
+                        </span>
+                      </>
+                    )}
+                  </div>
+                  <p className="text-apple-text-secondary leading-relaxed">
+                    {S23_PRODUCT.description}
+                  </p>
+                  {S23_PRODUCT.features && S23_PRODUCT.features.length > 0 && (
+                    <div>
+                      <h3 className="text-sm font-semibold uppercase tracking-wider text-apple-text-primary mb-3">
+                        Key Features
+                      </h3>
+                      <ul className="space-y-2">
+                        {S23_PRODUCT.features.map((feature, i) => (
+                          <li
+                            key={i}
+                            className="flex items-start gap-3 text-sm text-apple-text-primary"
+                          >
+                            <svg
+                              className="w-4 h-4 text-apple-success mt-0.5 shrink-0"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                            >
+                              <path d="M20 6L9 17l-5-5" />
+                            </svg>
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <ProductDetailClient />
       </>
     );
@@ -270,6 +362,72 @@ export default async function Page({ params }: Props) {
         />
         <BreadcrumbSchema items={breadcrumbItems} />
         {IPHONE_FAQS.length > 0 && <FaqSchema faqs={IPHONE_FAQS} />}
+        {/* Server-rendered content for Googlebot */}
+        <div id="ssr-product-root" data-slug="iphone-15-pro-max-512gb">
+          <div className="pt-28 sm:pt-32 pb-16 lg:pb-24">
+            <div className="section-container">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mb-16">
+                <div className="lg:col-span-2 space-y-4">
+                  <div className="aspect-square bg-apple-bg rounded-apple overflow-hidden flex items-center justify-center p-4">
+                    <span className="text-apple-text-secondary">
+                      iPhone 15 Pro Max 512GB
+                    </span>
+                  </div>
+                </div>
+                <div className="space-y-6">
+                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-apple-text-primary">
+                    {IPHONE_PRODUCT.name}
+                  </h1>
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-3xl font-semibold text-apple-text-primary">
+                      {formatPrice(IPHONE_PRODUCT.price)}
+                    </span>
+                    {IPHONE_PRODUCT.original_price > IPHONE_PRODUCT.price && (
+                      <>
+                        <span className="text-lg text-apple-text-secondary line-through">
+                          {formatPrice(IPHONE_PRODUCT.original_price)}
+                        </span>
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800">
+                          -{IPHONE_PRODUCT.discount_percentage}%
+                        </span>
+                      </>
+                    )}
+                  </div>
+                  <p className="text-apple-text-secondary leading-relaxed">
+                    {IPHONE_PRODUCT.description}
+                  </p>
+                  {IPHONE_PRODUCT.features &&
+                    IPHONE_PRODUCT.features.length > 0 && (
+                      <div>
+                        <h3 className="text-sm font-semibold uppercase tracking-wider text-apple-text-primary mb-3">
+                          Key Features
+                        </h3>
+                        <ul className="space-y-2">
+                          {IPHONE_PRODUCT.features.map((feature, i) => (
+                            <li
+                              key={i}
+                              className="flex items-start gap-3 text-sm text-apple-text-primary"
+                            >
+                              <svg
+                                className="w-4 h-4 text-apple-success mt-0.5 shrink-0"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.5"
+                              >
+                                <path d="M20 6L9 17l-5-5" />
+                              </svg>
+                              {feature}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <ProductDetailClient />
       </>
     );
@@ -322,6 +480,72 @@ export default async function Page({ params }: Props) {
         />
         <BreadcrumbSchema items={breadcrumbItems} />
         {WC2026_FAQS.length > 0 && <FaqSchema faqs={WC2026_FAQS} />}
+        {/* Server-rendered content for Googlebot */}
+        <div id="ssr-product-root" data-slug="messi-argentina-2026-jersey">
+          <div className="pt-28 sm:pt-32 pb-16 lg:pb-24">
+            <div className="section-container">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mb-16">
+                <div className="lg:col-span-2 space-y-4">
+                  <div className="aspect-square bg-apple-bg rounded-apple overflow-hidden flex items-center justify-center p-4">
+                    <span className="text-apple-text-secondary">
+                      Messi Argentina 2026 Jersey
+                    </span>
+                  </div>
+                </div>
+                <div className="space-y-6">
+                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-apple-text-primary">
+                    {WC2026_PRODUCT.name}
+                  </h1>
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-3xl font-semibold text-apple-text-primary">
+                      {formatPrice(WC2026_PRODUCT.price)}
+                    </span>
+                    {WC2026_PRODUCT.original_price > WC2026_PRODUCT.price && (
+                      <>
+                        <span className="text-lg text-apple-text-secondary line-through">
+                          {formatPrice(WC2026_PRODUCT.original_price)}
+                        </span>
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800">
+                          -{WC2026_PRODUCT.discount_percentage}%
+                        </span>
+                      </>
+                    )}
+                  </div>
+                  <p className="text-apple-text-secondary leading-relaxed">
+                    {WC2026_PRODUCT.description}
+                  </p>
+                  {WC2026_PRODUCT.features &&
+                    WC2026_PRODUCT.features.length > 0 && (
+                      <div>
+                        <h3 className="text-sm font-semibold uppercase tracking-wider text-apple-text-primary mb-3">
+                          Key Features
+                        </h3>
+                        <ul className="space-y-2">
+                          {WC2026_PRODUCT.features.map((feature, i) => (
+                            <li
+                              key={i}
+                              className="flex items-start gap-3 text-sm text-apple-text-primary"
+                            >
+                              <svg
+                                className="w-4 h-4 text-apple-success mt-0.5 shrink-0"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.5"
+                              >
+                                <path d="M20 6L9 17l-5-5" />
+                              </svg>
+                              {feature}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <ProductDetailClient />
       </>
     );
@@ -342,6 +566,8 @@ export default async function Page({ params }: Props) {
     { name: "Products", url: `${SITE_URL}/products` },
     { name: product.name, url: `${SITE_URL}/products/${product.slug}` },
   ];
+
+  const localImageUrls = SLUG_TO_IMAGES[slug] || [];
 
   return (
     <>
@@ -369,6 +595,132 @@ export default async function Page({ params }: Props) {
       {content?.faqs && content.faqs.length > 0 && (
         <FaqSchema faqs={content.faqs} />
       )}
+
+      {/* Server-rendered product content for Googlebot */}
+      <div id="ssr-product-root" data-slug={product.slug}>
+        <div className="pt-28 sm:pt-32 pb-16 lg:pb-24">
+          <div className="section-container">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mb-16">
+              {/* Image placeholder */}
+              <div className="lg:col-span-2 space-y-4">
+                <div className="aspect-square bg-apple-bg rounded-apple overflow-hidden flex items-center justify-center p-4">
+                  {localImageUrls.length > 0 ? (
+                    <span className="text-apple-text-secondary text-sm">
+                      {product.name}
+                    </span>
+                  ) : (
+                    <span className="text-apple-text-secondary">
+                      {product.name}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Product info */}
+              <div className="space-y-6">
+                {/* Page Title (SEO-optimised) */}
+                {content?.pageTitle ? (
+                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-apple-text-primary">
+                    {content.pageTitle}
+                  </h1>
+                ) : (
+                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-apple-text-primary">
+                    {product.name}
+                  </h1>
+                )}
+
+                {/* Tagline */}
+                {content?.tagline && (
+                  <p className="text-lg text-apple-text-secondary leading-relaxed italic">
+                    {content.tagline}
+                  </p>
+                )}
+
+                {/* Price */}
+                <div className="flex items-baseline gap-3">
+                  <span className="text-3xl font-semibold text-apple-text-primary">
+                    {formatPrice(product.price)}
+                  </span>
+                  {product.original_price > product.price && (
+                    <>
+                      <span className="text-lg text-apple-text-secondary line-through">
+                        {formatPrice(product.original_price)}
+                      </span>
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800">
+                        -{product.discount_percentage}%
+                      </span>
+                    </>
+                  )}
+                </div>
+
+                {/* Stock warning */}
+                {content?.stockWarning && (
+                  <p className="text-sm font-medium text-red-500">
+                    ⚡ {content.stockWarning}
+                  </p>
+                )}
+
+                {/* Description */}
+                <p className="text-apple-text-secondary leading-relaxed">
+                  {product.description}
+                </p>
+
+                {/* Features */}
+                {product.features && product.features.length > 0 && (
+                  <div>
+                    <h3 className="text-sm font-semibold uppercase tracking-wider text-apple-text-primary mb-3">
+                      Key Features
+                    </h3>
+                    <ul className="space-y-2">
+                      {product.features.map((feature, i) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-3 text-sm text-apple-text-primary"
+                        >
+                          <svg
+                            className="w-4 h-4 text-apple-success mt-0.5 shrink-0"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                          >
+                            <path d="M20 6L9 17l-5-5" />
+                          </svg>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Specifications */}
+                {product.specifications &&
+                  Object.keys(product.specifications).length > 0 && (
+                    <div>
+                      <h3 className="text-sm font-semibold uppercase tracking-wider text-apple-text-primary mb-3">
+                        Specifications
+                      </h3>
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                        {Object.entries(product.specifications).map(
+                          ([key, value]) => (
+                            <div key={key} className="contents">
+                              <span className="text-apple-text-secondary">
+                                {key}
+                              </span>
+                              <span className="text-apple-text-primary">
+                                {value}
+                              </span>
+                            </div>
+                          ),
+                        )}
+                      </div>
+                    </div>
+                  )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <ProductDetailClient />
     </>
