@@ -234,10 +234,10 @@ export const WC2026_REVIEWS: ProductReviewDetail[] = [
 // Values are filenames relative to the reviews-images/ folder
 // -------------------------------------------------------------------
 export const WC2026_REVIEW_IMAGES: Record<string, string[]> = {
-  "wc2026-r1": ["reviews-images/IMG-20260628-WA0037.webp"],
-  "wc2026-r2": ["reviews-images/IMG-20260628-WA0038.webp"],
-  "wc2026-r3": ["reviews-images/IMG-20260628-WA0039.webp"],
-  "wc2026-r4": ["reviews-images/IMG-20260628-WA0040.jpg"],
+  "wc2026-r1": ["reviews-images/Neha Maheshwari review photo 1.webp"],
+  "wc2026-r2": ["reviews-images/Sana Khan review photo 1.webp"],
+  "wc2026-r3": ["reviews-images/Rohan Joseph review photo 1.webp"],
+  "wc2026-r4": ["reviews-images/Rahul Deshmukh review photo 1.jpg"],
 };
 
 // -------------------------------------------------------------------
