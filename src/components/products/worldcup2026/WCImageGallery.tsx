@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import Image from "next/image";
 
 interface WCImageGalleryProps {
@@ -12,6 +12,7 @@ interface WCImageGalleryProps {
 /**
  * WCImageGallery — Amazon-style image gallery with thumbnails.
  * Displays a main image with clickable thumbnail strip.
+ * Auto-rotates through images every 2 seconds.
  */
 export default function WCImageGallery({
   images,
@@ -19,7 +20,9 @@ export default function WCImageGallery({
   productName,
 }: WCImageGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const thumbnailsRef = useRef<HTMLDivElement>(null);
+  const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const buildImageUrl = useCallback(
     (img: string) =>
@@ -27,7 +30,41 @@ export default function WCImageGallery({
     [folder],
   );
 
+  const stopAutoPlay = useCallback(() => {
+    if (autoPlayRef.current) {
+      clearInterval(autoPlayRef.current);
+      autoPlayRef.current = null;
+    }
+  }, []);
+
+  const startAutoPlay = useCallback(() => {
+    stopAutoPlay();
+    autoPlayRef.current = setInterval(() => {
+      setSelectedIndex((prev) => (prev + 1) % images.length);
+    }, 2000);
+  }, [images.length, stopAutoPlay]);
+
+  // Auto-play effect: starts/stops based on isPaused
+  useEffect(() => {
+    if (!isPaused && images.length > 1) {
+      startAutoPlay();
+    } else {
+      stopAutoPlay();
+    }
+    return () => stopAutoPlay();
+  }, [isPaused, images.length, startAutoPlay, stopAutoPlay]);
+
+  const pauseTemporarily = useCallback(() => {
+    setIsPaused(true);
+    setTimeout(() => setIsPaused(false), 6000);
+  }, []);
+
+  const resumeAutoPlay = useCallback(() => {
+    setIsPaused(false);
+  }, []);
+
   const handleThumbnailClick = (index: number) => {
+    pauseTemporarily();
     setSelectedIndex(index);
     // Scroll thumbnail into view
     if (thumbnailsRef.current) {
@@ -43,10 +80,12 @@ export default function WCImageGallery({
   };
 
   const handlePrevImage = () => {
+    pauseTemporarily();
     setSelectedIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
   const handleNextImage = () => {
+    pauseTemporarily();
     setSelectedIndex((prev) => (prev + 1) % images.length);
   };
 
@@ -61,7 +100,11 @@ export default function WCImageGallery({
   }
 
   return (
-    <div className="wc2026-gallery">
+    <div
+      className="wc2026-gallery"
+      onMouseEnter={pauseTemporarily}
+      onMouseLeave={resumeAutoPlay}
+    >
       {/* Main image */}
       <div className="wc2026-main-image">
         <img
