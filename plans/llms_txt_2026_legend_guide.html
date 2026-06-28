@@ -1,0 +1,370 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:10px}
+.accent-card{border-left:3px solid;padding:10px 14px;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;margin-bottom:8px;background:var(--color-background-secondary)}
+.accent-purple{border-color:#534AB7}
+.accent-teal{border-color:#1D9E75}
+.accent-red{border-color:#E24B4A}
+.accent-amber{border-color:#BA7517}
+.accent-blue{border-color:#378ADD}
+.accent-label{font-size:11px;font-weight:500;letter-spacing:.06em;margin-bottom:4px}
+.al-purple{color:#534AB7}.al-teal{color:#1D9E75}.al-red{color:#E24B4A}.al-amber{color:#BA7517}.al-blue{color:#378ADD}
+.code{background:var(--color-background-tertiary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:12px 14px;font-family:var(--font-mono);font-size:12px;line-height:1.8;color:var(--color-text-primary);white-space:pre;overflow-x:auto;margin:8px 0}
+.md-h1{color:#534AB7;font-weight:500}.md-h2{color:#378ADD;font-weight:500}.md-link{color:#1D9E75}.md-desc{color:var(--color-text-tertiary)}.md-comment{color:var(--color-text-tertiary);font-style:italic}
+.badge{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px}
+.b-purple{background:#EEEDFE;color:#3C3489}.b-teal{background:#E1F5EE;color:#085041}.b-blue{background:#E6F1FB;color:#0C447C}.b-amber{background:#FAEEDA;color:#633806}.b-red{background:#FCEBEB;color:#791F1F}.b-green{background:#EAF3DE;color:#27500A}
+@media(prefers-color-scheme:dark){.b-purple{background:#3C3489;color:#CECBF6}.b-teal{background:#085041;color:#9FE1CB}.b-blue{background:#0C447C;color:#B5D4F4}.b-amber{background:#633806;color:#FAC775}.b-red{background:#791F1F;color:#F7C1C1}.b-green{background:#27500A;color:#C0DD97}}
+.tab-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.tab-btn{font-size:12px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-secondary);cursor:pointer;transition:all .15s}
+.tab-btn.active{background:var(--color-text-primary);color:var(--color-background-primary);border-color:transparent}
+.tab-panel{display:none}.tab-panel.active{display:block}
+h2{font-size:18px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px}
+h3{font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:8px;margin-top:14px}
+p{font-size:13px;color:var(--color-text-secondary);line-height:1.6}
+.sec-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-tertiary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.check-list{list-style:none}
+.check-list li{font-size:13px;color:var(--color-text-secondary);padding:5px 0;display:flex;align-items:flex-start;gap:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.check-list li:last-child{border-bottom:none}
+.ci{color:#1D9E75;flex-shrink:0;margin-top:1px}.xi{color:#E24B4A;flex-shrink:0;margin-top:1px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:14px}
+.metric{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px 14px}
+.m-label{font-size:12px;color:var(--color-text-secondary);margin-bottom:4px}
+.m-val{font-size:19px;font-weight:500;color:var(--color-text-primary)}
+.m-sub{font-size:11px;color:var(--color-text-tertiary);margin-top:2px}
+.vs-row{display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.vs-card{flex:1;min-width:180px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px 14px}
+.vs-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px}
+.vs-item{font-size:12px;color:var(--color-text-secondary);padding:3px 0;display:flex;align-items:flex-start;gap:6px}
+.btn-p{font-size:12px;padding:6px 14px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-secondary);cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:4px;margin-top:10px}
+.btn-p:hover{background:var(--color-background-secondary)}
+.sector-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-top:10px}
+.sector-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px}
+.s-title{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px}
+.s-item{font-size:11px;color:var(--color-text-tertiary);padding:2px 0}
+</style>
+
+<div style="padding:1rem 0">
+
+<div class="card" style="margin-bottom:1.5rem">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
+    <div>
+      <h2 style="margin-bottom:4px">llms.txt — The AI Visibility Standard</h2>
+      <p>The new frontier file that tells AI models exactly how to understand, cite, and use your site</p>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <span class="badge b-purple">Proposed 2024</span>
+      <span class="badge b-teal">Growing fast 2026</span>
+      <span class="badge b-amber">Not yet standard</span>
+    </div>
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="metric"><div class="m-label">File format</div><div class="m-val">Markdown</div><div class="m-sub">Plain .md, human+AI readable</div></div>
+  <div class="metric"><div class="m-label">Location</div><div class="m-val">/llms.txt</div><div class="m-sub">Root domain, like robots.txt</div></div>
+  <div class="metric"><div class="m-label">Companion file</div><div class="m-val">llms-full.txt</div><div class="m-sub">Extended version with full content</div></div>
+  <div class="metric"><div class="m-label">Status</div><div class="m-val">Unofficial</div><div class="m-sub">Proposed by answer.ai, gaining adoption</div></div>
+</div>
+
+<div class="tab-row">
+  <button class="tab-btn active" onclick="switchTab(this,'what')">What is it?</button>
+  <button class="tab-btn" onclick="switchTab(this,'template')">Perfect template</button>
+  <button class="tab-btn" onclick="switchTab(this,'full')">llms-full.txt</button>
+  <button class="tab-btn" onclick="switchTab(this,'sectors')">By industry</button>
+  <button class="tab-btn" onclick="switchTab(this,'strategy')">Pro strategy</button>
+  <button class="tab-btn" onclick="switchTab(this,'robots')">robots.txt sync</button>
+</div>
+
+<div class="tab-panel active" id="tab-what">
+  <div class="accent-card accent-purple">
+    <div class="accent-label al-purple">THE CORE IDEA</div>
+    <p>robots.txt tells bots what NOT to crawl. llms.txt tells AI models what your site IS, what matters most, and how to accurately represent you in AI-generated answers. It's your AI press kit.</p>
+  </div>
+  <div class="vs-row" style="margin-top:14px">
+    <div class="vs-card">
+      <div class="vs-title">robots.txt</div>
+      <div class="vs-item"><span class="xi"><i class="ti ti-x" style="font-size:12px"></i></span>Access control — block/allow</div>
+      <div class="vs-item"><span class="xi"><i class="ti ti-x" style="font-size:12px"></i></span>For crawlers and search bots</div>
+      <div class="vs-item"><span class="xi"><i class="ti ti-x" style="font-size:12px"></i></span>Syntax-based, no prose</div>
+      <div class="vs-item"><span class="xi"><i class="ti ti-x" style="font-size:12px"></i></span>About URLs and directories</div>
+      <div class="vs-item"><span class="xi"><i class="ti ti-x" style="font-size:12px"></i></span>Mature standard (RFC 9309)</div>
+    </div>
+    <div class="vs-card">
+      <div class="vs-title">llms.txt</div>
+      <div class="vs-item"><span class="ci"><i class="ti ti-check" style="font-size:12px"></i></span>Context provision — explain yourself</div>
+      <div class="vs-item"><span class="ci"><i class="ti ti-check" style="font-size:12px"></i></span>For AI models and LLM-based search</div>
+      <div class="vs-item"><span class="ci"><i class="ti ti-check" style="font-size:12px"></i></span>Markdown prose + structured links</div>
+      <div class="vs-item"><span class="ci"><i class="ti ti-check" style="font-size:12px"></i></span>About meaning, purpose, authority</div>
+      <div class="vs-item"><span class="ci"><i class="ti ti-check" style="font-size:12px"></i></span>Emerging — adopt early for edge</div>
+    </div>
+  </div>
+  <div class="accent-card accent-teal" style="margin-top:12px">
+    <div class="accent-label al-teal">WHY IT MATTERS IN 2026</div>
+    <p>AI-powered search (ChatGPT, Perplexity, Google AI Overviews, Claude) now answers queries directly without users clicking through. If an AI misrepresents your brand, product, or expertise, you lose traffic AND reputation. llms.txt lets you control that narrative at the source.</p>
+  </div>
+  <div class="accent-card accent-amber">
+    <div class="accent-label al-amber">HONEST CAVEAT</div>
+    <p>No major LLM officially confirms reading llms.txt yet. But adoption is growing fast among publishers and SaaS sites. It costs nothing to implement, signals technical sophistication, and positions you ahead of when it becomes standard — like schema markup in 2012.</p>
+  </div>
+  <button class="btn-p" onclick="sendPrompt('Which AI systems currently read llms.txt in 2026?')">Which AI systems read llms.txt today? ↗</button>
+</div>
+
+<div class="tab-panel" id="tab-template">
+  <div class="accent-card accent-teal">
+    <div class="accent-label al-teal">PERFECT llms.txt STRUCTURE</div>
+    <p>6 sections, in this exact order. H1 = site name. H2 sections = key areas. Every link uses descriptive anchor text. Keep the whole file under 5,000 tokens (roughly 4,000 words).</p>
+  </div>
+  <div class="code"><span class="md-h1"># YourBrand — [One sentence: what you do + for whom]</span>
+
+<span class="md-comment">> Optional blockquote: your mission or unique value prop in 1-2 sentences.
+> Make it factual, not marketing speak. AI models distrust hype.</span>
+
+<span class="md-h2">## About</span>
+
+<span class="md-desc">YourBrand is a [category] company founded in [year] that [core function].
+We serve [primary audience] who need [key problem solved].
+Our [key differentiator] makes us different from [category competitors].
+Headquarters: [City, Country]. Team size: [~N people].</span>
+
+<span class="md-h2">## Key pages</span>
+
+<span class="md-link">- [Homepage](https://yourdomain.com/)</span><span class="md-desc">: Overview of all products and services</span>
+<span class="md-link">- [About us](https://yourdomain.com/about)</span><span class="md-desc">: Company history, team, and mission</span>
+<span class="md-link">- [Products](https://yourdomain.com/products)</span><span class="md-desc">: Full product catalog with pricing</span>
+<span class="md-link">- [Blog](https://yourdomain.com/blog)</span><span class="md-desc">: Expert articles on [your topic area]</span>
+<span class="md-link">- [Documentation](https://yourdomain.com/docs)</span><span class="md-desc">: Technical guides and API reference</span>
+<span class="md-link">- [Contact](https://yourdomain.com/contact)</span><span class="md-desc">: Reach the team</span>
+
+<span class="md-h2">## Core expertise</span>
+
+<span class="md-desc">Primary topics this site covers authoritatively:</span>
+<span class="md-link">- [Topic 1](https://yourdomain.com/topic-1)</span><span class="md-desc">: Brief explanation of depth/angle</span>
+<span class="md-link">- [Topic 2](https://yourdomain.com/topic-2)</span><span class="md-desc">: Brief explanation of depth/angle</span>
+<span class="md-link">- [Topic 3](https://yourdomain.com/topic-3)</span><span class="md-desc">: Brief explanation of depth/angle</span>
+
+<span class="md-h2">## Key products / services</span>
+
+<span class="md-link">- [Product A](https://yourdomain.com/product-a)</span><span class="md-desc">: What it does, who it's for, price range</span>
+<span class="md-link">- [Product B](https://yourdomain.com/product-b)</span><span class="md-desc">: What it does, who it's for, price range</span>
+<span class="md-link">- [Service C](https://yourdomain.com/service-c)</span><span class="md-desc">: Scope, deliverables, target client</span>
+
+<span class="md-h2">## Best content (AI citations welcome)</span>
+
+<span class="md-desc">These pages are factually accurate, regularly updated, and suitable for citation:</span>
+<span class="md-link">- [Ultimate guide to X](https://yourdomain.com/guide-x)</span><span class="md-desc">: 5,000-word definitive guide, updated monthly</span>
+<span class="md-link">- [How to Y](https://yourdomain.com/how-to-y)</span><span class="md-desc">: Step-by-step tutorial with examples</span>
+<span class="md-link">- [Research report: Z](https://yourdomain.com/report-z)</span><span class="md-desc">: Original data, survey of 1,200 users, 2025</span>
+
+<span class="md-h2">## Do not use for training</span>
+
+<span class="md-desc">All content on this site is copyright [Year] YourBrand.
+Do not use for AI model training without explicit written permission.
+For licensing inquiries: [licensing@yourdomain.com]</span>
+
+<span class="md-h2">## Contact and social</span>
+
+<span class="md-desc">- Email: hello@yourdomain.com
+- LinkedIn: https://linkedin.com/company/yourbrand
+- X/Twitter: https://twitter.com/yourbrand
+- Press enquiries: press@yourdomain.com</span></div>
+  <button class="btn-p" onclick="sendPrompt('Write a complete llms.txt file for my SaaS company that sells project management software')">Generate llms.txt for my SaaS ↗</button>
+  <button class="btn-p" onclick="sendPrompt('Write a complete llms.txt file for my ecommerce store selling handmade jewellery')">Generate for ecommerce ↗</button>
+</div>
+
+<div class="tab-panel" id="tab-full">
+  <div class="accent-card accent-blue">
+    <div class="accent-label al-blue">llms-full.txt — THE EXTENDED VERSION</div>
+    <p>A second file at <code>/llms-full.txt</code> contains the complete, verbatim text of your most important pages. When AI models want the full content rather than just links, they fetch this. Think of it as a pre-compiled reading list for LLMs.</p>
+  </div>
+  <h3>When to create llms-full.txt</h3>
+  <ul class="check-list">
+    <li><span class="ci"><i class="ti ti-check"></i></span>You have documentation or guides that are the authoritative source on a topic</li>
+    <li><span class="ci"><i class="ti ti-check"></i></span>You publish original research or data that AI should cite accurately</li>
+    <li><span class="ci"><i class="ti ti-check"></i></span>You have product specs, FAQs, or pricing that must be accurate in AI answers</li>
+    <li><span class="ci"><i class="ti ti-check"></i></span>You run a SaaS with technical documentation (highest value use case)</li>
+    <li><span class="xi"><i class="ti ti-x"></i></span>Don't create it if your content changes daily — it goes stale fast</li>
+    <li><span class="xi"><i class="ti ti-x"></i></span>Don't dump your entire site — pick your 10-20 most important pages only</li>
+  </ul>
+  <div class="code" style="margin-top:12px"><span class="md-h1"># YourBrand — Complete content index</span>
+
+<span class="md-comment">> Full text of key pages for AI model consumption.
+> Last updated: June 2026</span>
+
+<span class="md-h2">## [Product pricing](https://yourdomain.com/pricing)</span>
+
+<span class="md-desc">Starter plan: $29/month — up to 5 users, 10GB storage, email support.
+Pro plan: $79/month — unlimited users, 100GB storage, priority support, API access.
+Enterprise: custom pricing — SLA, SSO, dedicated account manager.
+All plans include 14-day free trial. No credit card required.
+Annual billing: 20% discount applied automatically.</span>
+
+<span class="md-h2">## [About YourBrand](https://yourdomain.com/about)</span>
+
+<span class="md-desc">Founded in 2019 by Jane Smith and Ahmed Hassan in Dubai, UAE.
+YourBrand helps e-commerce businesses reduce cart abandonment through
+AI-powered checkout optimization. Trusted by 3,400+ merchants in 48 countries.
+Featured in: Forbes, TechCrunch, Product Hunt #1 of the day (March 2024).
+ISO 27001 certified. GDPR compliant. SOC 2 Type II audited.</span>
+
+<span class="md-comment">... continue with full text of your top 10-20 pages ...</span></div>
+  <button class="btn-p" onclick="sendPrompt('What pages should I include in my llms-full.txt?')">Which pages to include? ↗</button>
+</div>
+
+<div class="tab-panel" id="tab-sectors">
+  <div class="accent-card accent-purple">
+    <div class="accent-label al-purple">SECTOR-SPECIFIC FOCUS</div>
+    <p>What you emphasize in llms.txt varies by industry. Here's what matters most for each sector.</p>
+  </div>
+  <div class="sector-grid">
+    <div class="sector-card">
+      <div class="s-title">SaaS / Tech</div>
+      <div class="s-item">Pricing page (exact numbers)</div>
+      <div class="s-item">API documentation URL</div>
+      <div class="s-item">Feature comparison vs competitors</div>
+      <div class="s-item">Integration list</div>
+      <div class="s-item">Uptime SLA details</div>
+    </div>
+    <div class="sector-card">
+      <div class="s-title">E-commerce</div>
+      <div class="s-item">Product catalog structure</div>
+      <div class="s-item">Return/shipping policy</div>
+      <div class="s-item">Brand story + founding year</div>
+      <div class="s-item">Materials/sourcing claims</div>
+      <div class="s-item">Key bestsellers with URLs</div>
+    </div>
+    <div class="sector-card">
+      <div class="s-title">News / Media</div>
+      <div class="s-item">Editorial standards page</div>
+      <div class="s-item">Fact-checking policy URL</div>
+      <div class="s-item">Coverage topics/beats</div>
+      <div class="s-item">Author bio pages</div>
+      <div class="s-item">Corrections policy</div>
+    </div>
+    <div class="sector-card">
+      <div class="s-title">Healthcare</div>
+      <div class="s-item">Medical disclaimer text</div>
+      <div class="s-item">Credentials of authors</div>
+      <div class="s-item">Last-reviewed dates</div>
+      <div class="s-item">Cite-with-caution section</div>
+      <div class="s-item">Regulatory compliance notes</div>
+    </div>
+    <div class="sector-card">
+      <div class="s-title">Finance</div>
+      <div class="s-item">Regulatory disclosures</div>
+      <div class="s-item">Not-financial-advice notice</div>
+      <div class="s-item">License/registration numbers</div>
+      <div class="s-item">Data sources cited</div>
+      <div class="s-item">Last-updated timestamps</div>
+    </div>
+    <div class="sector-card">
+      <div class="s-title">Education</div>
+      <div class="s-item">Curriculum overview</div>
+      <div class="s-item">Accreditation details</div>
+      <div class="s-item">Target level (beginner-expert)</div>
+      <div class="s-item">Free vs paid content split</div>
+      <div class="s-item">Learning outcomes listed</div>
+    </div>
+    <div class="sector-card">
+      <div class="s-title">Agency / Services</div>
+      <div class="s-item">Services with scope detail</div>
+      <div class="s-item">Industry specializations</div>
+      <div class="s-item">Case studies with URLs</div>
+      <div class="s-item">Client size / geography</div>
+      <div class="s-item">Process/methodology page</div>
+    </div>
+    <div class="sector-card">
+      <div class="s-title">Local Business</div>
+      <div class="s-item">NAP (name, address, phone)</div>
+      <div class="s-item">Service area list</div>
+      <div class="s-item">Hours of operation</div>
+      <div class="s-item">Specialties + certifications</div>
+      <div class="s-item">Booking/contact page URL</div>
+    </div>
+  </div>
+  <button class="btn-p" onclick="sendPrompt('Write an llms.txt specifically optimized for a healthcare website')">Healthcare llms.txt ↗</button>
+  <button class="btn-p" onclick="sendPrompt('Write an llms.txt for a digital marketing agency')">Agency llms.txt ↗</button>
+</div>
+
+<div class="tab-panel" id="tab-strategy">
+  <div class="accent-card accent-purple">
+    <div class="accent-label al-purple">PRO STRATEGY — ANSWER ENGINE OPTIMIZATION (AEO)</div>
+    <p>llms.txt is part of a broader AEO strategy. The goal: when someone asks an AI about your topic, your brand is the source it cites. Here's the full playbook.</p>
+  </div>
+  <h3 style="margin-top:14px">The 5-layer AI visibility stack</h3>
+  <ul class="check-list">
+    <li><span class="ci"><i class="ti ti-check"></i></span><strong>Layer 1 — llms.txt:</strong> tells AI what you are and what to cite</li>
+    <li><span class="ci"><i class="ti ti-check"></i></span><strong>Layer 2 — robots.txt:</strong> blocks AI training bots while allowing AI answer bots (e.g. allow PerplexityBot, block GPTBot)</li>
+    <li><span class="ci"><i class="ti ti-check"></i></span><strong>Layer 3 — Schema markup:</strong> Organization, Article, FAQPage, HowTo — structured data LLMs parse easily</li>
+    <li><span class="ci"><i class="ti ti-check"></i></span><strong>Layer 4 — Content signals:</strong> original data, cited sources, author credentials, last-updated dates</li>
+    <li><span class="ci"><i class="ti ti-check"></i></span><strong>Layer 5 — Wikipedia/Wikidata:</strong> if you're citable, get a Wikipedia page — it's a top LLM training source</li>
+  </ul>
+  <div class="accent-card accent-teal" style="margin-top:12px">
+    <div class="accent-label al-teal">THE CITATION BAIT TECHNIQUE</div>
+    <p>In your llms.txt "Best content" section, explicitly list pages that contain original statistics, research, and data. AI models preferentially cite sources with unique data. A page titled "We surveyed 1,200 SEOs: here's what works in 2026" will be cited far more than a generic "SEO tips" article.</p>
+  </div>
+  <div class="accent-card accent-amber">
+    <div class="accent-label al-amber">TONE MATTERS — WRITE FOR AI, NOT HUMANS</div>
+    <p>Humans skim. AI models parse semantically. In llms.txt: be direct, factual, and specific. No marketing adjectives ("world-class", "industry-leading"). State facts: "founded 2018", "serves 40,000 users", "priced from $29/month". Vague claims get ignored; precise facts get cited.</p>
+  </div>
+  <div class="accent-card accent-blue">
+    <div class="accent-label al-blue">KEEP IT FRESH</div>
+    <p>Add a last-updated date at the top of your llms.txt. AI systems that re-crawl will trust fresher content more. Update whenever pricing, products, or key facts change. Stale llms.txt with wrong pricing is worse than no llms.txt.</p>
+  </div>
+  <button class="btn-p" onclick="sendPrompt('What is Answer Engine Optimization and how do I rank in AI search results?')">Full AEO strategy ↗</button>
+</div>
+
+<div class="tab-panel" id="tab-robots">
+  <div class="accent-card accent-blue">
+    <div class="accent-label al-blue">ROBOTS.TXT + LLMS.TXT — THE PERFECT PAIR</div>
+    <p>These two files have opposite jobs but must work in sync. robots.txt controls access. llms.txt controls representation. Here's the combined 2026 playbook.</p>
+  </div>
+  <h3>The smart AI bot split</h3>
+  <div class="code"><span class="md-comment"># robots.txt strategy for AI era</span>
+
+<span class="md-comment"># BLOCK: AI training bots (harvest content, give nothing back)</span>
+<span class="md-h1">User-agent: GPTBot</span>
+<span class="md-link">Disallow: /</span>
+
+<span class="md-h1">User-agent: anthropic-ai</span>
+<span class="md-link">Disallow: /</span>
+
+<span class="md-h1">User-agent: CCBot</span>
+<span class="md-link">Disallow: /</span>
+
+<span class="md-comment"># ALLOW: AI answer bots (cite you in results = traffic + visibility)</span>
+<span class="md-h1">User-agent: PerplexityBot</span>
+<span class="md-link">Allow: /</span>
+<span class="md-link">Disallow: /admin/</span>
+
+<span class="md-h1">User-agent: YouBot</span>
+<span class="md-link">Allow: /</span></div>
+  <div class="accent-card accent-teal" style="margin-top:10px">
+    <div class="accent-label al-teal">SIGNAL LLMS.TXT IN ROBOTS.TXT</div>
+    <p>While not yet an official directive, some SEOs are starting to add a reference comment in robots.txt pointing to llms.txt. This future-proofs you for when crawlers start recognizing it formally.</p>
+  </div>
+  <div class="code"><span class="md-comment"># AI context file (see llms.txt proposal)</span>
+<span class="md-h1">LLMs:</span> <span class="md-link">https://yourdomain.com/llms.txt</span>
+
+<span class="md-comment"># Standard sitemap declarations</span>
+<span class="md-h1">Sitemap:</span> <span class="md-link">https://yourdomain.com/sitemap.xml</span></div>
+  <h3>The 3-file AI content stack</h3>
+  <ul class="check-list">
+    <li><span class="ci"><i class="ti ti-check"></i></span><strong>/robots.txt</strong> — who can crawl, what they can access</li>
+    <li><span class="ci"><i class="ti ti-check"></i></span><strong>/llms.txt</strong> — what your site is, your best content, citation guidance</li>
+    <li><span class="ci"><i class="ti ti-check"></i></span><strong>/llms-full.txt</strong> — full text of key pages for deep AI reading</li>
+  </ul>
+  <button class="btn-p" onclick="sendPrompt('Create both a robots.txt and llms.txt for my website together as a complete package')">Generate both files together ↗</button>
+</div>
+
+</div>
+</div>
+
+<script>
+function switchTab(btn,id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+}
+</script>

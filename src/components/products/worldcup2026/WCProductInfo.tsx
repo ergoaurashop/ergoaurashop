@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import type { Product, ProductReviewDetail } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
@@ -112,6 +112,66 @@ export default function WCProductInfo({
     : 0;
   const savingsPercent = product.discount_percentage;
 
+  // ── Dynamic delivery dates & countdown ──
+  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0 });
+  const [tomorrowFormatted, setTomorrowFormatted] = useState("");
+
+  useEffect(() => {
+    const dubaiOffset = 240; // UTC+4 in minutes
+    const now = new Date();
+    const dubaiNow = new Date(
+      now.getTime() + (now.getTimezoneOffset() + dubaiOffset) * 60000,
+    );
+
+    // Tomorrow's date
+    const tomorrow = new Date(dubaiNow);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    setTomorrowFormatted(
+      `${tomorrow.getDate()} ${months[tomorrow.getMonth()]}`,
+    );
+
+    // Countdown to 11:59 PM Dubai time
+    const cutoff = new Date(dubaiNow);
+    cutoff.setHours(23, 59, 0, 0);
+
+    function updateTimer() {
+      const now2 = new Date();
+      const dubaiNow2 = new Date(
+        now2.getTime() + (now2.getTimezoneOffset() + dubaiOffset) * 60000,
+      );
+      const diffMs = cutoff.getTime() - dubaiNow2.getTime();
+
+      if (diffMs <= 0) {
+        setTimeLeft({ hours: 0, minutes: 0 });
+        return;
+      }
+
+      const totalMinutes = Math.floor(diffMs / 60000);
+      const hours = Math.floor(totalMinutes / 60);
+      const minutes = totalMinutes % 60;
+      setTimeLeft({ hours, minutes });
+    }
+
+    updateTimer();
+    const interval = setInterval(updateTimer, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="wc2026-info">
       {/* ── Title ── */}
@@ -163,14 +223,14 @@ export default function WCProductInfo({
         </div>
         <p className="wc2026-price-tax">Inclusive of all taxes</p>
         <p style={{ fontSize: 13, color: "#565959" }}>
-          <strong style={{ color: "#0f1111" }}>FREE delivery</strong> Monday, 23
-          June.{" "}
+          <strong style={{ color: "#0f1111" }}>FREE delivery</strong> Tomorrow,{" "}
+          {tomorrowFormatted}.{" "}
           <a href="/" style={{ color: "#007185", textDecoration: "none" }}>
-            Order within 18 hrs 42 mins
+            Order within {timeLeft.hours} hrs {timeLeft.minutes} mins
           </a>
         </p>
         <p style={{ fontSize: 13, color: "#565959" }}>
-          Or fastest delivery Tomorrow, 22 June
+          Or fastest delivery Tomorrow, {tomorrowFormatted}
         </p>
       </div>
 
@@ -263,6 +323,32 @@ WCProductInfo.BuyBox = function BuyBox({ product, bundleOffer }: BuyBoxProps) {
   const [quantity, setQuantity] = useState(1);
   const [toast, setToast] = useState<string | null>(null);
   const [isAdding, setIsAdding] = useState(false);
+  const [buyBoxTomorrow, setBuyBoxTomorrow] = useState("");
+
+  useEffect(() => {
+    const dubaiOffset = 240; // UTC+4 in minutes
+    const now = new Date();
+    const dubaiNow = new Date(
+      now.getTime() + (now.getTimezoneOffset() + dubaiOffset) * 60000,
+    );
+    const tomorrow = new Date(dubaiNow);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    setBuyBoxTomorrow(`${tomorrow.getDate()} ${months[tomorrow.getMonth()]}`);
+  }, []);
 
   const handleAddToCart = useCallback(() => {
     if (!selectedSize) {
@@ -310,7 +396,7 @@ WCProductInfo.BuyBox = function BuyBox({ product, bundleOffer }: BuyBoxProps) {
 
       {/* Free delivery */}
       <div className="wc2026-buy-free-delivery">
-        FREE delivery Monday, 23 June
+        FREE delivery Tomorrow, {buyBoxTomorrow}
       </div>
 
       {/* Stock status */}

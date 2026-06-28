@@ -1,0 +1,383 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.section { margin-bottom: 2rem; }
+.section-title { font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-tertiary); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 10px; }
+.rule-card { border-left: 3px solid; padding: 10px 14px; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; margin-bottom: 8px; background: var(--color-background-secondary); }
+.rule-card.good { border-color: #1D9E75; }
+.rule-card.bad { border-color: #E24B4A; }
+.rule-card.tip { border-color: #378ADD; }
+.rule-card.warn { border-color: #BA7517; }
+.rule-label { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; margin-bottom: 4px; }
+.good .rule-label { color: #1D9E75; }
+.bad .rule-label { color: #E24B4A; }
+.tip .rule-label { color: #378ADD; }
+.warn .rule-label { color: #BA7517; }
+.code-block { background: var(--color-background-tertiary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 12px 14px; font-family: var(--font-mono); font-size: 12px; line-height: 1.7; color: var(--color-text-primary); white-space: pre; overflow-x: auto; margin: 8px 0; }
+.comment { color: var(--color-text-tertiary); }
+.directive { color: #378ADD; }
+.value { color: #1D9E75; }
+.highlight-val { color: #EF9F27; }
+.badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; }
+.badge-green { background: #EAF3DE; color: #3B6D11; }
+.badge-red { background: #FCEBEB; color: #A32D2D; }
+.badge-blue { background: #E6F1FB; color: #185FA5; }
+.badge-amber { background: #FAEEDA; color: #854F0B; }
+@media (prefers-color-scheme: dark) {
+  .badge-green { background: #27500A; color: #C0DD97; }
+  .badge-red { background: #501313; color: #F09595; }
+  .badge-blue { background: #042C53; color: #85B7EB; }
+  .badge-amber { background: #412402; color: #FAC775; }
+}
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.metric { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 12px 14px; }
+.metric-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+.metric-value { font-size: 20px; font-weight: 500; color: var(--color-text-primary); }
+.metric-sub { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
+.divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 1.5rem 0; }
+.tab-row { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+.tab-btn { font-size: 12px; padding: 5px 12px; border-radius: 20px; border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-secondary); cursor: pointer; transition: all 0.15s; }
+.tab-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: transparent; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.inline-badge { font-size: 10px; font-weight: 500; padding: 1px 6px; border-radius: 10px; vertical-align: middle; margin-left: 4px; }
+.check-list { list-style: none; }
+.check-list li { font-size: 13px; color: var(--color-text-secondary); padding: 5px 0; display: flex; align-items: flex-start; gap: 8px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.check-list li:last-child { border-bottom: none; }
+.check-icon { color: #1D9E75; margin-top: 1px; flex-shrink: 0; }
+.x-icon { color: #E24B4A; margin-top: 1px; flex-shrink: 0; }
+h2 { font-size: 18px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 6px; }
+p { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+.agent-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.agent-table th { font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-tertiary); padding: 6px 10px; text-align: left; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.agent-table td { padding: 7px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); color: var(--color-text-secondary); }
+.agent-table tr:last-child td { border-bottom: none; }
+.agent-table code { font-family: var(--font-mono); font-size: 11px; background: var(--color-background-secondary); padding: 1px 5px; border-radius: 4px; }
+.btn-prompt { font-size: 12px; padding: 6px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-secondary); cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; gap: 4px; }
+.btn-prompt:hover { background: var(--color-background-secondary); }
+</style>
+
+<h2 style="sr-only">Perfect robots.txt for 2026 — SEO guide</h2>
+<div style="padding: 1rem 0">
+
+<!-- Header -->
+<div class="card" style="margin-bottom: 1.5rem;">
+  <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px">
+    <div>
+      <h2 style="margin-bottom:4px">The 2026 Perfect robots.txt</h2>
+      <p>Maximum crawl efficiency · AI bot management · Core Web Vitals protection</p>
+    </div>
+    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+      <span class="badge badge-blue">RFC 9309 Compliant</span>
+      <span class="badge badge-green">2026 Updated</span>
+      <span class="badge badge-amber">AI-Bot Ready</span>
+    </div>
+  </div>
+</div>
+
+<!-- Metrics -->
+<div class="grid-2" style="margin-bottom:1.5rem">
+  <div class="metric">
+    <div class="metric-label">File size limit</div>
+    <div class="metric-value">500 KB</div>
+    <div class="metric-sub">Google hard cap — keep under 50 KB</div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">Crawl-delay range</div>
+    <div class="metric-value">1–10s</div>
+    <div class="metric-sub">Google ignores; Bing/others respect</div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">Sitemap limit</div>
+    <div class="metric-value">Unlimited</div>
+    <div class="metric-sub">List all sitemap files</div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">User-agent blocks</div>
+    <div class="metric-value">Per group</div>
+    <div class="metric-sub">One allow/disallow set per bot</div>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="tab-row">
+  <button class="tab-btn active" onclick="switchTab(this,'complete')">Complete Template</button>
+  <button class="tab-btn" onclick="switchTab(this,'ai')">AI Bot Control</button>
+  <button class="tab-btn" onclick="switchTab(this,'ecommerce')">E-commerce</button>
+  <button class="tab-btn" onclick="switchTab(this,'crawl')">Crawl Budget</button>
+  <button class="tab-btn" onclick="switchTab(this,'mistakes')">Common Mistakes</button>
+  <button class="tab-btn" onclick="switchTab(this,'checklist')">Checklist</button>
+</div>
+
+<!-- TAB: Complete Template -->
+<div class="tab-panel active" id="tab-complete">
+  <div class="rule-card tip">
+    <div class="rule-label">PRO TIP</div>
+    <p>This is the universal perfect template. Sections are ordered from most to least permissive. Always test at <strong>google.com/webmasters/tools/robots-testing-tool</strong> after editing.</p>
+  </div>
+  <div class="code-block"><span class="comment"># ============================================
+# robots.txt — Perfect 2026 Template
+# Last updated: June 2026
+# ============================================
+
+# ---- GOOGLE BOTS ----</span>
+<span class="directive">User-agent:</span> <span class="value">Googlebot</span>
+<span class="directive">Allow:</span> <span class="value">/</span>
+<span class="directive">Disallow:</span> <span class="value">/admin/</span>
+<span class="directive">Disallow:</span> <span class="value">/private/</span>
+<span class="directive">Disallow:</span> <span class="value">/checkout/</span>
+<span class="directive">Disallow:</span> <span class="value">/cart/</span>
+<span class="directive">Disallow:</span> <span class="value">/*?*sort=</span>
+<span class="directive">Disallow:</span> <span class="value">/*?*filter=</span>
+<span class="directive">Allow:</span> <span class="value">/*.css$</span>
+<span class="directive">Allow:</span> <span class="value">/*.js$</span>
+
+<span class="comment"># Google Image Bot</span>
+<span class="directive">User-agent:</span> <span class="value">Googlebot-Image</span>
+<span class="directive">Allow:</span> <span class="value">/images/</span>
+<span class="directive">Disallow:</span> <span class="value">/images/private/</span>
+
+<span class="comment"># ---- BING / MICROSOFT ----</span>
+<span class="directive">User-agent:</span> <span class="value">Bingbot</span>
+<span class="directive">Allow:</span> <span class="value">/</span>
+<span class="directive">Disallow:</span> <span class="value">/admin/</span>
+<span class="directive">Disallow:</span> <span class="value">/private/</span>
+<span class="directive">Crawl-delay:</span> <span class="value">2</span>
+
+<span class="comment"># ---- AI TRAINING BOTS — BLOCK ALL ----</span>
+<span class="directive">User-agent:</span> <span class="value">GPTBot</span>
+<span class="directive">Disallow:</span> <span class="value">/</span>
+
+<span class="directive">User-agent:</span> <span class="value">ChatGPT-User</span>
+<span class="directive">Disallow:</span> <span class="value">/</span>
+
+<span class="directive">User-agent:</span> <span class="value">CCBot</span>
+<span class="directive">Disallow:</span> <span class="value">/</span>
+
+<span class="directive">User-agent:</span> <span class="value">anthropic-ai</span>
+<span class="directive">Disallow:</span> <span class="value">/</span>
+
+<span class="directive">User-agent:</span> <span class="value">Claude-Web</span>
+<span class="directive">Disallow:</span> <span class="value">/</span>
+
+<span class="directive">User-agent:</span> <span class="value">Google-Extended</span>
+<span class="directive">Disallow:</span> <span class="value">/</span>
+
+<span class="directive">User-agent:</span> <span class="value">PerplexityBot</span>
+<span class="directive">Disallow:</span> <span class="value">/</span>
+
+<span class="directive">User-agent:</span> <span class="value">Bytespider</span>
+<span class="directive">Disallow:</span> <span class="value">/</span>
+
+<span class="directive">User-agent:</span> <span class="value">FacebookBot</span>
+<span class="directive">Disallow:</span> <span class="value">/</span>
+
+<span class="comment"># ---- SEO / RESEARCH BOTS ----</span>
+<span class="directive">User-agent:</span> <span class="value">AhrefsBot</span>
+<span class="directive">Crawl-delay:</span> <span class="value">5</span>
+<span class="directive">Disallow:</span> <span class="value">/admin/</span>
+
+<span class="directive">User-agent:</span> <span class="value">SemrushBot</span>
+<span class="directive">Crawl-delay:</span> <span class="value">5</span>
+
+<span class="directive">User-agent:</span> <span class="value">MJ12bot</span>
+<span class="directive">Disallow:</span> <span class="value">/</span>
+
+<span class="comment"># ---- MALICIOUS / SPAM BOTS ----</span>
+<span class="directive">User-agent:</span> <span class="value">SemrushBot-SA</span>
+<span class="directive">Disallow:</span> <span class="value">/</span>
+
+<span class="directive">User-agent:</span> <span class="value">DotBot</span>
+<span class="directive">Disallow:</span> <span class="value">/</span>
+
+<span class="comment"># ---- CATCH-ALL (all other bots) ----</span>
+<span class="directive">User-agent:</span> <span class="value">*</span>
+<span class="directive">Allow:</span> <span class="value">/</span>
+<span class="directive">Disallow:</span> <span class="value">/admin/</span>
+<span class="directive">Disallow:</span> <span class="value">/private/</span>
+<span class="directive">Disallow:</span> <span class="value">/wp-admin/</span>
+<span class="directive">Disallow:</span> <span class="value">/wp-includes/</span>
+<span class="directive">Disallow:</span> <span class="value">/cgi-bin/</span>
+<span class="directive">Disallow:</span> <span class="value">/tmp/</span>
+<span class="directive">Disallow:</span> <span class="value">/search?</span>
+<span class="directive">Disallow:</span> <span class="value">/tag/</span>
+<span class="directive">Disallow:</span> <span class="value">/author/</span>
+<span class="directive">Crawl-delay:</span> <span class="value">3</span>
+
+<span class="comment"># ---- SITEMAPS (list ALL) ----</span>
+<span class="directive">Sitemap:</span> <span class="highlight-val">https://yourdomain.com/sitemap.xml</span>
+<span class="directive">Sitemap:</span> <span class="highlight-val">https://yourdomain.com/sitemap-images.xml</span>
+<span class="directive">Sitemap:</span> <span class="highlight-val">https://yourdomain.com/sitemap-videos.xml</span>
+<span class="directive">Sitemap:</span> <span class="highlight-val">https://yourdomain.com/news-sitemap.xml</span></div>
+</div>
+
+<!-- TAB: AI Bots -->
+<div class="tab-panel" id="tab-ai">
+  <div class="rule-card warn">
+    <div class="rule-label">2026 CRITICAL SHIFT</div>
+    <p>AI training bots are now the #1 robots.txt concern. They harvest content without giving SEO value back. Block them explicitly unless you want your content used for AI model training.</p>
+  </div>
+  <table class="agent-table" style="margin-top:12px">
+    <thead>
+      <tr><th>Bot Name</th><th>User-Agent</th><th>Company</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>GPTBot</td><td><code>GPTBot</code></td><td>OpenAI</td><td><span class="badge badge-red">Block</span></td></tr>
+      <tr><td>ChatGPT User</td><td><code>ChatGPT-User</code></td><td>OpenAI</td><td><span class="badge badge-red">Block</span></td></tr>
+      <tr><td>Claude Crawler</td><td><code>anthropic-ai</code></td><td>Anthropic</td><td><span class="badge badge-red">Block</span></td></tr>
+      <tr><td>Claude Web</td><td><code>Claude-Web</code></td><td>Anthropic</td><td><span class="badge badge-red">Block</span></td></tr>
+      <tr><td>Common Crawl</td><td><code>CCBot</code></td><td>Common Crawl</td><td><span class="badge badge-red">Block</span></td></tr>
+      <tr><td>Google Extended</td><td><code>Google-Extended</code></td><td>Google (Gemini)</td><td><span class="badge badge-amber">Optional</span></td></tr>
+      <tr><td>Perplexity</td><td><code>PerplexityBot</code></td><td>Perplexity AI</td><td><span class="badge badge-amber">Optional</span></td></tr>
+      <tr><td>Bytespider</td><td><code>Bytespider</code></td><td>TikTok/ByteDance</td><td><span class="badge badge-red">Block</span></td></tr>
+      <tr><td>ImagesiftBot</td><td><code>ImagesiftBot</code></td><td>AI image training</td><td><span class="badge badge-red">Block</span></td></tr>
+      <tr><td>Diffbot</td><td><code>Diffbot</code></td><td>Diffbot AI</td><td><span class="badge badge-amber">Optional</span></td></tr>
+    </tbody>
+  </table>
+  <div class="rule-card tip" style="margin-top:12px">
+    <div class="rule-label">NOTE ON GOOGLE-EXTENDED</div>
+    <p>Blocking <code>Google-Extended</code> stops your content training Gemini but does NOT affect Google Search ranking. Safe to block if you prefer.</p>
+  </div>
+  <div style="margin-top:12px">
+    <button class="btn-prompt" onclick="sendPrompt('Which AI bots should I allow vs block for my news website?')">Which AI bots should news sites allow? ↗</button>
+  </div>
+</div>
+
+<!-- TAB: E-commerce -->
+<div class="tab-panel" id="tab-ecommerce">
+  <div class="rule-card good">
+    <div class="rule-label">ECOMMERCE STRATEGY</div>
+    <p>Block faceted navigation, session IDs, and checkout flows. Allow all product, category, and landing pages. Protect crawl budget from parameter-heavy URLs.</p>
+  </div>
+  <div class="code-block"><span class="directive">User-agent:</span> <span class="value">Googlebot</span>
+<span class="directive">Allow:</span> <span class="value">/products/</span>
+<span class="directive">Allow:</span> <span class="value">/categories/</span>
+<span class="directive">Allow:</span> <span class="value">/collections/</span>
+<span class="comment"># Block thin/duplicate pages</span>
+<span class="directive">Disallow:</span> <span class="value">/cart/</span>
+<span class="directive">Disallow:</span> <span class="value">/checkout/</span>
+<span class="directive">Disallow:</span> <span class="value">/order-confirmation/</span>
+<span class="directive">Disallow:</span> <span class="value">/account/</span>
+<span class="directive">Disallow:</span> <span class="value">/wishlist/</span>
+<span class="directive">Disallow:</span> <span class="value">/compare/</span>
+<span class="comment"># Block faceted navigation (URL params)</span>
+<span class="directive">Disallow:</span> <span class="value">/*?sort=</span>
+<span class="directive">Disallow:</span> <span class="value">/*?color=</span>
+<span class="directive">Disallow:</span> <span class="value">/*?size=</span>
+<span class="directive">Disallow:</span> <span class="value">/*?price=</span>
+<span class="directive">Disallow:</span> <span class="value">/*?page=</span>
+<span class="directive">Disallow:</span> <span class="value">/*?ref=</span>
+<span class="directive">Disallow:</span> <span class="value">/*?sid=</span>
+<span class="comment"># Block internal search results</span>
+<span class="directive">Disallow:</span> <span class="value">/search</span>
+<span class="directive">Disallow:</span> <span class="value">/search/</span></div>
+  <div style="margin-top:12px">
+    <button class="btn-prompt" onclick="sendPrompt('How do I handle faceted navigation SEO without blocking too much?')">How to handle faceted navigation? ↗</button>
+  </div>
+</div>
+
+<!-- TAB: Crawl Budget -->
+<div class="tab-panel" id="tab-crawl">
+  <div class="rule-card tip">
+    <div class="rule-label">WHAT IS CRAWL BUDGET?</div>
+    <p>The number of pages Google will crawl on your site per day. Wasted crawl = valuable pages not indexed. For sites under 1,000 pages, crawl budget is rarely an issue — but for large sites it's critical.</p>
+  </div>
+  <div style="margin-top:14px">
+    <div class="section-title"><i class="ti ti-ban" aria-hidden="true"></i> Pages that waste crawl budget — always block</div>
+    <ul class="check-list">
+      <li><span class="x-icon"><i class="ti ti-x"></i></span>URL parameters that create duplicate content (<code>?ref=</code>, <code>?utm_</code>, <code>?session=</code>)</li>
+      <li><span class="x-icon"><i class="ti ti-x"></i></span>Paginated pages beyond page 3 (use <code>rel="next"</code> instead)</li>
+      <li><span class="x-icon"><i class="ti ti-x"></i></span>Tag and archive pages with thin content</li>
+      <li><span class="x-icon"><i class="ti ti-x"></i></span>Internal search result pages</li>
+      <li><span class="x-icon"><i class="ti ti-x"></i></span>Print-friendly page versions</li>
+      <li><span class="x-icon"><i class="ti ti-x"></i></span>Login/account/profile pages</li>
+      <li><span class="x-icon"><i class="ti ti-x"></i></span>Thank-you and confirmation pages</li>
+      <li><span class="x-icon"><i class="ti ti-x"></i></span>Staging or dev subfolders left exposed</li>
+    </ul>
+  </div>
+  <div style="margin-top:14px">
+    <div class="section-title"><i class="ti ti-check" aria-hidden="true"></i> Always allow (critical 2026 rule)</div>
+    <ul class="check-list">
+      <li><span class="check-icon"><i class="ti ti-check"></i></span>All <code>.css</code> files — Google renders pages to evaluate layout quality</li>
+      <li><span class="check-icon"><i class="ti ti-check"></i></span>All <code>.js</code> files — blocking JS hides content from Google's renderer</li>
+      <li><span class="check-icon"><i class="ti ti-check"></i></span>All font files — affects Core Web Vitals CLS score</li>
+      <li><span class="check-icon"><i class="ti ti-check"></i></span>Image CDN paths used in structured data</li>
+    </ul>
+  </div>
+  <div style="margin-top:12px">
+    <button class="btn-prompt" onclick="sendPrompt('My site has 50,000 pages — how do I optimize crawl budget with robots.txt?')">Optimize crawl budget for large sites ↗</button>
+  </div>
+</div>
+
+<!-- TAB: Mistakes -->
+<div class="tab-panel" id="tab-mistakes">
+  <div class="section-title"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Most damaging robots.txt mistakes in 2026</div>
+  <div class="rule-card bad">
+    <div class="rule-label">MISTAKE #1 — BLOCKING CSS/JS</div>
+    <p>Disallowing <code>*.css</code> or <code>*.js</code> prevents Google from rendering your pages. Google sees a broken layout and may downgrade rankings. This is the single most common fatal error.</p>
+  </div>
+  <div class="rule-card bad">
+    <div class="rule-label">MISTAKE #2 — DISALLOW: / ACCIDENT</div>
+    <p>A single <code>Disallow: /</code> under <code>User-agent: *</code> blocks your entire site from all bots. Usually introduced during staging and never removed. Check logs immediately if traffic drops to zero.</p>
+  </div>
+  <div class="rule-card bad">
+    <div class="rule-label">MISTAKE #3 — USING robots.txt FOR PRIVATE PAGES</div>
+    <p>robots.txt is public. Anyone can read it. Never list URLs here you want to hide — use authentication or noindex meta tags instead. Listing <code>/secret-deals/</code> in robots.txt just advertises it.</p>
+  </div>
+  <div class="rule-card bad">
+    <div class="rule-label">MISTAKE #4 — TRAILING SLASH MISMATCH</div>
+    <p><code>Disallow: /admin</code> blocks <code>/admin</code> but NOT <code>/admin/</code>. Always use trailing slashes for directories: <code>Disallow: /admin/</code></p>
+  </div>
+  <div class="rule-card bad">
+    <div class="rule-label">MISTAKE #5 — BLOCKING noindexed PAGES</div>
+    <p>Paradox: if you block a page in robots.txt, Google can't crawl it to read the noindex tag — it may still appear in search as a URL-only result. Block OR noindex, not both.</p>
+  </div>
+  <div class="rule-card bad">
+    <div class="rule-label">MISTAKE #6 — WRONG SITEMAP PROTOCOL</div>
+    <p>Always use absolute, fully-qualified HTTPS URLs for Sitemap: directives. <code>Sitemap: /sitemap.xml</code> is wrong. Use <code>Sitemap: https://yourdomain.com/sitemap.xml</code></p>
+  </div>
+  <div class="rule-card warn">
+    <div class="rule-label">MYTH — Crawl-delay works for Google</div>
+    <p>Google officially ignores <code>Crawl-delay</code>. Use Google Search Console's crawl rate settings instead. Crawl-delay is respected by Bing, Yandex, and most other bots.</p>
+  </div>
+</div>
+
+<!-- TAB: Checklist -->
+<div class="tab-panel" id="tab-checklist">
+  <div class="section-title"><i class="ti ti-list-check" aria-hidden="true"></i> Pre-launch robots.txt audit — 2026</div>
+  <ul class="check-list">
+    <li><span class="check-icon"><i class="ti ti-check"></i></span>File is served at exactly <code>https://yourdomain.com/robots.txt</code></li>
+    <li><span class="check-icon"><i class="ti ti-check"></i></span>File returns HTTP 200 (not 301/404/500)</li>
+    <li><span class="check-icon"><i class="ti ti-check"></i></span>File is plain text, UTF-8, no BOM</li>
+    <li><span class="check-icon"><i class="ti ti-check"></i></span>Under 500 KB in size (ideally under 50 KB)</li>
+    <li><span class="check-icon"><i class="ti ti-check"></i></span>No <code>Disallow: /</code> under <code>User-agent: *</code> unless intentional</li>
+    <li><span class="check-icon"><i class="ti ti-check"></i></span>CSS and JS files are allowed (not blocked)</li>
+    <li><span class="check-icon"><i class="ti ti-check"></i></span>At least one Sitemap: directive with HTTPS URL</li>
+    <li><span class="check-icon"><i class="ti ti-check"></i></span>Staging/dev paths are disallowed</li>
+    <li><span class="check-icon"><i class="ti ti-check"></i></span>Admin, login, checkout pages are disallowed</li>
+    <li><span class="check-icon"><i class="ti ti-check"></i></span>AI training bots are explicitly blocked</li>
+    <li><span class="check-icon"><i class="ti ti-check"></i></span>Parameter-based duplicate URLs are disallowed</li>
+    <li><span class="check-icon"><i class="ti ti-check"></i></span>Tested in Google Search Console robots.txt tester</li>
+    <li><span class="check-icon"><i class="ti ti-check"></i></span>Verified in Bing Webmaster Tools</li>
+    <li><span class="check-icon"><i class="ti ti-check"></i></span>No sensitive URLs exposed in file (privacy check)</li>
+    <li><span class="check-icon"><i class="ti ti-check"></i></span>Reviewed after every major site restructure</li>
+  </ul>
+  <div style="margin-top: 14px; display:flex; gap:8px; flex-wrap:wrap;">
+    <button class="btn-prompt" onclick="sendPrompt('Audit my robots.txt and tell me what is wrong with it')">Audit my robots.txt ↗</button>
+    <button class="btn-prompt" onclick="sendPrompt('Generate a robots.txt specifically for a WordPress site')">Generate for WordPress ↗</button>
+    <button class="btn-prompt" onclick="sendPrompt('Generate a robots.txt for a Shopify ecommerce store')">Generate for Shopify ↗</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+function switchTab(btn, id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+</script>
