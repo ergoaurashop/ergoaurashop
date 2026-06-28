@@ -20,6 +20,7 @@ import {
 } from "@/lib/iphone-15-pro-max-data";
 import {
   WC2026_PRODUCT,
+  WC2026_PRODUCT_IMAGES,
   WC2026_REVIEWS,
   WC2026_REVIEW_SUMMARY,
   WC2026_FAQS,
@@ -463,6 +464,8 @@ export default async function Page({ params }: Props) {
       },
     ];
 
+    const heroImageUrl = `/images/products/${WC2026_FOLDER.split("/").map(encodeURIComponent).join("/")}/${WC2026_PRODUCT_IMAGES[0].split("/").map(encodeURIComponent).join("/")}`;
+
     return (
       <>
         <ProductSchema
@@ -486,10 +489,16 @@ export default async function Page({ params }: Props) {
             <div className="section-container">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mb-16">
                 <div className="lg:col-span-2 space-y-4">
-                  <div className="aspect-square bg-apple-bg rounded-apple overflow-hidden flex items-center justify-center p-4">
-                    <span className="text-apple-text-secondary">
-                      Messi Argentina 2026 Jersey
-                    </span>
+                  <div className="aspect-square bg-apple-bg rounded-apple overflow-hidden flex items-center justify-center">
+                    <img
+                      src={heroImageUrl}
+                      alt="Messi Argentina 2026 Jersey"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "contain",
+                      }}
+                    />
                   </div>
                 </div>
                 <div className="space-y-6">
