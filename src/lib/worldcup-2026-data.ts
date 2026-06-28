@@ -229,6 +229,18 @@ export const WC2026_REVIEWS: ProductReviewDetail[] = [
 ];
 
 // -------------------------------------------------------------------
+// Review images (one image each for first 4 reviews)
+// Keys match review IDs (wc2026-r1, wc2026-r2, wc2026-r3, wc2026-r4)
+// Values are filenames relative to the reviews-images/ folder
+// -------------------------------------------------------------------
+export const WC2026_REVIEW_IMAGES: Record<string, string[]> = {
+  "wc2026-r1": ["reviews-images/IMG-20260628-WA0037.webp"],
+  "wc2026-r2": ["reviews-images/IMG-20260628-WA0038.webp"],
+  "wc2026-r3": ["reviews-images/IMG-20260628-WA0039.webp"],
+  "wc2026-r4": ["reviews-images/IMG-20260628-WA0040.jpg"],
+};
+
+// -------------------------------------------------------------------
 // Review summary
 // -------------------------------------------------------------------
 export const WC2026_REVIEW_SUMMARY = {

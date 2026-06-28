@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import type { ProductReviewDetail } from "@/lib/types";
+import { WC2026_REVIEW_IMAGES, WC2026_FOLDER } from "@/lib/worldcup-2026-data";
+
+/** Build a URL for a review image file. */
+function getReviewImagePath(filename: string): string {
+  return `/images/products/${WC2026_FOLDER.split("/").map(encodeURIComponent).join("/")}/${encodeURIComponent(filename)}`;
+}
 
 /* ── Types ── */
 interface WCReviewsProps {
@@ -140,6 +147,29 @@ export default function WCReviews({ reviews, reviewSummary }: WCReviewsProps) {
                 )}
               </div>
               <p className="wc2026-review-text">{review.text}</p>
+
+              {/* ── Review image (only for reviews with images) ── */}
+              {(WC2026_REVIEW_IMAGES[review.id] ?? []).length > 0 && (
+                <div className="wc2026-review-images">
+                  {WC2026_REVIEW_IMAGES[review.id].map((filename, i) => (
+                    <div key={filename} className="wc2026-review-image-wrapper">
+                      <Image
+                        src={getReviewImagePath(filename)}
+                        alt={`${review.name} review photo ${i + 1}`}
+                        width={120}
+                        height={120}
+                        style={{
+                          height: "120px",
+                          width: "auto",
+                          objectFit: "cover",
+                        }}
+                        unoptimized
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+
               {review.helpfulCount !== undefined && (
                 <div className="wc2026-review-helpful">
                   <span>{review.helpfulCount} people found this helpful</span>
