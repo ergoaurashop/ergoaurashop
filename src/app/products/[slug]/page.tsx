@@ -35,7 +35,7 @@ import {
 import { SITE_METADATA, SITE_URL } from "@/lib/constants";
 import { PRODUCT_RICH_CONTENT } from "@/lib/product-content";
 import { PRODUCT_REVIEW_SUMMARIES, PRODUCT_REVIEWS } from "@/lib/reviews-data";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, getProductImages } from "@/lib/utils";
 import ProductDetailClient from "./ProductDetailClient";
 import ProductSchema from "@/components/seo/ProductSchema";
 import BreadcrumbSchema from "@/components/seo/BreadcrumbSchema";
@@ -576,7 +576,7 @@ export default async function Page({ params }: Props) {
     { name: product.name, url: `${SITE_URL}/products/${product.slug}` },
   ];
 
-  const localImageUrls = SLUG_TO_IMAGES[slug] || [];
+  const localImageUrls = getProductImages(slug);
 
   return (
     <>
@@ -612,15 +612,19 @@ export default async function Page({ params }: Props) {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mb-16">
               {/* Image placeholder */}
               <div className="lg:col-span-2 space-y-4">
-                <div className="aspect-square bg-apple-bg rounded-apple overflow-hidden flex items-center justify-center p-4">
+                <div className="aspect-square bg-apple-bg rounded-apple overflow-hidden">
                   {localImageUrls.length > 0 ? (
-                    <span className="text-apple-text-secondary text-sm">
-                      {product.name}
-                    </span>
+                    <img
+                      src={localImageUrls[0]}
+                      alt={product.name}
+                      className="w-full h-full object-contain p-4"
+                    />
                   ) : (
-                    <span className="text-apple-text-secondary">
-                      {product.name}
-                    </span>
+                    <div className="flex items-center justify-center p-4 h-full">
+                      <span className="text-apple-text-secondary">
+                        {product.name}
+                      </span>
+                    </div>
                   )}
                 </div>
               </div>
