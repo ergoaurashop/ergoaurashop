@@ -10,6 +10,7 @@ import {
   S23_REVIEW_SUMMARY,
   S23_FAQS,
   S23_FOLDER,
+  S23_HERO_IMAGES,
 } from "@/lib/s23-ultra-data";
 import {
   IPHONE_PRODUCT,
@@ -17,6 +18,7 @@ import {
   IPHONE_REVIEW_SUMMARY,
   IPHONE_FAQS,
   IPHONE_FOLDER,
+  IPHONE_HERO_IMAGES,
 } from "@/lib/iphone-15-pro-max-data";
 import {
   WC2026_PRODUCT,
@@ -271,10 +273,12 @@ export default async function Page({ params }: Props) {
             <div className="section-container">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mb-16">
                 <div className="lg:col-span-2 space-y-4">
-                  <div className="aspect-square bg-apple-bg rounded-apple overflow-hidden flex items-center justify-center p-4">
-                    <span className="text-apple-text-secondary">
-                      Samsung Galaxy S23 Ultra
-                    </span>
+                  <div className="aspect-square bg-apple-bg rounded-apple overflow-hidden">
+                    <img
+                      src={`/images/products/${S23_FOLDER.split("/").map(encodeURIComponent).join("/")}/${encodeURIComponent(S23_HERO_IMAGES[0])}`}
+                      alt="Samsung Galaxy S23 Ultra"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </div>
                 <div className="space-y-6">
@@ -369,10 +373,12 @@ export default async function Page({ params }: Props) {
             <div className="section-container">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mb-16">
                 <div className="lg:col-span-2 space-y-4">
-                  <div className="aspect-square bg-apple-bg rounded-apple overflow-hidden flex items-center justify-center p-4">
-                    <span className="text-apple-text-secondary">
-                      iPhone 15 Pro Max 512GB
-                    </span>
+                  <div className="aspect-square bg-apple-bg rounded-apple overflow-hidden">
+                    <img
+                      src={`/images/products/${IPHONE_FOLDER.split("/").map(encodeURIComponent).join("/")}/${encodeURIComponent(IPHONE_HERO_IMAGES[0])}`}
+                      alt="iPhone 15 Pro Max 512GB"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </div>
                 <div className="space-y-6">
