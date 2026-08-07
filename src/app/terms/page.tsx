@@ -105,7 +105,7 @@ const SECTIONS = [
   {
     id: "contact",
     title: "20. Contact & Grievance Officer",
-    content: `If you have any questions, concerns, or grievances regarding these Terms & Conditions, our products, or our services, please contact us:\n\nEmail: info@ergoaurashop.com\nGrievance Officer: customer@ergoaurashop.com\n\nWe will endeavor to address your concerns within 30 days of receipt.`,
+    content: `If you have any questions, concerns, or grievances regarding these Terms & Conditions, our products, or our services, please contact us:\n\nEmail: info@ergoaurashop.com\nGrievance Officer: support@ergoaurashop.com\n\nWe will endeavor to address your concerns within 30 days of receipt.`,
   },
 ];
 

@@ -1,9 +1,11 @@
 /**
- * scripts/send-direct-failed-payment-emails.mjs
+ * scripts/send-s23-batch2-failed-payment-emails.mjs
  *
- * ONE-TIME script to send payment-failed recovery emails directly to a list
- * of customers (without querying Supabase). Includes beautiful product
- * images gallery and product page link for "Samsung Galaxy S23 Ultra 512GB".
+ * ONE-TIME script to send payment-failed recovery emails for
+ * "Samsung Galaxy S23 Ultra" to the 6 customers from the Aug 2026
+ * failed/dropped payment list. Includes the S23 product page link
+ * and a beautiful product image gallery (same proven template as
+ * scripts/send-direct-failed-payment-emails.mjs).
  *
  * Usage:
  *   1. Ensure .env.local has:
@@ -11,8 +13,17 @@
  *        RESEND_FROM_EMAIL=ErgoAura <support@ergoaurashop.com>
  *        NEXT_PUBLIC_SITE_URL=https://ergoaurashop.com
  *
- *   2. Run from project root:
- *        node scripts/send-direct-failed-payment-emails.mjs
+ *   2. DRY-RUN (recommended first — prints recipients, no emails sent):
+ *        node scripts/send-s23-batch2-failed-payment-emails.mjs --dry-run
+ *
+ *   3. SEND:
+ *        node scripts/send-s23-batch2-failed-payment-emails.mjs
+ *
+ * Safety:
+ *   - 500ms delay between sends (respect rate limits)
+ *   - Logs every send attempt to stdout
+ *   - Never modifies the database
+ *   - Fatal errors (invalid API key, etc.) stop the script immediately
  */
 
 // ── Load .env.local manually (no external dependencies) ─────────────
@@ -46,6 +57,9 @@ try {
   process.exit(1);
 }
 
+// ── CLI flags ────────────────────────────────────────────────────────
+const DRY_RUN = process.argv.includes("--dry-run");
+
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL;
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://ergoaurashop.com";
@@ -71,7 +85,7 @@ const BRAND_TEXT_LIGHT = "#666666";
 const BRAND_TEXT_MUTED = "#999999";
 
 // ── Product Info ──────────────────────────────────────────────────────
-const PRODUCT_NAME = "Samsung Galaxy S23 Ultra 512GB";
+const PRODUCT_NAME = "Samsung Galaxy S23 Ultra";
 const PRODUCT_PRICE = "₹24,990";
 const PRODUCT_ORIGINAL_PRICE = "₹1,24,999";
 const PRODUCT_PAGE_URL = `${SITE_URL}/products/samsung-galaxy-s23-ultra`;
@@ -102,69 +116,47 @@ const PRODUCT_IMAGES = [
 ];
 
 // ── Customer Data ─────────────────────────────────────────────────────
+// Aug 2026 failed/dropped payment list — Samsung Galaxy S23 Ultra @ ₹24,990 (UPI)
+// Only row 1 included a customer name; others fall back to "there" in the greeting.
 const CUSTOMERS = [
   {
-    name: "Mohan",
-    email: "mohan9629655818@gmail.com",
-    paymentId: "pay_T4KbIjxZOiHXNX",
+    name: "Rohit Sharma",
+    email: "rohitsharma1409@gmail.com",
+    paymentId: "pay_TMgZcwfgna1YVR",
   },
   {
-    name: "Ghulam Nabi Bhat",
-    email: "ghulamnabibhat7889941016@gmail.com",
-    paymentId: "pay_T4B4Dd4jbamrwQ",
-  },
-  { name: "AV", email: "av0597161@gmail.com", paymentId: "pay_T4AaeRVYq46wyE" },
-  {
-    name: "Prince Pawan Modi",
-    email: "princepawanmodi@gmail.com",
-    paymentId: "pay_T49fJTwYTY4lyq",
+    name: "",
+    email: "sarwantokbi@gmail.com",
+    paymentId: "pay_TMfAnRh6Let9TM",
   },
   {
-    name: "Pankaj Kumar",
-    email: "pankajkumar99551035@gmail.com",
-    paymentId: "pay_T49Bjd7SNeQ6lZ",
+    name: "",
+    email: "sanaulla8732@gmail.com",
+    paymentId: "pay_TMRC5FaBd6OXKf",
   },
   {
-    name: "Ajay Kumar",
-    email: "ajaykumarajaykumar0767@gmail.com",
-    paymentId: "pay_T47uq9w56v9Dg3",
+    name: "",
+    email: "mt6273919@gmail.com",
+    paymentId: "pay_TMQkLrVCqk6I6e",
   },
   {
-    name: "TG Oulhous",
-    email: "tgoulhous542@gmail.com",
-    paymentId: "pay_T47QBD5hTOMJc3",
+    name: "",
+    email: "parjapatipannalal8@gmail.com",
+    paymentId: "pay_TMQaxWgbdZ9qyk",
   },
   {
-    name: "Ram Babu",
-    email: "rambabu554433rrr@gmail.com",
-    paymentId: "pay_T47ASfZiok7wux",
-  },
-  {
-    name: "Ram Babu",
-    email: "rambabu554433rrr@gmail.com",
-    paymentId: "pay_T476mC8fBbDqCq",
-  },
-  {
-    name: "Lucky Kumar",
-    email: "lucckykumar1234567@gmail.com",
-    paymentId: "pay_T45vJdFYtnUK08",
-  },
-  // Send a copy to the store email for reference
-  {
-    name: "ErgoAura Store",
-    email: "ergoaurashop@gmail.com",
-    paymentId: "pay_REFERENCE_COPY",
-  },
-  {
-    name: "Kavya Nair",
-    email: "rkavyanairkr@gmail.com",
-    paymentId: "pay_REFERENCE_COPY_2",
+    name: "",
+    email: "sonarganesh51@gmail.com",
+    paymentId: "pay_TMQEFKcx7H97WC",
   },
 ];
 
 // ── Email Builder ─────────────────────────────────────────────────────
 
 function buildEmailHtml({ customerName, paymentId }) {
+  // Fallback greeting for customers without a name
+  const displayName = customerName ? customerName : "there";
+
   // Build image gallery rows (2 images per row)
   const imageCells = PRODUCT_IMAGES.map(
     (img) => `
@@ -210,7 +202,7 @@ function buildEmailHtml({ customerName, paymentId }) {
 
   <!-- Preview Text (hidden) -->
   <div style="display:none;font-size:1px;color:${BRAND_IVORY};line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">
-    Hey ${customerName}, your payment for ${PRODUCT_NAME} didn't go through. Complete your purchase now &mdash; your phone is still reserved for you!
+    Hey ${displayName}, your payment for ${PRODUCT_NAME} didn't go through. Complete your purchase now &mdash; your phone is still reserved for you!
   </div>
 
   <!-- Full-width container -->
@@ -259,7 +251,7 @@ function buildEmailHtml({ customerName, paymentId }) {
                 <tr>
                   <td align="center" style="padding-bottom:8px;">
                     <p style="margin:0;font-family:'Inter',sans-serif;font-size:16px;color:${BRAND_TEXT_LIGHT};line-height:24px;">
-                      Don't worry <strong>${customerName}</strong> &mdash; it happens sometimes.<br>
+                      Don't worry <strong>${displayName}</strong> &mdash; it happens sometimes.<br>
                       Your <strong>${PRODUCT_NAME}</strong> is still reserved for you!
                     </p>
                   </td>
@@ -528,6 +520,27 @@ async function sendEmailViaResend({ to, subject, html }) {
 // ── Main ──────────────────────────────────────────────────────────────
 
 async function main() {
+  const subject = `Complete Your Purchase — ${PRODUCT_NAME} at ErgoAura`;
+
+  if (DRY_RUN) {
+    console.log("🔍 DRY-RUN — no emails will be sent.\n");
+    console.log(`Subject: ${subject}`);
+    console.log(`From:    ${RESEND_FROM_EMAIL}`);
+    console.log(`Product: ${PRODUCT_NAME} (${PRODUCT_PRICE})`);
+    console.log(`Product Page: ${PRODUCT_PAGE_URL}\n`);
+    console.log("Would send to:");
+    CUSTOMERS.forEach((c, i) => {
+      const name = c.name ? c.name : "(no name → greeting uses 'there')";
+      console.log(
+        `  ${i + 1}. ${name} <${c.email}> — paymentId ${c.paymentId}`,
+      );
+    });
+    console.log(
+      `\nTotal recipients: ${CUSTOMERS.length} (DRY-RUN, nothing sent)`,
+    );
+    process.exit(0);
+  }
+
   console.log(
     `📧 Sending payment-failed recovery emails to ${CUSTOMERS.length} customers...\n`,
   );
@@ -543,10 +556,8 @@ async function main() {
       paymentId,
     });
 
-    const subject = `Complete Your Purchase — ${PRODUCT_NAME} at ErgoAura`;
-
     console.log(
-      `[${i + 1}/${CUSTOMERS.length}] Sending to ${name} <${email}> (${paymentId})...`,
+      `[${i + 1}/${CUSTOMERS.length}] Sending to ${name || "(no name)"} <${email}> (${paymentId})...`,
     );
 
     try {

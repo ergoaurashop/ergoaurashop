@@ -70,8 +70,8 @@ const SUPPORT_SECTION = `
                   </a>
                 </td>
                 <td align="center" style="padding:0 12px;border-left:1px solid ${BRAND_COLORS.ivoryDark};">
-                  <a href="tel:+971585693880" style="font-family:${FONTS.body};font-size:14px;color:${BRAND_COLORS.gold};text-decoration:none;font-weight:600;">
-                    📞 +971 58 569 3880
+                  <a href="tel:+919496090395" style="font-family:${FONTS.body};font-size:14px;color:${BRAND_COLORS.gold};text-decoration:none;font-weight:600;">
+                    📞 +919496090395
                   </a>
                 </td>
               </tr>
