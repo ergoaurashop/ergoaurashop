@@ -14,6 +14,7 @@ import "./globals.css";
 import TrustMarquee from "@/components/layout/TrustMarquee";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import WhatsAppTab from "@/components/whatsapp/WhatsAppTab";
 import PageViewTracker from "@/components/analytics/PageViewTracker";
 import OrganizationSchema from "@/components/seo/OrganizationSchema";
 import WebSiteSchema from "@/components/seo/WebSiteSchema";
@@ -160,6 +161,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+
+        {/* Floating WhatsApp docked tab — Home, Products & product pages */}
+        <WhatsAppTab />
 
         {/* SPA page-view tracking — wrapped in Suspense because
             PageViewTracker calls useSearchParams() which requires it. */}

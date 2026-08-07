@@ -35,6 +35,37 @@ export const SOCIAL_LINKS = {
   facebook: "https://www.facebook.com/profile.php?id=61590640415430",
 } as const;
 
+// =====================================================================
+// WhatsApp
+// =====================================================================
+/** WhatsApp number in international format WITHOUT the "+" (for wa.me links) */
+export const WHATSAPP_NUMBER = "919496090395";
+
+/** Default pre-filled message for the floating WhatsApp tab */
+export const WHATSAPP_MESSAGE =
+  "Hi ErgoAura! 🛍️ I'm interested in your products — any ongoing offers or discounts I should know about?";
+
+/**
+ * Build a WhatsApp deep link with an optional pre-filled message.
+ * Example: https://wa.me/919496090395?text=Hi%20ErgoAura!...
+ */
+export function getWhatsAppLink(
+  message: string = WHATSAPP_MESSAGE,
+  number: string = WHATSAPP_NUMBER,
+): string {
+  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+}
+
+/**
+ * True when the floating WhatsApp tab should appear for the given pathname.
+ * Show on: Home ("/"), the products listing ("/products"), every
+ * product detail page ("/products/[slug]"), and the contact page ("/contact-us").
+ */
+export function shouldShowWhatsApp(pathname: string): boolean {
+  if (pathname === "/" || pathname === "/contact-us") return true;
+  return pathname.startsWith("/products");
+}
+
 /** Default metadata for all pages */
 export const SITE_METADATA = {
   title: "ErgoAura Shop",
