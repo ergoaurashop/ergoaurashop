@@ -78,13 +78,14 @@ export default function WhatsAppTab() {
         "no-underline select-none",
       )}
     >
-      {/* Hover label — slides in from the left as the tab widens */}
+      {/* Hover label — collapsed (max-w-0) at rest so the glyph + vertical
+          "Chat" stay visible; slides in from the left as the tab widens */}
       <span
         className={cn(
-          "whitespace-nowrap pl-4 pr-1",
+          "whitespace-nowrap pl-4 pr-1 overflow-hidden",
           "text-[11px] font-semibold tracking-[0.18em]",
-          "opacity-0 translate-x-3 transition-all duration-300",
-          "group-hover:opacity-100 group-hover:translate-x-0",
+          "max-w-0 opacity-0 translate-x-3 transition-all duration-300",
+          "group-hover:max-w-[12rem] group-hover:opacity-100 group-hover:translate-x-0",
         )}
       >
         Chat with us
