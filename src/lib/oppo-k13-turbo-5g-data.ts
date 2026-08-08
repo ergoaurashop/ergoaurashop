@@ -182,13 +182,13 @@ export const OPPO_K13_TURBO_5G_REVIEWS: ProductReviewDetail[] = [
 // Review summary
 // -------------------------------------------------------------------
 export const OPPO_K13_TURBO_5G_REVIEW_SUMMARY = {
-  totalReviews: 24,
+  totalReviews: 17,
   averageRating: 4.6,
   ratingDistribution: {
-    5: 18,
+    5: 12,
     4: 4,
     3: 1,
-    2: 1,
+    2: 0,
     1: 0,
   },
 };

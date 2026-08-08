@@ -178,13 +178,13 @@ export const APPLE_IPHONE_17_PRO_REVIEWS: ProductReviewDetail[] = [
 // Review summary
 // -------------------------------------------------------------------
 export const APPLE_IPHONE_17_PRO_REVIEW_SUMMARY = {
-  totalReviews: 24,
+  totalReviews: 11,
   averageRating: 4.6,
   ratingDistribution: {
-    5: 18,
-    4: 4,
+    5: 8,
+    4: 2,
     3: 1,
-    2: 1,
+    2: 0,
     1: 0,
   },
 };

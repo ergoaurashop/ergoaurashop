@@ -217,13 +217,13 @@ export const VIVO_V70_ELITE_REVIEWS: ProductReviewDetail[] = [
 // Review summary
 // -------------------------------------------------------------------
 export const VIVO_V70_ELITE_REVIEW_SUMMARY = {
-  totalReviews: 26,
+  totalReviews: 11,
   averageRating: 4.6,
   ratingDistribution: {
-    5: 19,
-    4: 5,
+    5: 7,
+    4: 3,
     3: 1,
-    2: 1,
+    2: 0,
     1: 0,
   },
 };

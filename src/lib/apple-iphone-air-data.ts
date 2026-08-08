@@ -179,13 +179,13 @@ export const APPLE_IPHONE_AIR_REVIEWS: ProductReviewDetail[] = [
 // Review summary
 // -------------------------------------------------------------------
 export const APPLE_IPHONE_AIR_REVIEW_SUMMARY = {
-  totalReviews: 24,
+  totalReviews: 16,
   averageRating: 4.6,
   ratingDistribution: {
-    5: 18,
+    5: 11,
     4: 4,
     3: 1,
-    2: 1,
+    2: 0,
     1: 0,
   },
 };

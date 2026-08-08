@@ -213,11 +213,11 @@ export const EDGE_70_PRO_PLUS_REVIEWS: ProductReviewDetail[] = [
 // Review summary
 // -------------------------------------------------------------------
 export const EDGE_70_PRO_PLUS_REVIEW_SUMMARY = {
-  totalReviews: 27,
+  totalReviews: 19,
   averageRating: 4.8,
   ratingDistribution: {
-    5: 23,
-    4: 3,
+    5: 16,
+    4: 2,
     3: 1,
     2: 0,
     1: 0,

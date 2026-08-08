@@ -209,10 +209,10 @@ export const NORD_6_REVIEWS: ProductReviewDetail[] = [
 // Review summary
 // -------------------------------------------------------------------
 export const NORD_6_REVIEW_SUMMARY = {
-  totalReviews: 24,
+  totalReviews: 22,
   averageRating: 4.7,
   ratingDistribution: {
-    5: 19,
+    5: 17,
     4: 4,
     3: 1,
     2: 0,

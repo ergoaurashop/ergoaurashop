@@ -180,12 +180,12 @@ export const EDGE_70_FUSION_REVIEWS: ProductReviewDetail[] = [
 // Review summary
 // -------------------------------------------------------------------
 export const EDGE_70_FUSION_REVIEW_SUMMARY = {
-  totalReviews: 24,
+  totalReviews: 15,
   averageRating: 4.6,
   ratingDistribution: {
-    5: 18,
-    4: 4,
-    3: 1,
+    5: 11,
+    4: 3,
+    3: 0,
     2: 1,
     1: 0,
   },

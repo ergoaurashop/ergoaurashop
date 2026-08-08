@@ -182,13 +182,13 @@ export const IQOO_Z11X_REVIEWS: ProductReviewDetail[] = [
 // Review summary
 // -------------------------------------------------------------------
 export const IQOO_Z11X_REVIEW_SUMMARY = {
-  totalReviews: 24,
+  totalReviews: 21,
   averageRating: 4.6,
   ratingDistribution: {
-    5: 18,
-    4: 4,
+    5: 15,
+    4: 5,
     3: 1,
-    2: 1,
+    2: 0,
     1: 0,
   },
 };

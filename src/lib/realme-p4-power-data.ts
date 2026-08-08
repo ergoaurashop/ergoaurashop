@@ -180,13 +180,13 @@ export const P4POWER_REVIEWS: ProductReviewDetail[] = [
 // Review summary
 // -------------------------------------------------------------------
 export const P4POWER_REVIEW_SUMMARY = {
-  totalReviews: 24,
+  totalReviews: 12,
   averageRating: 4.6,
   ratingDistribution: {
-    5: 18,
-    4: 4,
+    5: 8,
+    4: 3,
     3: 1,
-    2: 1,
+    2: 0,
     1: 0,
   },
 };
