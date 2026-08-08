@@ -61,6 +61,9 @@ export default function CartSidebar() {
   const discountedSubtotal = Math.max(0, subtotal - b2g1Discount);
   const youSave = b2g1Discount;
 
+  /* True only when the cart holds at least one B2G1-eligible product */
+  const hasEligibleItem = items.some((item) => isB2G1Eligible(item.product));
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -230,8 +233,8 @@ export default function CartSidebar() {
                 </div>
               )}
 
-              {/* B2G1 promo banner (shown when no items qualify yet) */}
-              {items.length > 0 && b2g1Discount === 0 && (
+              {/* B2G1 promo banner (shown when eligible items exist but none qualify yet) */}
+              {hasEligibleItem && b2g1Discount === 0 && (
                 <div className="mx-6 py-3 px-3 bg-gradient-to-r from-amber-200 via-gold-light to-amber-100 bg-[length:200%_100%] animate-gradient-shift border border-gold/30 rounded-apple-sm flex items-center gap-2 shadow-gold/20">
                   <span className="text-lg shrink-0">🎁</span>
                   <p className="text-xs text-amber-900 font-medium leading-snug">

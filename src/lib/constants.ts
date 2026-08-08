@@ -87,7 +87,7 @@ export const CATEGORIES = [
 ] as const;
 
 /** Categories that should NOT be eligible for Buy 2 Get 1 Free offer */
-export const B2G1_EXCLUDED_CATEGORIES = ["electronics"] as const;
+export const B2G1_EXCLUDED_CATEGORIES = ["electronics", "phones"] as const;
 
 // =====================================================================
 // DeepSeek AI
