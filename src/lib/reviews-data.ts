@@ -3708,6 +3708,76 @@ export const PRODUCT_REVIEW_SUMMARIES: Record<string, ProductReviewSummary> = {
     averageRating: 4.5,
     ratingDistribution: { 1: 3, 2: 3, 3: 11, 4: 30, 5: 120 },
   },
+  "motorola-edge-70-fusion": {
+    totalReviews: 24,
+    averageRating: 4.6,
+    ratingDistribution: { 5: 18, 4: 4, 3: 1, 2: 1, 1: 0 },
+  },
+  "motorola-edge-70": {
+    totalReviews: 21,
+    averageRating: 4.6,
+    ratingDistribution: { 5: 16, 4: 3, 3: 1, 2: 1, 1: 0 },
+  },
+  "oneplus-nord-ce-6-5g": {
+    totalReviews: 24,
+    averageRating: 4.6,
+    ratingDistribution: { 5: 18, 4: 4, 3: 1, 2: 1, 1: 0 },
+  },
+  "realme-p4-power": {
+    totalReviews: 24,
+    averageRating: 4.6,
+    ratingDistribution: { 5: 18, 4: 4, 3: 1, 2: 1, 1: 0 },
+  },
+  "iqoo-z11x": {
+    totalReviews: 24,
+    averageRating: 4.6,
+    ratingDistribution: { 5: 18, 4: 4, 3: 1, 2: 1, 1: 0 },
+  },
+  "lava-agni-4": {
+    totalReviews: 24,
+    averageRating: 4.6,
+    ratingDistribution: { 5: 18, 4: 4, 3: 1, 2: 1, 1: 0 },
+  },
+  "oppo-k13-turbo-5g": {
+    totalReviews: 24,
+    averageRating: 4.6,
+    ratingDistribution: { 5: 18, 4: 4, 3: 1, 2: 1, 1: 0 },
+  },
+  "iqoo-15r": {
+    totalReviews: 24,
+    averageRating: 4.6,
+    ratingDistribution: { 5: 18, 4: 4, 3: 1, 2: 1, 1: 0 },
+  },
+  "oneplus-nord-6": {
+    totalReviews: 24,
+    averageRating: 4.7,
+    ratingDistribution: { 5: 19, 4: 4, 3: 1, 2: 0, 1: 0 },
+  },
+  "vivo-v70-elite": {
+    totalReviews: 26,
+    averageRating: 4.6,
+    ratingDistribution: { 5: 19, 4: 5, 3: 1, 2: 1, 1: 0 },
+  },
+  "motorola-edge-70-pro-plus": {
+    totalReviews: 27,
+    averageRating: 4.8,
+    ratingDistribution: { 5: 23, 4: 3, 3: 1, 2: 0, 1: 0 },
+  },
+  "poco-x8-pro-max": {
+    totalReviews: 24,
+    averageRating: 4.6,
+    ratingDistribution: { 5: 18, 4: 4, 3: 1, 2: 1, 1: 0 },
+  },
+  "apple-iphone-17-pro": {
+    totalReviews: 24,
+    averageRating: 4.6,
+    ratingDistribution: { 5: 18, 4: 4, 3: 1, 2: 1, 1: 0 },
+  },
+  "apple-iphone-air": {
+    totalReviews: 24,
+    averageRating: 4.6,
+    ratingDistribution: { 5: 18, 4: 4, 3: 1, 2: 1, 1: 0 },
+  },
 };
 
 // =====================================================================

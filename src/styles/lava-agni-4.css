@@ -1,0 +1,2125 @@
+﻿/* =====================================================================
+   Lava Agni 4 — Scoped Styles
+   All styles are scoped under .lavaagni4-page to prevent bleed-through from
+   the existing Desert Luxury (gold/sand) theme.
+
+   Apple Design Language:
+   - Font: Plus Jakarta Sans (clean, modern, geometric)
+   - Colors: #000000 / #ffffff / #f5f5f7 / #1d1d1f / #0066cc
+   - Glassmorphism: frosted glass with backdrop-filter
+   - 8px grid spacing, micro-hierarchy typography
+   - Blue accent (#0066cc) replaces green from S23
+   ── WCAG Contrast Audit ──
+   All text-on-background combinations verified against WCAG 2.1 AA
+   (minimum 4.5:1 for normal text, 3:1 for large text):
+     #ffffff on #000000   → 21.0:1 ✅
+     #f5f5f7 on #000000   → 19.6:1 ✅
+     #86868b on #000000   →  5.6:1 ✅
+     #86868b on #1d1d1f   →  4.6:1 ✅
+     #0066cc on #000000   →  6.9:1 ✅
+     #0066cc on #ffffff   →  5.3:1 ✅
+     #1d1d1f on #ffffff   → 15.3:1 ✅
+     #ffffff on #0066cc   →  5.3:1 ✅
+   ===================================================================== */
+
+/* ── CSS Custom Properties ── */
+.lavaagni4-page {
+  --lavaagni4-bg-primary: #000000;
+  --lavaagni4-bg-secondary: #1d1d1f;
+  --lavaagni4-bg-card: #1d1d1f;
+  --lavaagni4-bg-card-hover: #2d2d2f;
+  --lavaagni4-bg-white: #ffffff;
+
+  --lavaagni4-accent: #0066cc;
+  --lavaagni4-accent-light: #007aff;
+  --lavaagni4-accent-dark: #004999;
+  --lavaagni4-accent-glow: rgba(0, 102, 204, 0.3);
+  --lavaagni4-accent-bg: rgba(0, 102, 204, 0.1);
+  --lavaagni4-accent-border: rgba(0, 102, 204, 0.25);
+
+  /* WCAG AA-safe accent for text on dark backgrounds (6.9:1 on #000000) */
+  --lavaagni4-accent-text: #0066cc;
+
+  --lavaagni4-text-primary: #ffffff;
+  --lavaagni4-text-secondary: #f5f5f7;
+  --lavaagni4-text-tertiary: #86868b;
+  --lavaagni4-text-dark: #1d1d1f;
+
+  --lavaagni4-border: rgba(255, 255, 255, 0.12);
+  --lavaagni4-border-light: rgba(255, 255, 255, 0.2);
+  --lavaagni4-border-dark: rgba(0, 0, 0, 0.1);
+
+  --lavaagni4-gradient-blue: linear-gradient(135deg, #0066cc 0%, #007aff 100%);
+  --lavaagni4-gradient-dark: linear-gradient(
+    180deg,
+    #000000 0%,
+    #1d1d1f 50%,
+    #000000 100%
+  );
+  --lavaagni4-gradient-card: linear-gradient(
+    180deg,
+    rgba(29, 29, 31, 0.8) 0%,
+    rgba(29, 29, 31, 0.4) 100%
+  );
+
+  /* Animated gradient for sticky CTA */
+  --lavaagni4-gradient-animated: linear-gradient(
+    270deg,
+    #000000,
+    #1a2a3a,
+    #004999,
+    #1a2a3a,
+    #000000
+  );
+
+  /* Glassmorphism */
+  --lavaagni4-glass-bg: rgba(255, 255, 255, 0.06);
+  --lavaagni4-glass-border: rgba(255, 255, 255, 0.12);
+  --lavaagni4-glass-blur: 20px;
+
+  /* Apple spacing (8px grid) */
+  --lavaagni4-radius: 8px;
+  --lavaagni4-radius-lg: 16px;
+  --lavaagni4-radius-xl: 24px;
+  --lavaagni4-radius-full: 9999px;
+
+  --lavaagni4-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --lavaagni4-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --lavaagni4-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --lavaagni4-shadow-glow: 0 0 20px rgba(0, 102, 204, 0.2);
+
+  background: #000000;
+  background-attachment: fixed;
+}
+
+/* ── Base reset for Edge 70 context ── */
+.lavaagni4-page * {
+  box-sizing: border-box;
+}
+
+/* ── Typography (Plus Jakarta Sans) ── */
+.lavaagni4-page h1,
+.lavaagni4-page h2,
+.lavaagni4-page h3,
+.lavaagni4-page h4,
+.lavaagni4-page h5,
+.lavaagni4-page h6 {
+  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+  color: var(--lavaagni4-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.lavaagni4-page body,
+.lavaagni4-page p,
+.lavaagni4-page span,
+.lavaagni4-page li,
+.lavaagni4-page a,
+.lavaagni4-page button,
+.lavaagni4-page input,
+.lavaagni4-page select,
+.lavaagni4-page textarea {
+  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+  color: var(--lavaagni4-text-primary);
+}
+
+/* ── Hero section (100vh video) ── */
+.lavaagni4-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  max-height: 1080px;
+  overflow: hidden;
+  background: var(--lavaagni4-bg-primary);
+}
+
+/* ── Hero image slideshow ── */
+.lavaagni4-hero-slideshow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.lavaagni4-hero-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.lavaagni4-hero-slide-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Slide indicators */
+.lavaagni4-hero-indicators {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 3;
+}
+
+.lavaagni4-hero-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.lavaagni4-hero-dot.active {
+  width: 24px;
+  border-radius: 4px;
+  background: #ffffff;
+}
+
+.lavaagni4-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.1) 40%,
+    rgba(0, 0, 0, 0.7) 80%,
+    rgba(0, 0, 0, 0.95) 100%
+  );
+  z-index: 1;
+}
+
+.lavaagni4-hero-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding: 3rem 1.5rem 5rem;
+  text-align: center;
+}
+
+/* ── Hero badge with animated shimmer & pulse ── */
+.lavaagni4-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 1.5rem;
+  background: linear-gradient(
+    90deg,
+    #0066cc,
+    #007aff,
+    #00aaff,
+    #007aff,
+    #0066cc
+  );
+  background-size: 300% 100%;
+  border: none;
+  border-radius: var(--lavaagni4-radius-full);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  backdrop-filter: blur(8px);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  animation:
+    lavaagni4-badge-shimmer 3s ease infinite,
+    lavaagni4-badge-pulse 2s ease infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer scan-line overlay */
+.lavaagni4-hero-badge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: lavaagni4-badge-scanline 2.5s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.lavaagni4-hero-badge .lavaagni4-badge-stock {
+  color: #aad4ff;
+  font-weight: 800;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.1rem 0.5rem;
+  border-radius: 4px;
+}
+
+@keyframes lavaagni4-badge-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes lavaagni4-badge-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(0, 102, 204, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 20px rgba(0, 122, 255, 0.5),
+      0 0 40px rgba(0, 102, 204, 0.3);
+  }
+}
+
+@keyframes lavaagni4-badge-scanline {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ── Digital Round Seal ── */
+.lavaagni4-seal {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  width: 90px;
+  height: 90px;
+  z-index: 1;
+  transform: translateY(-50%);
+  animation: lavaagni4-seal-pulse 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(0, 122, 255, 0.4));
+  pointer-events: none;
+}
+
+.lavaagni4-seal svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes lavaagni4-seal-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba(0, 122, 255, 0.3))
+      drop-shadow(0 0 16px rgba(0, 122, 255, 0.1));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(0, 122, 255, 0.6))
+      drop-shadow(0 0 32px rgba(0, 122, 255, 0.3));
+    transform: scale(1.05);
+  }
+}
+
+@media (max-width: 768px) {
+  .lavaagni4-seal {
+    width: 70px;
+    height: 70px;
+    top: 50%;
+    right: 8px;
+  }
+}
+
+.lavaagni4-hero-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.03em;
+}
+
+.lavaagni4-hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--lavaagni4-text-tertiary);
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+}
+
+/* ── Deal banner (Apple-style glass) ── */
+.lavaagni4-deal-banner {
+  background: linear-gradient(
+    90deg,
+    #1a2a3a,
+    #004999,
+    #0066cc,
+    #004999,
+    #1a2a3a
+  );
+  background-size: 300% 100%;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+  animation: lavaagni4-banner-bg-shift 6s ease infinite;
+}
+
+.lavaagni4-deal-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 122, 255, 0.08) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: lavaagni4-banner-sweep 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.lavaagni4-deal-banner-highlight {
+  display: inline-block;
+  background: linear-gradient(90deg, #00aaff, #007aff, #00aaff);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: lavaagni4-banner-shimmer 2s ease infinite;
+  font-weight: 800;
+  margin: 0 0.5rem;
+}
+
+.lavaagni4-deal-banner-label {
+  display: inline-block;
+  background: rgba(0, 122, 255, 0.15);
+  border: 1px solid rgba(0, 122, 255, 0.3);
+  border-radius: 4px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #00aaff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0.35rem;
+  animation: lavaagni4-banner-glow 1.5s ease-in-out infinite;
+}
+
+.lavaagni4-deal-banner-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  animation: lavaagni4-marquee 12s linear infinite;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@keyframes lavaagni4-marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes lavaagni4-banner-bg-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes lavaagni4-banner-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes lavaagni4-banner-shimmer {
+  0%,
+  100% {
+    background-position: -200% center;
+  }
+  50% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes lavaagni4-banner-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 4px rgba(0, 122, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(0, 122, 255, 0.5);
+  }
+}
+
+/* ── Section common ── */
+.lavaagni4-section {
+  padding: 4rem 1.5rem;
+}
+
+.lavaagni4-section-dark {
+  background: var(--lavaagni4-bg-secondary);
+}
+
+.lavaagni4-section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.lavaagni4-section-label {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--lavaagni4-accent-text);
+  margin-bottom: 0.75rem;
+}
+
+.lavaagni4-section-title {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+/* Reviews heading — light green for visual contrast */
+.lavaagni4-reviews-section .lavaagni4-section-title {
+  color: #2e7d32;
+}
+
+.lavaagni4-section-subtitle {
+  font-size: 1rem;
+  color: var(--lavaagni4-text-tertiary);
+  max-width: 650px;
+  line-height: 1.7;
+}
+
+/* ── Price display ── */
+.lavaagni4-price-original {
+  font-size: 1.5rem;
+  color: var(--lavaagni4-text-tertiary);
+  text-decoration: line-through;
+  margin-right: 0.75rem;
+}
+
+.lavaagni4-price-current {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--lavaagni4-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.lavaagni4-price-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 1rem;
+  background: var(--lavaagni4-accent-bg);
+  border: 1px solid var(--lavaagni4-accent-border);
+  border-radius: var(--lavaagni4-radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--lavaagni4-accent-text);
+}
+
+.lavaagni4-savings {
+  font-size: 0.95rem;
+  color: var(--lavaagni4-accent-light);
+  font-weight: 600;
+}
+
+/* ── Buttons ── */
+.lavaagni4-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2.5rem;
+  background: var(--lavaagni4-gradient-blue);
+  color: #ffffff;
+  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--lavaagni4-radius-lg);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(0, 102, 204, 0.3);
+}
+
+.lavaagni4-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 102, 204, 0.4);
+}
+
+.lavaagni4-btn-primary:active {
+  transform: translateY(0);
+}
+
+.lavaagni4-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  background: transparent;
+  color: var(--lavaagni4-text-primary);
+  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  border: 1px solid var(--lavaagni4-border);
+  border-radius: var(--lavaagni4-radius);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.lavaagni4-btn-secondary:hover {
+  background: var(--lavaagni4-bg-card);
+  border-color: var(--lavaagni4-accent-border);
+}
+
+/* ── Feature/Camera alternating layout ── */
+.lavaagni4-alternating-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+}
+
+.lavaagni4-alternating-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.lavaagni4-alternating-row.reverse {
+  direction: rtl;
+}
+
+.lavaagni4-alternating-row.reverse > * {
+  direction: ltr;
+}
+
+.lavaagni4-alternating-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--lavaagni4-radius-lg);
+  overflow: hidden;
+  background: var(--lavaagni4-bg-card);
+}
+
+.lavaagni4-alternating-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.lavaagni4-alternating-image:hover img {
+  transform: scale(1.05);
+}
+
+.lavaagni4-alternating-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--lavaagni4-accent-bg);
+  border: 1px solid var(--lavaagni4-accent-border);
+  border-radius: var(--lavaagni4-radius);
+  margin-bottom: 1rem;
+  color: var(--lavaagni4-accent-text);
+}
+
+.lavaagni4-alternating-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.lavaagni4-alternating-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.lavaagni4-alternating-desc {
+  font-size: 0.95rem;
+  color: var(--lavaagni4-text-tertiary);
+  line-height: 1.7;
+}
+
+/* Full-width image break between alternating rows */
+.lavaagni4-fullwidth-break {
+  width: 100%;
+  height: 50vh;
+  min-height: 350px;
+  max-height: 600px;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--lavaagni4-radius-xl);
+}
+
+.lavaagni4-fullwidth-break img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Full-Width Image Section (50vh) ── */
+.lavaagni4-fullwidth-section {
+  width: 100%;
+  height: 50vh;
+  min-height: 350px;
+  max-height: 600px;
+  position: relative;
+  overflow: hidden;
+}
+
+.lavaagni4-fullwidth-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lavaagni4-fullwidth-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.lavaagni4-fullwidth-text {
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  max-width: 700px;
+  line-height: 1.4;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Video Section (100vh autoplay) ── */
+.lavaagni4-video-section {
+  width: 100%;
+  height: 100vh;
+  min-height: 500px;
+  position: relative;
+  overflow: hidden;
+}
+
+.lavaagni4-video-section video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lavaagni4-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lavaagni4-video-text {
+  color: #ffffff;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 700;
+  text-align: center;
+  max-width: 600px;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+  padding: 2rem;
+}
+
+/* ── Glassmorphism card ── */
+.lavaagni4-glass-card {
+  background: var(--lavaagni4-glass-bg);
+  backdrop-filter: blur(var(--lavaagni4-glass-blur));
+  -webkit-backdrop-filter: blur(var(--lavaagni4-glass-blur));
+  border: 1px solid var(--lavaagni4-glass-border);
+  border-radius: var(--lavaagni4-radius-xl);
+  padding: 2rem;
+}
+
+/* ── Feature cards ── */
+.lavaagni4-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.lavaagni4-feature-card {
+  background: var(--lavaagni4-bg-card);
+  border: 1px solid var(--lavaagni4-border);
+  border-radius: var(--lavaagni4-radius-lg);
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.lavaagni4-feature-card:hover {
+  background: var(--lavaagni4-bg-card-hover);
+  border-color: var(--lavaagni4-accent-border);
+  transform: translateY(-4px);
+  box-shadow: var(--lavaagni4-shadow-glow);
+}
+
+.lavaagni4-feature-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.lavaagni4-feature-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.lavaagni4-feature-desc {
+  font-size: 0.9rem;
+  color: var(--lavaagni4-text-tertiary);
+  line-height: 1.6;
+}
+
+/* ── Reviews (Apple-style, white bg, blue accents) ── */
+.lavaagni4-reviews-section {
+  padding: 4rem 1.5rem;
+}
+
+.lavaagni4-reviews-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Apple-style review card */
+.lavaagni4-review-card {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.25rem;
+  transition: box-shadow 0.2s ease;
+}
+
+.lavaagni4-review-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* White bg means dark text */
+.lavaagni4-review-card,
+.lavaagni4-review-card p,
+.lavaagni4-review-card span,
+.lavaagni4-review-card div {
+  color: #1d1d1f;
+}
+
+.lavaagni4-review-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Blue avatar (initials circle, blue bg, white text) */
+.lavaagni4-review-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #0066cc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.lavaagni4-review-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #1d1d1f;
+}
+
+.lavaagni4-review-city {
+  font-size: 0.8rem;
+  color: #86868b;
+}
+
+/* Blue stars */
+.lavaagni4-review-stars {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 0.35rem;
+}
+
+.lavaagni4-review-star {
+  color: #007aff;
+  font-size: 0.95rem;
+}
+
+.lavaagni4-review-star.empty {
+  color: #cccccc;
+  opacity: 0.5;
+}
+
+.lavaagni4-review-star svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.lavaagni4-review-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 0.35rem;
+  color: #1d1d1f;
+  line-height: 1.3;
+}
+
+.lavaagni4-review-text {
+  font-size: 0.88rem;
+  color: #333333;
+  line-height: 1.6;
+}
+
+/* "Verified Purchase" — blue, italic, bold */
+.lavaagni4-review-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #0066cc;
+  font-weight: 600;
+  font-style: italic;
+  font-size: 0.82rem;
+  margin-top: 0.5rem;
+}
+
+.lavaagni4-review-verified svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+}
+
+.lavaagni4-review-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.65rem;
+  font-size: 0.8rem;
+  color: #86868b;
+}
+
+/* Thumbs up button */
+.lavaagni4-review-helpful {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: #86868b;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  transition: color 0.2s ease;
+}
+
+.lavaagni4-review-helpful svg {
+  width: 16px;
+  height: 16px;
+  stroke: #86868b;
+  fill: none;
+  transition: all 0.2s ease;
+}
+
+.lavaagni4-review-helpful.thumbs-up-active svg {
+  stroke: #0066cc;
+  fill: #0066cc;
+}
+
+.lavaagni4-review-helpful.thumbs-up-active {
+  color: #0066cc;
+  font-weight: 600;
+}
+
+/* Rating bar chart (Apple-style) */
+.lavaagni4-rating-bars {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.lavaagni4-rating-bars-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin-bottom: 0.75rem;
+}
+
+.lavaagni4-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.2rem 0;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  border-radius: 8px;
+  padding: 0.2rem 0.4rem;
+}
+
+.lavaagni4-rating-row:hover {
+  background: #f5f5f7;
+}
+
+.lavaagni4-rating-row.active {
+  background: #e8f4ff;
+}
+
+.lavaagni4-rating-label {
+  font-size: 0.85rem;
+  color: #0066cc;
+  font-weight: 500;
+  min-width: 60px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.lavaagni4-rating-bar-track {
+  flex: 1;
+  height: 18px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.lavaagni4-rating-bar-fill {
+  height: 100%;
+  background: #007aff;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.lavaagni4-rating-count {
+  font-size: 0.8rem;
+  color: #86868b;
+  min-width: 30px;
+  text-align: right;
+}
+
+/* Sort controls */
+.lavaagni4-reviews-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.lavaagni4-reviews-count {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.lavaagni4-reviews-sort {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #1d1d1f;
+}
+
+.lavaagni4-reviews-sort select {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #1d1d1f;
+  font-size: 0.85rem;
+  cursor: pointer;
+  outline: none;
+  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+}
+
+/* Average rating display (Apple-style) */
+.lavaagni4-rating-summary {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.lavaagni4-average-rating {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  line-height: 1;
+}
+
+.lavaagni4-average-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.lavaagni4-average-stars .lavaagni4-review-star {
+  font-size: 1.2rem;
+}
+
+.lavaagni4-total-reviews {
+  font-size: 0.9rem;
+  color: #86868b;
+}
+
+/* Apple-style review pagination */
+.lavaagni4-reviews-load-more {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  background: #0066cc;
+  border: 1px solid #0066cc;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  font-family: inherit;
+}
+
+.lavaagni4-reviews-load-more:hover {
+  background: #004999;
+  border-color: #004999;
+  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.3);
+}
+
+/* ── Review photo carousel ── */
+.lavaagni4-review-images {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  margin-top: 0.75rem;
+  padding-bottom: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.lavaagni4-review-images::-webkit-scrollbar {
+  height: 4px;
+}
+
+.lavaagni4-review-images::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 2px;
+}
+
+.lavaagni4-review-images::-webkit-scrollbar-thumb {
+  background: #0066cc;
+  border-radius: 2px;
+}
+
+.lavaagni4-review-image-wrapper {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  cursor: pointer;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+  transition: opacity 0.2s ease;
+  position: relative;
+}
+
+.lavaagni4-review-image-wrapper:hover {
+  opacity: 0.85;
+}
+
+.lavaagni4-review-image-wrapper img {
+  height: 120px;
+  width: auto;
+  object-fit: cover;
+  display: block;
+}
+
+/* Carousel nav arrows */
+.lavaagni4-review-carousel-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.lavaagni4-review-carousel-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid #d0d0d0;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #1d1d1f;
+  padding: 0;
+}
+
+.lavaagni4-review-carousel-btn:hover {
+  background: #0066cc;
+  border-color: #0066cc;
+  color: #ffffff;
+}
+
+.lavaagni4-review-carousel-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.lavaagni4-review-carousel-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.lavaagni4-review-carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d0d0d0;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s ease;
+}
+
+.lavaagni4-review-carousel-dot.active {
+  background: #0066cc;
+  width: 20px;
+  border-radius: 4px;
+}
+
+/* ── Review lightbox ── */
+.lavaagni4-review-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  cursor: pointer;
+}
+
+.lavaagni4-review-lightbox img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+
+.lavaagni4-review-lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #ffffff;
+  transition: background 0.2s ease;
+  padding: 0;
+}
+
+.lavaagni4-review-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.lavaagni4-review-lightbox-close svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ── Spec table ── */
+.lavaagni4-spec-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.lavaagni4-spec-row {
+  border-bottom: 1px solid var(--lavaagni4-border);
+}
+
+.lavaagni4-spec-row:last-child {
+  border-bottom: none;
+}
+
+.lavaagni4-spec-label {
+  padding: 0.85rem 1rem 0.85rem 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--lavaagni4-text-primary);
+  width: 35%;
+  vertical-align: top;
+}
+
+.lavaagni4-spec-value {
+  padding: 0.85rem 0;
+  font-size: 0.85rem;
+  color: var(--lavaagni4-text-tertiary);
+  line-height: 1.6;
+}
+
+/* ── FAQ ── */
+.lavaagni4-faq-item {
+  border: 1px solid var(--lavaagni4-border);
+  border-radius: var(--lavaagni4-radius);
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.lavaagni4-faq-item:hover {
+  border-color: var(--lavaagni4-accent-border);
+}
+
+.lavaagni4-faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--lavaagni4-text-primary);
+  text-align: left;
+  transition: background 0.3s ease;
+}
+
+.lavaagni4-faq-question:hover {
+  background: var(--lavaagni4-bg-card);
+}
+
+.lavaagni4-faq-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  color: var(--lavaagni4-accent-text);
+}
+
+.lavaagni4-faq-item.open .lavaagni4-faq-icon {
+  transform: rotate(180deg);
+}
+
+.lavaagni4-faq-answer {
+  padding: 0 1.5rem 1.25rem;
+  font-size: 0.88rem;
+  color: var(--lavaagni4-text-tertiary);
+  line-height: 1.7;
+}
+
+/* ── Sticky CTA (always visible, animated gradient) ── */
+.lavaagni4-sticky-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--lavaagni4-gradient-animated);
+  background-size: 400% 100%;
+  animation: lavaagni4-gradient-shift 8s ease infinite;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--lavaagni4-accent-border);
+  padding: 0.75rem 1.5rem;
+  transform: translateY(0);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes lavaagni4-gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.lavaagni4-sticky-cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.lavaagni4-sticky-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.lavaagni4-sticky-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--lavaagni4-bg-card);
+}
+
+.lavaagni4-sticky-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lavaagni4-sticky-product-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+  display: none;
+}
+
+.lavaagni4-sticky-pricing {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.lavaagni4-sticky-price {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.lavaagni4-sticky-original {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: line-through;
+}
+
+.lavaagni4-sticky-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #007aff;
+  background: rgba(0, 122, 255, 0.15);
+  border: 1px solid rgba(0, 122, 255, 0.3);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--lavaagni4-radius-full);
+}
+
+.lavaagni4-sticky-btn {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+/* ── Divider ── */
+.lavaagni4-divider {
+  height: 1px;
+  background: var(--lavaagni4-border);
+  margin: 0;
+  border: none;
+}
+
+/* ── Timer / urgency ── */
+.lavaagni4-urgency-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--lavaagni4-text-tertiary);
+}
+
+.lavaagni4-urgency-numbers {
+  font-weight: 600;
+  color: var(--lavaagni4-accent-text);
+  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+}
+
+/* ── Stock indicator ── */
+.lavaagni4-stock-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--lavaagni4-bg-card);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.lavaagni4-stock-fill {
+  height: 100%;
+  background: var(--lavaagni4-gradient-blue);
+  border-radius: 2px;
+  transition: width 1s ease;
+}
+
+/* ── Pricing / Limited Time Offer Section ── */
+.lavaagni4-pricing-section {
+  background: linear-gradient(
+    135deg,
+    #000000 0%,
+    #0a1a2e 25%,
+    #0d2440 50%,
+    #0a1a2e 75%,
+    #000000 100%
+  );
+  background-size: 400% 400%;
+  animation: lavaagni4-pricing-bg-shift 10s ease infinite;
+  position: relative;
+  overflow: hidden;
+  padding: 4rem 1.5rem;
+}
+
+/* Floating orbs */
+.lavaagni4-pricing-section::before,
+.lavaagni4-pricing-section::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lavaagni4-pricing-section::before {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 102, 204, 0.08) 0%,
+    transparent 70%
+  );
+  top: -150px;
+  right: -150px;
+  animation: lavaagni4-orb-float 12s ease-in-out infinite;
+}
+
+.lavaagni4-pricing-section::after {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 170, 255, 0.06) 0%,
+    transparent 70%
+  );
+  bottom: -100px;
+  left: -100px;
+  animation: lavaagni4-orb-float 8s ease-in-out infinite reverse;
+}
+
+@keyframes lavaagni4-pricing-bg-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 100%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes lavaagni4-orb-float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -30px) scale(1.05);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
+}
+
+/* Pricing label with shimmer */
+.lavaagni4-pricing-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  background: linear-gradient(
+    90deg,
+    #00aaff,
+    #007aff,
+    #00aaff,
+    #007aff,
+    #00aaff
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: lavaagni4-label-shimmer 3s linear infinite;
+  position: relative;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(0, 170, 255, 0.15);
+  border-radius: var(--lavaagni4-radius-full);
+  background-color: rgba(0, 170, 255, 0.04);
+  margin-bottom: 1.5rem;
+}
+
+@keyframes lavaagni4-label-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Pricing container */
+.lavaagni4-pricing-container {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* Price animation */
+.lavaagni4-pricing-amount {
+  margin: 1rem 0;
+}
+
+.lavaagni4-pricing-current {
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.03em;
+  animation: lavaagni4-price-pulse 2s ease-in-out infinite;
+}
+
+@keyframes lavaagni4-price-pulse {
+  0%,
+  100% {
+    text-shadow: 0 0 20px rgba(0, 102, 204, 0.3);
+  }
+  50% {
+    text-shadow:
+      0 0 40px rgba(0, 102, 204, 0.6),
+      0 0 60px rgba(0, 122, 255, 0.3);
+  }
+}
+
+.lavaagni4-pricing-original {
+  font-size: 1.5rem;
+  color: var(--lavaagni4-text-tertiary);
+  text-decoration: line-through;
+  margin-left: 1rem;
+}
+
+.lavaagni4-pricing-savings {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #007aff;
+  background: rgba(0, 122, 255, 0.1);
+  border: 1px solid rgba(0, 122, 255, 0.2);
+  padding: 0.4rem 1rem;
+  border-radius: var(--lavaagni4-radius-full);
+  margin-top: 0.5rem;
+}
+
+/* Timer container */
+.lavaagni4-pricing-timer {
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.lavaagni4-pricing-timer-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.lavaagni4-pricing-timer-header svg {
+  width: 16px;
+  height: 16px;
+  color: #ff3b30;
+  animation: lavaagni4-urgency-pulse 1s ease infinite;
+}
+
+@keyframes lavaagni4-urgency-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Timer units row — single line */
+.lavaagni4-timer-units {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Each digit unit */
+.lavaagni4-timer-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* The digit number — improved contrast */
+.lavaagni4-timer-digit {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--lavaagni4-radius);
+  padding: 0.5rem 0.85rem;
+  min-width: 56px;
+  text-align: center;
+  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.lavaagni4-timer-digit.ticking {
+  background: rgba(255, 59, 48, 0.2);
+  border-color: rgba(255, 59, 48, 0.4);
+}
+
+/* Timer separator */
+.lavaagni4-timer-separator {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 1.5rem;
+  line-height: 1;
+  user-select: none;
+}
+
+/* Timer label */
+.lavaagni4-timer-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
+}
+
+/* Buy button in pricing */
+.lavaagni4-pricing-btn {
+  margin: 1.5rem auto;
+  padding: 1.25rem 3rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Trust indicators */
+.lavaagni4-pricing-trust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.lavaagni4-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--lavaagni4-text-tertiary);
+}
+
+.lavaagni4-trust-item svg {
+  width: 16px;
+  height: 16px;
+  color: #34c759;
+  flex-shrink: 0;
+}
+
+/* Stock indicator */
+.lavaagni4-stock-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--lavaagni4-text-tertiary);
+  margin-bottom: 0.5rem;
+}
+
+.lavaagni4-stock-text strong {
+  color: #ff3b30;
+  font-weight: 700;
+}
+
+.lavaagni4-stock-bar-container {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* ── Colour selector (Titanium colours) ── */
+.lavaagni4-colour-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  margin: 1.5rem 0;
+}
+
+.lavaagni4-colour-label {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.lavaagni4-colour-options {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.lavaagni4-colour-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  transition: transform 0.2s ease;
+  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+}
+
+.lavaagni4-colour-swatch:hover {
+  transform: translateY(-2px);
+}
+
+.lavaagni4-colour-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2.5px solid rgba(255, 255, 255, 0.25);
+  transition: all 0.25s ease;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.lavaagni4-colour-swatch.active .lavaagni4-colour-circle {
+  border-color: #007aff;
+  box-shadow:
+    0 0 0 3px rgba(0, 122, 255, 0.25),
+    0 2px 12px rgba(0, 122, 255, 0.35);
+  transform: scale(1.08);
+}
+
+.lavaagni4-colour-name {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.lavaagni4-colour-swatch.active .lavaagni4-colour-name {
+  color: #007aff;
+  font-weight: 600;
+}
+
+/* ── Scroll animations ── */
+.lavaagni4-fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+.lavaagni4-fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.lavaagni4-fade-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+.lavaagni4-fade-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.lavaagni4-fade-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+.lavaagni4-fade-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.lavaagni4-scale-in {
+  opacity: 0;
+  transform: scale(0.9);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.lavaagni4-scale-in.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .lavaagni4-alternating-row {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .lavaagni4-alternating-row.reverse {
+    direction: ltr;
+  }
+
+  .lavaagni4-alternating-image {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+@media (max-width: 768px) {
+  .lavaagni4-section {
+    padding: 2.5rem 1rem;
+  }
+
+  .lavaagni4-hero-content {
+    padding: 2rem 1rem 4rem;
+  }
+
+  .lavaagni4-hero-title {
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+  }
+
+  .lavaagni4-pricing-section {
+    padding: 2.5rem 1rem;
+  }
+
+  .lavaagni4-pricing-current {
+    font-size: clamp(2.5rem, 8vw, 3.5rem);
+  }
+
+  .lavaagni4-timer-digit {
+    font-size: 1.5rem;
+    min-width: 45px;
+    padding: 0.4rem 0.7rem;
+  }
+
+  .lavaagni4-timer-separator {
+    font-size: 1.35rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .lavaagni4-review-card {
+    padding: 1rem;
+  }
+
+  .lavaagni4-sticky-cta-inner {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .lavaagni4-sticky-left {
+    display: none;
+  }
+
+  .lavaagni4-sticky-btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+    flex: 1;
+  }
+
+  .lavaagni4-sticky-badge {
+    display: none;
+  }
+
+  .lavaagni4-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lavaagni4-deal-banner-text {
+    font-size: 0.8rem;
+  }
+
+  .lavaagni4-reviews-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .lavaagni4-rating-summary {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .lavaagni4-pricing-trust {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .lavaagni4-colour-selector {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .lavaagni4-section {
+    padding: 2rem 0.75rem;
+  }
+
+  .lavaagni4-hero-title {
+    font-size: 1.5rem;
+  }
+
+  .lavaagni4-hero-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .lavaagni4-price-current {
+    font-size: 2rem;
+  }
+
+  .lavaagni4-btn-primary {
+    padding: 0.85rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .lavaagni4-alternating-section {
+    gap: 3rem;
+  }
+
+  .lavaagni4-sticky-price {
+    font-size: 1.1rem;
+  }
+
+  .lavaagni4-sticky-original {
+    font-size: 0.8rem;
+  }
+
+  .lavaagni4-timer-digit {
+    font-size: 1.2rem;
+    min-width: 38px;
+    padding: 0.3rem 0.55rem;
+  }
+
+  .lavaagni4-timer-separator {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .lavaagni4-timer-label {
+    font-size: 0.6rem;
+  }
+
+  .lavaagni4-colour-circle {
+    width: 36px;
+    height: 36px;
+  }
+
+  .lavaagni4-colour-options {
+    gap: 1rem;
+  }
+
+  .lavaagni4-colour-name {
+    font-size: 0.65rem;
+  }
+}

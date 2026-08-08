@@ -6,6 +6,7 @@ export type BadgeVariant =
   | "ded_licensed"
   | "made_in_uae"
   | "wasleen_choice"
+  | "super_choice"
   | "super_deal"
   | "b2g1"
   | "discount"
@@ -33,6 +34,8 @@ const variantStyles: Record<string, string> = {
   made_in_uae: "bg-[#059669] text-white",
   wasleen_choice: "bg-[#000] text-[#C9A962] border border-[#C9A962]",
   b2g1: "bg-gradient-to-r from-amber-500 to-orange-500 text-white",
+  super_choice:
+    "bg-gradient-to-r from-amber-500 to-yellow-400 text-[#1A1614] animate-pulse",
   super_deal:
     "bg-gradient-to-r from-red-600 to-red-500 text-white animate-pulse",
   discount: "bg-[#EF4444] text-white",
@@ -56,6 +59,7 @@ export const BADGE_ICONS: Record<string, string> = {
   ded_licensed: "\u{1F3DB}\uFE0F",
   made_in_uae: "\u{1F1E6}\u{1F1EA}",
   wasleen_choice: "\u2B50",
+  super_choice: "\u{1F3C6}",
   super_deal: "\u{1F525}",
   b2g1: "\u{1F381}",
   installation_included: "\u{1F527}",
@@ -67,6 +71,7 @@ const DEFAULT_ICONS: Record<string, React.ReactNode> = {
   ded_licensed: <span className="mr-1">🏛️</span>,
   made_in_uae: <span className="mr-1">🇦🇪</span>,
   wasleen_choice: <span className="mr-1">⭐</span>,
+  super_choice: <span className="mr-1">🏆</span>,
   super_deal: <span className="mr-1">🔥</span>,
   b2g1: <span className="mr-1">🎁</span>,
   installation_included: <span className="mr-1">🔧</span>,

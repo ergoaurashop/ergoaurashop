@@ -10,6 +10,7 @@ import ProductGrid from "@/components/products/ProductGrid";
 import HeroProductShowcase from "@/components/products/HeroProductShowcase";
 import IPhoneBanner from "@/components/products/iphone-15-pro-max/IPhoneBanner";
 import S23Banner from "@/components/products/s23/S23Banner";
+import BestChoiceDealsCarousel from "@/components/products/BestChoiceDealsCarousel";
 import Button from "@/components/ui/Button";
 import { CATEGORIES } from "@/lib/constants";
 import { LOCAL_PRODUCTS } from "@/lib/products-data";
@@ -78,6 +79,16 @@ export default function HomePage() {
       <div className="section-container py-6">
         <S23Banner />
       </div>
+
+      {/* ============================== */}
+      {/* Best Choice Deals this week   */}
+      {/* (category prop is future-proof) */}
+      {/* ============================== */}
+      <BestChoiceDealsCarousel
+        category="phones"
+        heading="Best Choice Deals this week"
+        subheading="Hand-picked phones at unbeatable prices — limited stock, big savings."
+      />
 
       {/* ============================== */}
       {/* Hero Section */}

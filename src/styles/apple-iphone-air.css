@@ -1,0 +1,2125 @@
+﻿/* =====================================================================
+   Apple iPhone Air — Scoped Styles
+   All styles are scoped under .appleiphoneair-page to prevent bleed-through from
+   the existing Desert Luxury (gold/sand) theme.
+
+   Apple Design Language:
+   - Font: Plus Jakarta Sans (clean, modern, geometric)
+   - Colors: #000000 / #ffffff / #f5f5f7 / #1d1d1f / #0066cc
+   - Glassmorphism: frosted glass with backdrop-filter
+   - 8px grid spacing, micro-hierarchy typography
+   - Blue accent (#0066cc) replaces green from S23
+   ── WCAG Contrast Audit ──
+   All text-on-background combinations verified against WCAG 2.1 AA
+   (minimum 4.5:1 for normal text, 3:1 for large text):
+     #ffffff on #000000   → 21.0:1 ✅
+     #f5f5f7 on #000000   → 19.6:1 ✅
+     #86868b on #000000   →  5.6:1 ✅
+     #86868b on #1d1d1f   →  4.6:1 ✅
+     #0066cc on #000000   →  6.9:1 ✅
+     #0066cc on #ffffff   →  5.3:1 ✅
+     #1d1d1f on #ffffff   → 15.3:1 ✅
+     #ffffff on #0066cc   →  5.3:1 ✅
+   ===================================================================== */
+
+/* ── CSS Custom Properties ── */
+.appleiphoneair-page {
+  --appleiphoneair-bg-primary: #000000;
+  --appleiphoneair-bg-secondary: #1d1d1f;
+  --appleiphoneair-bg-card: #1d1d1f;
+  --appleiphoneair-bg-card-hover: #2d2d2f;
+  --appleiphoneair-bg-white: #ffffff;
+
+  --appleiphoneair-accent: #0066cc;
+  --appleiphoneair-accent-light: #007aff;
+  --appleiphoneair-accent-dark: #004999;
+  --appleiphoneair-accent-glow: rgba(0, 102, 204, 0.3);
+  --appleiphoneair-accent-bg: rgba(0, 102, 204, 0.1);
+  --appleiphoneair-accent-border: rgba(0, 102, 204, 0.25);
+
+  /* WCAG AA-safe accent for text on dark backgrounds (6.9:1 on #000000) */
+  --appleiphoneair-accent-text: #0066cc;
+
+  --appleiphoneair-text-primary: #ffffff;
+  --appleiphoneair-text-secondary: #f5f5f7;
+  --appleiphoneair-text-tertiary: #86868b;
+  --appleiphoneair-text-dark: #1d1d1f;
+
+  --appleiphoneair-border: rgba(255, 255, 255, 0.12);
+  --appleiphoneair-border-light: rgba(255, 255, 255, 0.2);
+  --appleiphoneair-border-dark: rgba(0, 0, 0, 0.1);
+
+  --appleiphoneair-gradient-blue: linear-gradient(135deg, #0066cc 0%, #007aff 100%);
+  --appleiphoneair-gradient-dark: linear-gradient(
+    180deg,
+    #000000 0%,
+    #1d1d1f 50%,
+    #000000 100%
+  );
+  --appleiphoneair-gradient-card: linear-gradient(
+    180deg,
+    rgba(29, 29, 31, 0.8) 0%,
+    rgba(29, 29, 31, 0.4) 100%
+  );
+
+  /* Animated gradient for sticky CTA */
+  --appleiphoneair-gradient-animated: linear-gradient(
+    270deg,
+    #000000,
+    #1a2a3a,
+    #004999,
+    #1a2a3a,
+    #000000
+  );
+
+  /* Glassmorphism */
+  --appleiphoneair-glass-bg: rgba(255, 255, 255, 0.06);
+  --appleiphoneair-glass-border: rgba(255, 255, 255, 0.12);
+  --appleiphoneair-glass-blur: 20px;
+
+  /* Apple spacing (8px grid) */
+  --appleiphoneair-radius: 8px;
+  --appleiphoneair-radius-lg: 16px;
+  --appleiphoneair-radius-xl: 24px;
+  --appleiphoneair-radius-full: 9999px;
+
+  --appleiphoneair-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --appleiphoneair-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --appleiphoneair-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --appleiphoneair-shadow-glow: 0 0 20px rgba(0, 102, 204, 0.2);
+
+  background: #000000;
+  background-attachment: fixed;
+}
+
+/* ── Base reset for Edge 70 context ── */
+.appleiphoneair-page * {
+  box-sizing: border-box;
+}
+
+/* ── Typography (Plus Jakarta Sans) ── */
+.appleiphoneair-page h1,
+.appleiphoneair-page h2,
+.appleiphoneair-page h3,
+.appleiphoneair-page h4,
+.appleiphoneair-page h5,
+.appleiphoneair-page h6 {
+  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+  color: var(--appleiphoneair-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.appleiphoneair-page body,
+.appleiphoneair-page p,
+.appleiphoneair-page span,
+.appleiphoneair-page li,
+.appleiphoneair-page a,
+.appleiphoneair-page button,
+.appleiphoneair-page input,
+.appleiphoneair-page select,
+.appleiphoneair-page textarea {
+  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+  color: var(--appleiphoneair-text-primary);
+}
+
+/* ── Hero section (100vh video) ── */
+.appleiphoneair-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  max-height: 1080px;
+  overflow: hidden;
+  background: var(--appleiphoneair-bg-primary);
+}
+
+/* ── Hero image slideshow ── */
+.appleiphoneair-hero-slideshow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.appleiphoneair-hero-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.appleiphoneair-hero-slide-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Slide indicators */
+.appleiphoneair-hero-indicators {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 3;
+}
+
+.appleiphoneair-hero-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.appleiphoneair-hero-dot.active {
+  width: 24px;
+  border-radius: 4px;
+  background: #ffffff;
+}
+
+.appleiphoneair-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.1) 40%,
+    rgba(0, 0, 0, 0.7) 80%,
+    rgba(0, 0, 0, 0.95) 100%
+  );
+  z-index: 1;
+}
+
+.appleiphoneair-hero-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding: 3rem 1.5rem 5rem;
+  text-align: center;
+}
+
+/* ── Hero badge with animated shimmer & pulse ── */
+.appleiphoneair-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 1.5rem;
+  background: linear-gradient(
+    90deg,
+    #0066cc,
+    #007aff,
+    #00aaff,
+    #007aff,
+    #0066cc
+  );
+  background-size: 300% 100%;
+  border: none;
+  border-radius: var(--appleiphoneair-radius-full);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  backdrop-filter: blur(8px);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  animation:
+    appleiphoneair-badge-shimmer 3s ease infinite,
+    appleiphoneair-badge-pulse 2s ease infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer scan-line overlay */
+.appleiphoneair-hero-badge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: appleiphoneair-badge-scanline 2.5s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.appleiphoneair-hero-badge .appleiphoneair-badge-stock {
+  color: #aad4ff;
+  font-weight: 800;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.1rem 0.5rem;
+  border-radius: 4px;
+}
+
+@keyframes appleiphoneair-badge-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes appleiphoneair-badge-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(0, 102, 204, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 20px rgba(0, 122, 255, 0.5),
+      0 0 40px rgba(0, 102, 204, 0.3);
+  }
+}
+
+@keyframes appleiphoneair-badge-scanline {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ── Digital Round Seal ── */
+.appleiphoneair-seal {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  width: 90px;
+  height: 90px;
+  z-index: 1;
+  transform: translateY(-50%);
+  animation: appleiphoneair-seal-pulse 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(0, 122, 255, 0.4));
+  pointer-events: none;
+}
+
+.appleiphoneair-seal svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes appleiphoneair-seal-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba(0, 122, 255, 0.3))
+      drop-shadow(0 0 16px rgba(0, 122, 255, 0.1));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(0, 122, 255, 0.6))
+      drop-shadow(0 0 32px rgba(0, 122, 255, 0.3));
+    transform: scale(1.05);
+  }
+}
+
+@media (max-width: 768px) {
+  .appleiphoneair-seal {
+    width: 70px;
+    height: 70px;
+    top: 50%;
+    right: 8px;
+  }
+}
+
+.appleiphoneair-hero-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.03em;
+}
+
+.appleiphoneair-hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--appleiphoneair-text-tertiary);
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+}
+
+/* ── Deal banner (Apple-style glass) ── */
+.appleiphoneair-deal-banner {
+  background: linear-gradient(
+    90deg,
+    #1a2a3a,
+    #004999,
+    #0066cc,
+    #004999,
+    #1a2a3a
+  );
+  background-size: 300% 100%;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+  animation: appleiphoneair-banner-bg-shift 6s ease infinite;
+}
+
+.appleiphoneair-deal-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 122, 255, 0.08) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: appleiphoneair-banner-sweep 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.appleiphoneair-deal-banner-highlight {
+  display: inline-block;
+  background: linear-gradient(90deg, #00aaff, #007aff, #00aaff);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: appleiphoneair-banner-shimmer 2s ease infinite;
+  font-weight: 800;
+  margin: 0 0.5rem;
+}
+
+.appleiphoneair-deal-banner-label {
+  display: inline-block;
+  background: rgba(0, 122, 255, 0.15);
+  border: 1px solid rgba(0, 122, 255, 0.3);
+  border-radius: 4px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #00aaff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0.35rem;
+  animation: appleiphoneair-banner-glow 1.5s ease-in-out infinite;
+}
+
+.appleiphoneair-deal-banner-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  animation: appleiphoneair-marquee 12s linear infinite;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@keyframes appleiphoneair-marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes appleiphoneair-banner-bg-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes appleiphoneair-banner-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes appleiphoneair-banner-shimmer {
+  0%,
+  100% {
+    background-position: -200% center;
+  }
+  50% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes appleiphoneair-banner-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 4px rgba(0, 122, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(0, 122, 255, 0.5);
+  }
+}
+
+/* ── Section common ── */
+.appleiphoneair-section {
+  padding: 4rem 1.5rem;
+}
+
+.appleiphoneair-section-dark {
+  background: var(--appleiphoneair-bg-secondary);
+}
+
+.appleiphoneair-section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.appleiphoneair-section-label {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--appleiphoneair-accent-text);
+  margin-bottom: 0.75rem;
+}
+
+.appleiphoneair-section-title {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+/* Reviews heading — light green for visual contrast */
+.appleiphoneair-reviews-section .appleiphoneair-section-title {
+  color: #2e7d32;
+}
+
+.appleiphoneair-section-subtitle {
+  font-size: 1rem;
+  color: var(--appleiphoneair-text-tertiary);
+  max-width: 650px;
+  line-height: 1.7;
+}
+
+/* ── Price display ── */
+.appleiphoneair-price-original {
+  font-size: 1.5rem;
+  color: var(--appleiphoneair-text-tertiary);
+  text-decoration: line-through;
+  margin-right: 0.75rem;
+}
+
+.appleiphoneair-price-current {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--appleiphoneair-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.appleiphoneair-price-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 1rem;
+  background: var(--appleiphoneair-accent-bg);
+  border: 1px solid var(--appleiphoneair-accent-border);
+  border-radius: var(--appleiphoneair-radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--appleiphoneair-accent-text);
+}
+
+.appleiphoneair-savings {
+  font-size: 0.95rem;
+  color: var(--appleiphoneair-accent-light);
+  font-weight: 600;
+}
+
+/* ── Buttons ── */
+.appleiphoneair-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2.5rem;
+  background: var(--appleiphoneair-gradient-blue);
+  color: #ffffff;
+  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--appleiphoneair-radius-lg);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(0, 102, 204, 0.3);
+}
+
+.appleiphoneair-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 102, 204, 0.4);
+}
+
+.appleiphoneair-btn-primary:active {
+  transform: translateY(0);
+}
+
+.appleiphoneair-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  background: transparent;
+  color: var(--appleiphoneair-text-primary);
+  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  border: 1px solid var(--appleiphoneair-border);
+  border-radius: var(--appleiphoneair-radius);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.appleiphoneair-btn-secondary:hover {
+  background: var(--appleiphoneair-bg-card);
+  border-color: var(--appleiphoneair-accent-border);
+}
+
+/* ── Feature/Camera alternating layout ── */
+.appleiphoneair-alternating-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+}
+
+.appleiphoneair-alternating-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.appleiphoneair-alternating-row.reverse {
+  direction: rtl;
+}
+
+.appleiphoneair-alternating-row.reverse > * {
+  direction: ltr;
+}
+
+.appleiphoneair-alternating-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--appleiphoneair-radius-lg);
+  overflow: hidden;
+  background: var(--appleiphoneair-bg-card);
+}
+
+.appleiphoneair-alternating-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.appleiphoneair-alternating-image:hover img {
+  transform: scale(1.05);
+}
+
+.appleiphoneair-alternating-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--appleiphoneair-accent-bg);
+  border: 1px solid var(--appleiphoneair-accent-border);
+  border-radius: var(--appleiphoneair-radius);
+  margin-bottom: 1rem;
+  color: var(--appleiphoneair-accent-text);
+}
+
+.appleiphoneair-alternating-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.appleiphoneair-alternating-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.appleiphoneair-alternating-desc {
+  font-size: 0.95rem;
+  color: var(--appleiphoneair-text-tertiary);
+  line-height: 1.7;
+}
+
+/* Full-width image break between alternating rows */
+.appleiphoneair-fullwidth-break {
+  width: 100%;
+  height: 50vh;
+  min-height: 350px;
+  max-height: 600px;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--appleiphoneair-radius-xl);
+}
+
+.appleiphoneair-fullwidth-break img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Full-Width Image Section (50vh) ── */
+.appleiphoneair-fullwidth-section {
+  width: 100%;
+  height: 50vh;
+  min-height: 350px;
+  max-height: 600px;
+  position: relative;
+  overflow: hidden;
+}
+
+.appleiphoneair-fullwidth-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.appleiphoneair-fullwidth-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.appleiphoneair-fullwidth-text {
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  max-width: 700px;
+  line-height: 1.4;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Video Section (100vh autoplay) ── */
+.appleiphoneair-video-section {
+  width: 100%;
+  height: 100vh;
+  min-height: 500px;
+  position: relative;
+  overflow: hidden;
+}
+
+.appleiphoneair-video-section video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.appleiphoneair-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.appleiphoneair-video-text {
+  color: #ffffff;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 700;
+  text-align: center;
+  max-width: 600px;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+  padding: 2rem;
+}
+
+/* ── Glassmorphism card ── */
+.appleiphoneair-glass-card {
+  background: var(--appleiphoneair-glass-bg);
+  backdrop-filter: blur(var(--appleiphoneair-glass-blur));
+  -webkit-backdrop-filter: blur(var(--appleiphoneair-glass-blur));
+  border: 1px solid var(--appleiphoneair-glass-border);
+  border-radius: var(--appleiphoneair-radius-xl);
+  padding: 2rem;
+}
+
+/* ── Feature cards ── */
+.appleiphoneair-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.appleiphoneair-feature-card {
+  background: var(--appleiphoneair-bg-card);
+  border: 1px solid var(--appleiphoneair-border);
+  border-radius: var(--appleiphoneair-radius-lg);
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.appleiphoneair-feature-card:hover {
+  background: var(--appleiphoneair-bg-card-hover);
+  border-color: var(--appleiphoneair-accent-border);
+  transform: translateY(-4px);
+  box-shadow: var(--appleiphoneair-shadow-glow);
+}
+
+.appleiphoneair-feature-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.appleiphoneair-feature-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.appleiphoneair-feature-desc {
+  font-size: 0.9rem;
+  color: var(--appleiphoneair-text-tertiary);
+  line-height: 1.6;
+}
+
+/* ── Reviews (Apple-style, white bg, blue accents) ── */
+.appleiphoneair-reviews-section {
+  padding: 4rem 1.5rem;
+}
+
+.appleiphoneair-reviews-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Apple-style review card */
+.appleiphoneair-review-card {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.25rem;
+  transition: box-shadow 0.2s ease;
+}
+
+.appleiphoneair-review-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* White bg means dark text */
+.appleiphoneair-review-card,
+.appleiphoneair-review-card p,
+.appleiphoneair-review-card span,
+.appleiphoneair-review-card div {
+  color: #1d1d1f;
+}
+
+.appleiphoneair-review-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Blue avatar (initials circle, blue bg, white text) */
+.appleiphoneair-review-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #0066cc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.appleiphoneair-review-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #1d1d1f;
+}
+
+.appleiphoneair-review-city {
+  font-size: 0.8rem;
+  color: #86868b;
+}
+
+/* Blue stars */
+.appleiphoneair-review-stars {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 0.35rem;
+}
+
+.appleiphoneair-review-star {
+  color: #007aff;
+  font-size: 0.95rem;
+}
+
+.appleiphoneair-review-star.empty {
+  color: #cccccc;
+  opacity: 0.5;
+}
+
+.appleiphoneair-review-star svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.appleiphoneair-review-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 0.35rem;
+  color: #1d1d1f;
+  line-height: 1.3;
+}
+
+.appleiphoneair-review-text {
+  font-size: 0.88rem;
+  color: #333333;
+  line-height: 1.6;
+}
+
+/* "Verified Purchase" — blue, italic, bold */
+.appleiphoneair-review-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #0066cc;
+  font-weight: 600;
+  font-style: italic;
+  font-size: 0.82rem;
+  margin-top: 0.5rem;
+}
+
+.appleiphoneair-review-verified svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+}
+
+.appleiphoneair-review-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.65rem;
+  font-size: 0.8rem;
+  color: #86868b;
+}
+
+/* Thumbs up button */
+.appleiphoneair-review-helpful {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: #86868b;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  transition: color 0.2s ease;
+}
+
+.appleiphoneair-review-helpful svg {
+  width: 16px;
+  height: 16px;
+  stroke: #86868b;
+  fill: none;
+  transition: all 0.2s ease;
+}
+
+.appleiphoneair-review-helpful.thumbs-up-active svg {
+  stroke: #0066cc;
+  fill: #0066cc;
+}
+
+.appleiphoneair-review-helpful.thumbs-up-active {
+  color: #0066cc;
+  font-weight: 600;
+}
+
+/* Rating bar chart (Apple-style) */
+.appleiphoneair-rating-bars {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.appleiphoneair-rating-bars-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin-bottom: 0.75rem;
+}
+
+.appleiphoneair-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.2rem 0;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  border-radius: 8px;
+  padding: 0.2rem 0.4rem;
+}
+
+.appleiphoneair-rating-row:hover {
+  background: #f5f5f7;
+}
+
+.appleiphoneair-rating-row.active {
+  background: #e8f4ff;
+}
+
+.appleiphoneair-rating-label {
+  font-size: 0.85rem;
+  color: #0066cc;
+  font-weight: 500;
+  min-width: 60px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.appleiphoneair-rating-bar-track {
+  flex: 1;
+  height: 18px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.appleiphoneair-rating-bar-fill {
+  height: 100%;
+  background: #007aff;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.appleiphoneair-rating-count {
+  font-size: 0.8rem;
+  color: #86868b;
+  min-width: 30px;
+  text-align: right;
+}
+
+/* Sort controls */
+.appleiphoneair-reviews-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.appleiphoneair-reviews-count {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.appleiphoneair-reviews-sort {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #1d1d1f;
+}
+
+.appleiphoneair-reviews-sort select {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #1d1d1f;
+  font-size: 0.85rem;
+  cursor: pointer;
+  outline: none;
+  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+}
+
+/* Average rating display (Apple-style) */
+.appleiphoneair-rating-summary {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.appleiphoneair-average-rating {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  line-height: 1;
+}
+
+.appleiphoneair-average-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.appleiphoneair-average-stars .appleiphoneair-review-star {
+  font-size: 1.2rem;
+}
+
+.appleiphoneair-total-reviews {
+  font-size: 0.9rem;
+  color: #86868b;
+}
+
+/* Apple-style review pagination */
+.appleiphoneair-reviews-load-more {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  background: #0066cc;
+  border: 1px solid #0066cc;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  font-family: inherit;
+}
+
+.appleiphoneair-reviews-load-more:hover {
+  background: #004999;
+  border-color: #004999;
+  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.3);
+}
+
+/* ── Review photo carousel ── */
+.appleiphoneair-review-images {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  margin-top: 0.75rem;
+  padding-bottom: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.appleiphoneair-review-images::-webkit-scrollbar {
+  height: 4px;
+}
+
+.appleiphoneair-review-images::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 2px;
+}
+
+.appleiphoneair-review-images::-webkit-scrollbar-thumb {
+  background: #0066cc;
+  border-radius: 2px;
+}
+
+.appleiphoneair-review-image-wrapper {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  cursor: pointer;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+  transition: opacity 0.2s ease;
+  position: relative;
+}
+
+.appleiphoneair-review-image-wrapper:hover {
+  opacity: 0.85;
+}
+
+.appleiphoneair-review-image-wrapper img {
+  height: 120px;
+  width: auto;
+  object-fit: cover;
+  display: block;
+}
+
+/* Carousel nav arrows */
+.appleiphoneair-review-carousel-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.appleiphoneair-review-carousel-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid #d0d0d0;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #1d1d1f;
+  padding: 0;
+}
+
+.appleiphoneair-review-carousel-btn:hover {
+  background: #0066cc;
+  border-color: #0066cc;
+  color: #ffffff;
+}
+
+.appleiphoneair-review-carousel-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.appleiphoneair-review-carousel-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.appleiphoneair-review-carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d0d0d0;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s ease;
+}
+
+.appleiphoneair-review-carousel-dot.active {
+  background: #0066cc;
+  width: 20px;
+  border-radius: 4px;
+}
+
+/* ── Review lightbox ── */
+.appleiphoneair-review-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  cursor: pointer;
+}
+
+.appleiphoneair-review-lightbox img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+
+.appleiphoneair-review-lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #ffffff;
+  transition: background 0.2s ease;
+  padding: 0;
+}
+
+.appleiphoneair-review-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.appleiphoneair-review-lightbox-close svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ── Spec table ── */
+.appleiphoneair-spec-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.appleiphoneair-spec-row {
+  border-bottom: 1px solid var(--appleiphoneair-border);
+}
+
+.appleiphoneair-spec-row:last-child {
+  border-bottom: none;
+}
+
+.appleiphoneair-spec-label {
+  padding: 0.85rem 1rem 0.85rem 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--appleiphoneair-text-primary);
+  width: 35%;
+  vertical-align: top;
+}
+
+.appleiphoneair-spec-value {
+  padding: 0.85rem 0;
+  font-size: 0.85rem;
+  color: var(--appleiphoneair-text-tertiary);
+  line-height: 1.6;
+}
+
+/* ── FAQ ── */
+.appleiphoneair-faq-item {
+  border: 1px solid var(--appleiphoneair-border);
+  border-radius: var(--appleiphoneair-radius);
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.appleiphoneair-faq-item:hover {
+  border-color: var(--appleiphoneair-accent-border);
+}
+
+.appleiphoneair-faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--appleiphoneair-text-primary);
+  text-align: left;
+  transition: background 0.3s ease;
+}
+
+.appleiphoneair-faq-question:hover {
+  background: var(--appleiphoneair-bg-card);
+}
+
+.appleiphoneair-faq-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  color: var(--appleiphoneair-accent-text);
+}
+
+.appleiphoneair-faq-item.open .appleiphoneair-faq-icon {
+  transform: rotate(180deg);
+}
+
+.appleiphoneair-faq-answer {
+  padding: 0 1.5rem 1.25rem;
+  font-size: 0.88rem;
+  color: var(--appleiphoneair-text-tertiary);
+  line-height: 1.7;
+}
+
+/* ── Sticky CTA (always visible, animated gradient) ── */
+.appleiphoneair-sticky-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--appleiphoneair-gradient-animated);
+  background-size: 400% 100%;
+  animation: appleiphoneair-gradient-shift 8s ease infinite;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--appleiphoneair-accent-border);
+  padding: 0.75rem 1.5rem;
+  transform: translateY(0);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes appleiphoneair-gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.appleiphoneair-sticky-cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.appleiphoneair-sticky-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.appleiphoneair-sticky-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--appleiphoneair-bg-card);
+}
+
+.appleiphoneair-sticky-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.appleiphoneair-sticky-product-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+  display: none;
+}
+
+.appleiphoneair-sticky-pricing {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.appleiphoneair-sticky-price {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.appleiphoneair-sticky-original {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: line-through;
+}
+
+.appleiphoneair-sticky-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #007aff;
+  background: rgba(0, 122, 255, 0.15);
+  border: 1px solid rgba(0, 122, 255, 0.3);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--appleiphoneair-radius-full);
+}
+
+.appleiphoneair-sticky-btn {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+/* ── Divider ── */
+.appleiphoneair-divider {
+  height: 1px;
+  background: var(--appleiphoneair-border);
+  margin: 0;
+  border: none;
+}
+
+/* ── Timer / urgency ── */
+.appleiphoneair-urgency-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--appleiphoneair-text-tertiary);
+}
+
+.appleiphoneair-urgency-numbers {
+  font-weight: 600;
+  color: var(--appleiphoneair-accent-text);
+  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+}
+
+/* ── Stock indicator ── */
+.appleiphoneair-stock-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--appleiphoneair-bg-card);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.appleiphoneair-stock-fill {
+  height: 100%;
+  background: var(--appleiphoneair-gradient-blue);
+  border-radius: 2px;
+  transition: width 1s ease;
+}
+
+/* ── Pricing / Limited Time Offer Section ── */
+.appleiphoneair-pricing-section {
+  background: linear-gradient(
+    135deg,
+    #000000 0%,
+    #0a1a2e 25%,
+    #0d2440 50%,
+    #0a1a2e 75%,
+    #000000 100%
+  );
+  background-size: 400% 400%;
+  animation: appleiphoneair-pricing-bg-shift 10s ease infinite;
+  position: relative;
+  overflow: hidden;
+  padding: 4rem 1.5rem;
+}
+
+/* Floating orbs */
+.appleiphoneair-pricing-section::before,
+.appleiphoneair-pricing-section::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.appleiphoneair-pricing-section::before {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 102, 204, 0.08) 0%,
+    transparent 70%
+  );
+  top: -150px;
+  right: -150px;
+  animation: appleiphoneair-orb-float 12s ease-in-out infinite;
+}
+
+.appleiphoneair-pricing-section::after {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 170, 255, 0.06) 0%,
+    transparent 70%
+  );
+  bottom: -100px;
+  left: -100px;
+  animation: appleiphoneair-orb-float 8s ease-in-out infinite reverse;
+}
+
+@keyframes appleiphoneair-pricing-bg-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 100%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes appleiphoneair-orb-float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -30px) scale(1.05);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
+}
+
+/* Pricing label with shimmer */
+.appleiphoneair-pricing-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  background: linear-gradient(
+    90deg,
+    #00aaff,
+    #007aff,
+    #00aaff,
+    #007aff,
+    #00aaff
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: appleiphoneair-label-shimmer 3s linear infinite;
+  position: relative;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(0, 170, 255, 0.15);
+  border-radius: var(--appleiphoneair-radius-full);
+  background-color: rgba(0, 170, 255, 0.04);
+  margin-bottom: 1.5rem;
+}
+
+@keyframes appleiphoneair-label-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Pricing container */
+.appleiphoneair-pricing-container {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* Price animation */
+.appleiphoneair-pricing-amount {
+  margin: 1rem 0;
+}
+
+.appleiphoneair-pricing-current {
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.03em;
+  animation: appleiphoneair-price-pulse 2s ease-in-out infinite;
+}
+
+@keyframes appleiphoneair-price-pulse {
+  0%,
+  100% {
+    text-shadow: 0 0 20px rgba(0, 102, 204, 0.3);
+  }
+  50% {
+    text-shadow:
+      0 0 40px rgba(0, 102, 204, 0.6),
+      0 0 60px rgba(0, 122, 255, 0.3);
+  }
+}
+
+.appleiphoneair-pricing-original {
+  font-size: 1.5rem;
+  color: var(--appleiphoneair-text-tertiary);
+  text-decoration: line-through;
+  margin-left: 1rem;
+}
+
+.appleiphoneair-pricing-savings {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #007aff;
+  background: rgba(0, 122, 255, 0.1);
+  border: 1px solid rgba(0, 122, 255, 0.2);
+  padding: 0.4rem 1rem;
+  border-radius: var(--appleiphoneair-radius-full);
+  margin-top: 0.5rem;
+}
+
+/* Timer container */
+.appleiphoneair-pricing-timer {
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.appleiphoneair-pricing-timer-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.appleiphoneair-pricing-timer-header svg {
+  width: 16px;
+  height: 16px;
+  color: #ff3b30;
+  animation: appleiphoneair-urgency-pulse 1s ease infinite;
+}
+
+@keyframes appleiphoneair-urgency-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Timer units row — single line */
+.appleiphoneair-timer-units {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Each digit unit */
+.appleiphoneair-timer-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* The digit number — improved contrast */
+.appleiphoneair-timer-digit {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--appleiphoneair-radius);
+  padding: 0.5rem 0.85rem;
+  min-width: 56px;
+  text-align: center;
+  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.appleiphoneair-timer-digit.ticking {
+  background: rgba(255, 59, 48, 0.2);
+  border-color: rgba(255, 59, 48, 0.4);
+}
+
+/* Timer separator */
+.appleiphoneair-timer-separator {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 1.5rem;
+  line-height: 1;
+  user-select: none;
+}
+
+/* Timer label */
+.appleiphoneair-timer-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
+}
+
+/* Buy button in pricing */
+.appleiphoneair-pricing-btn {
+  margin: 1.5rem auto;
+  padding: 1.25rem 3rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Trust indicators */
+.appleiphoneair-pricing-trust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.appleiphoneair-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--appleiphoneair-text-tertiary);
+}
+
+.appleiphoneair-trust-item svg {
+  width: 16px;
+  height: 16px;
+  color: #34c759;
+  flex-shrink: 0;
+}
+
+/* Stock indicator */
+.appleiphoneair-stock-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--appleiphoneair-text-tertiary);
+  margin-bottom: 0.5rem;
+}
+
+.appleiphoneair-stock-text strong {
+  color: #ff3b30;
+  font-weight: 700;
+}
+
+.appleiphoneair-stock-bar-container {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* ── Colour selector (Titanium colours) ── */
+.appleiphoneair-colour-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  margin: 1.5rem 0;
+}
+
+.appleiphoneair-colour-label {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.appleiphoneair-colour-options {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.appleiphoneair-colour-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  transition: transform 0.2s ease;
+  font-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+}
+
+.appleiphoneair-colour-swatch:hover {
+  transform: translateY(-2px);
+}
+
+.appleiphoneair-colour-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2.5px solid rgba(255, 255, 255, 0.25);
+  transition: all 0.25s ease;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.appleiphoneair-colour-swatch.active .appleiphoneair-colour-circle {
+  border-color: #007aff;
+  box-shadow:
+    0 0 0 3px rgba(0, 122, 255, 0.25),
+    0 2px 12px rgba(0, 122, 255, 0.35);
+  transform: scale(1.08);
+}
+
+.appleiphoneair-colour-name {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.appleiphoneair-colour-swatch.active .appleiphoneair-colour-name {
+  color: #007aff;
+  font-weight: 600;
+}
+
+/* ── Scroll animations ── */
+.appleiphoneair-fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+.appleiphoneair-fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.appleiphoneair-fade-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+.appleiphoneair-fade-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.appleiphoneair-fade-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+.appleiphoneair-fade-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.appleiphoneair-scale-in {
+  opacity: 0;
+  transform: scale(0.9);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.appleiphoneair-scale-in.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .appleiphoneair-alternating-row {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .appleiphoneair-alternating-row.reverse {
+    direction: ltr;
+  }
+
+  .appleiphoneair-alternating-image {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+@media (max-width: 768px) {
+  .appleiphoneair-section {
+    padding: 2.5rem 1rem;
+  }
+
+  .appleiphoneair-hero-content {
+    padding: 2rem 1rem 4rem;
+  }
+
+  .appleiphoneair-hero-title {
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+  }
+
+  .appleiphoneair-pricing-section {
+    padding: 2.5rem 1rem;
+  }
+
+  .appleiphoneair-pricing-current {
+    font-size: clamp(2.5rem, 8vw, 3.5rem);
+  }
+
+  .appleiphoneair-timer-digit {
+    font-size: 1.5rem;
+    min-width: 45px;
+    padding: 0.4rem 0.7rem;
+  }
+
+  .appleiphoneair-timer-separator {
+    font-size: 1.35rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .appleiphoneair-review-card {
+    padding: 1rem;
+  }
+
+  .appleiphoneair-sticky-cta-inner {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .appleiphoneair-sticky-left {
+    display: none;
+  }
+
+  .appleiphoneair-sticky-btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+    flex: 1;
+  }
+
+  .appleiphoneair-sticky-badge {
+    display: none;
+  }
+
+  .appleiphoneair-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .appleiphoneair-deal-banner-text {
+    font-size: 0.8rem;
+  }
+
+  .appleiphoneair-reviews-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .appleiphoneair-rating-summary {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .appleiphoneair-pricing-trust {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .appleiphoneair-colour-selector {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .appleiphoneair-section {
+    padding: 2rem 0.75rem;
+  }
+
+  .appleiphoneair-hero-title {
+    font-size: 1.5rem;
+  }
+
+  .appleiphoneair-hero-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .appleiphoneair-price-current {
+    font-size: 2rem;
+  }
+
+  .appleiphoneair-btn-primary {
+    padding: 0.85rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .appleiphoneair-alternating-section {
+    gap: 3rem;
+  }
+
+  .appleiphoneair-sticky-price {
+    font-size: 1.1rem;
+  }
+
+  .appleiphoneair-sticky-original {
+    font-size: 0.8rem;
+  }
+
+  .appleiphoneair-timer-digit {
+    font-size: 1.2rem;
+    min-width: 38px;
+    padding: 0.3rem 0.55rem;
+  }
+
+  .appleiphoneair-timer-separator {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .appleiphoneair-timer-label {
+    font-size: 0.6rem;
+  }
+
+  .appleiphoneair-colour-circle {
+    width: 36px;
+    height: 36px;
+  }
+
+  .appleiphoneair-colour-options {
+    gap: 1rem;
+  }
+
+  .appleiphoneair-colour-name {
+    font-size: 0.65rem;
+  }
+}

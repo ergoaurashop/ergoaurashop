@@ -121,10 +121,17 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
             <Badge variant="wasleen_choice" size="sm">
               ErgoAura&apos;s Choice
             </Badge>
-            {hasDiscount && product.discount_percentage >= 40 && (
-              <Badge variant="super_deal" size="sm">
-                Super Deal
+            {product.isSuperChoice ? (
+              <Badge variant="super_choice" size="sm">
+                Super Choice
               </Badge>
+            ) : (
+              hasDiscount &&
+              product.discount_percentage >= 40 && (
+                <Badge variant="super_deal" size="sm">
+                  Super Deal
+                </Badge>
+              )
             )}
           </div>
 

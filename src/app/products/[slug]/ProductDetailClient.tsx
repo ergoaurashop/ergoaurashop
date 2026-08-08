@@ -29,6 +29,91 @@ const IPhone15ProMaxSection = dynamic(
   { ssr: false },
 );
 
+/* Lazy-load Motorola Edge 70 Fusion section — only loaded when slug matches */
+const Edge70FusionSection = dynamic(
+  () =>
+    import("@/components/products/motorola-edge-70-fusion/Edge70FusionSection"),
+  { ssr: false },
+);
+
+/* Lazy-load Motorola Edge 70 section — only loaded when slug matches */
+const Edge70Section = dynamic(
+  () => import("@/components/products/motorola-edge-70/Edge70Section"),
+  { ssr: false },
+);
+
+/* Lazy-load OnePlus Nord CE 6 5G section — only loaded when slug matches */
+const NordCe6Section = dynamic(
+  () => import("@/components/products/oneplus-nord-ce-6-5g/NordCe6Section"),
+  { ssr: false },
+);
+
+/* Lazy-load realme P4 Power section — only loaded when slug matches */
+const P4PowerSection = dynamic(
+  () => import("@/components/products/realme-p4-power/P4PowerSection"),
+  { ssr: false },
+);
+
+/* Lazy-load iQOO Z11x section — only loaded when slug matches */
+const IqooZ11xSection = dynamic(
+  () => import("@/components/products/iqoo-z11x/IqooZ11xSection"),
+  { ssr: false },
+);
+
+/* Lazy-load Lava Agni 4 section — only loaded when slug matches */
+const LavaAgni4Section = dynamic(
+  () => import("@/components/products/lava-agni-4/LavaAgni4Section"),
+  { ssr: false },
+);
+
+/* Lazy-load OPPO K13 Turbo 5G section — only loaded when slug matches */
+const OppoK13Turbo5gSection = dynamic(
+  () => import("@/components/products/oppo-k13-turbo-5g/OppoK13Turbo5gSection"),
+  { ssr: false },
+);
+
+/* Lazy-load OnePlus Nord 6 section — only loaded when slug matches */
+const Nord6Section = dynamic(
+  () => import("@/components/products/oneplus-nord-6/Nord6Section"),
+  { ssr: false },
+);
+
+/* Lazy-load vivo V70 Elite section — only loaded when slug matches */
+const VivoV70EliteSection = dynamic(
+  () => import("@/components/products/vivo-v70-elite/VivoV70EliteSection"),
+  { ssr: false },
+);
+
+/* Lazy-load Motorola Edge 70 Pro+ 5G section — only loaded when slug matches */
+const Edge70ProPlusSection = dynamic(
+  () => import("@/components/products/motorola-edge-70-pro-plus/Edge70ProPlusSection"),
+  { ssr: false },
+);
+
+/* Lazy-load POCO X8 Pro Max section — only loaded when slug matches */
+const PocoX8ProMaxSection = dynamic(
+  () => import("@/components/products/poco-x8-pro-max/PocoX8ProMaxSection"),
+  { ssr: false },
+);
+
+/* Lazy-load Apple iPhone 17 Pro section — only loaded when slug matches */
+const AppleIphone17ProSection = dynamic(
+  () => import("@/components/products/apple-iphone-17-pro/AppleIphone17ProSection"),
+  { ssr: false },
+);
+
+/* Lazy-load Apple iPhone Air section — only loaded when slug matches */
+const AppleIphoneAirSection = dynamic(
+  () => import("@/components/products/apple-iphone-air/AppleIphoneAirSection"),
+  { ssr: false },
+);
+
+/* Lazy-load iQOO 15R section — only loaded when slug matches */
+const Iqoo15rSection = dynamic(
+  () => import("@/components/products/iqoo-15r/Iqoo15rSection"),
+  { ssr: false },
+);
+
 /* Lazy-load WorldCup 2026 section — only loaded when slug matches */
 const WorldCup2026Section = dynamic(
   () => import("@/components/products/worldcup2026/WorldCup2026Section"),
@@ -299,6 +384,76 @@ export default function ProductDetailClient() {
   /* ── iPhone 15 Pro Max 512GB — fully self-contained page ── */
   if (slug === "iphone-15-pro-max-512gb") {
     return <IPhone15ProMaxSection />;
+  }
+
+  /* ── Motorola Edge 70 Fusion — fully self-contained page ── */
+  if (slug === "motorola-edge-70-fusion") {
+    return <Edge70FusionSection />;
+  }
+
+  /* ── Motorola Edge 70 — fully self-contained page ── */
+  if (slug === "motorola-edge-70") {
+    return <Edge70Section />;
+  }
+
+  /* ── OnePlus Nord CE 6 5G — fully self-contained page ── */
+  if (slug === "oneplus-nord-ce-6-5g") {
+    return <NordCe6Section />;
+  }
+
+  /* ── realme P4 Power — fully self-contained page ── */
+  if (slug === "realme-p4-power") {
+    return <P4PowerSection />;
+  }
+
+  /* ── iQOO Z11x — fully self-contained page ── */
+  if (slug === "iqoo-z11x") {
+    return <IqooZ11xSection />;
+  }
+
+  /* ── Lava Agni 4 — fully self-contained page ── */
+  if (slug === "lava-agni-4") {
+    return <LavaAgni4Section />;
+  }
+
+  /* ── OPPO K13 Turbo 5G — fully self-contained page ── */
+  if (slug === "oppo-k13-turbo-5g") {
+    return <OppoK13Turbo5gSection />;
+  }
+
+  /* ── iQOO 15R — fully self-contained page ── */
+  if (slug === "iqoo-15r") {
+    return <Iqoo15rSection />;
+  }
+
+  /* ── OnePlus Nord 6 — fully self-contained page ── */
+  if (slug === "oneplus-nord-6") {
+    return <Nord6Section />;
+  }
+
+  /* ── vivo V70 Elite — fully self-contained page ── */
+  if (slug === "vivo-v70-elite") {
+    return <VivoV70EliteSection />;
+  }
+
+  /* ── Motorola Edge 70 Pro+ 5G — fully self-contained page ── */
+  if (slug === "motorola-edge-70-pro-plus") {
+    return <Edge70ProPlusSection />;
+  }
+
+  /* ── POCO X8 Pro Max — fully self-contained page ── */
+  if (slug === "poco-x8-pro-max") {
+    return <PocoX8ProMaxSection />;
+  }
+
+  /* ── Apple iPhone 17 Pro — fully self-contained page ── */
+  if (slug === "apple-iphone-17-pro") {
+    return <AppleIphone17ProSection />;
+  }
+
+  /* ── Apple iPhone Air — fully self-contained page ── */
+  if (slug === "apple-iphone-air") {
+    return <AppleIphoneAirSection />;
   }
 
   /* ── S23 Ultra — fully self-contained page (hooks above are called unconditionally) ── */

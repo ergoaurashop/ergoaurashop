@@ -15,6 +15,8 @@ export interface Product {
   features: string[];
   specifications: Record<string, string>;
   is_active: boolean;
+  /** Flags this product to show the "Super Choice" badge instead of "Super Deal" */
+  isSuperChoice?: boolean;
   created_at: string;
   updated_at: string;
 }

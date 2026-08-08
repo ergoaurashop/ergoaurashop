@@ -6,6 +6,21 @@
 
 import type { Product } from "@/lib/types";
 import { IPHONE_PRODUCT } from "@/lib/iphone-15-pro-max-data";
+import { EDGE_70_FUSION_PRODUCT } from "@/lib/motorola-edge-70-fusion-data";
+import { EDGE_70_PRODUCT } from "@/lib/motorola-edge-70-data";
+import { NORD_CE6_PRODUCT } from "@/lib/oneplus-nord-ce-6-5g-data";
+import { P4POWER_PRODUCT } from "@/lib/realme-p4-power-data";
+import { IQOO_Z11X_PRODUCT } from "@/lib/iqoo-z11x-data";
+import { LAVA_AGNI_4_PRODUCT } from "@/lib/lava-agni-4-data";
+import { OPPO_K13_TURBO_5G_PRODUCT } from "@/lib/oppo-k13-turbo-5g-data";
+import { IQOO_15R_PRODUCT } from "@/lib/iqoo-15r-data";
+import { NORD_6_PRODUCT } from "@/lib/oneplus-nord-6-data";
+import { VIVO_V70_ELITE_PRODUCT } from "@/lib/vivo-v70-elite-data";
+import { EDGE_70_PRO_PLUS_PRODUCT } from "@/lib/motorola-edge-70-pro-plus-data";
+import { POCO_X8_PRO_MAX_PRODUCT } from "@/lib/poco-x8-pro-max-data";
+import { APPLE_IPHONE_17_PRO_PRODUCT } from "@/lib/apple-iphone-17-pro-data";
+import { APPLE_IPHONE_AIR_PRODUCT } from "@/lib/apple-iphone-air-data";
+
 
 /**
  * Maps product slugs to their actual folder names on disk.
@@ -29,7 +44,22 @@ export const SLUG_TO_FOLDER: Record<string, string> = {
     "Part-2/iPhone-15-Pro-Max-512GB-Smart-Phone-Mega-Deal-Offer",
   "messi-argentina-2026-jersey":
     "Part-2/Messi 10 Jersy Argentina world cup 2026",
+  "motorola-edge-70-fusion": "Motorola Edge 70 Fusion",
+  "motorola-edge-70": "Motorola Edge 70",
+  "oneplus-nord-ce-6-5g": "OnePlus Nord CE 6 5G",
+  "realme-p4-power": "realme P4 Power",
+  "iqoo-z11x": "iQOO Z11x",
+  "lava-agni-4": "Lava Agni 4",
+  "oppo-k13-turbo-5g": "OPPO K13 Turbo 5G",
+  "iqoo-15r": "iQOO 15R",
+  "oneplus-nord-6": "OnePlus Nord 6",
+  "vivo-v70-elite": "vivo V70 Elite",
+  "motorola-edge-70-pro-plus": "Motorola Edge 70 Pro+ 5G",
+  "apple-iphone-17-pro": "Apple iPhone 17 Pro",
+  "apple-iphone-air": "Apple iPhone Air",
+  "poco-x8-pro-max": "POCO X8 Pro Max",
 };
+
 
 /**
  * Maps product slugs to their image filenames (in display order).
@@ -180,7 +210,164 @@ export const SLUG_TO_IMAGES: Record<string, string[]> = {
     "Home/71S5WdLyYpL._AC_SX569_.jpg",
     "Home/911VxI6UNHL._AC_SX569_.jpg",
   ],
+  "motorola-edge-70-fusion": [
+    "images (1).jpg",
+    "455112-687778.avif",
+    "455113-687780.avif",
+    "455115-687784.avif",
+    "455116-687786.avif",
+    "455117-687788.avif",
+    "455118-687790.avif",
+  ],
+  "motorola-edge-70": [
+    "Edge-70.jpg",
+    "169804735-PBA500CP20042026_01-2100.webp",
+    "gsmarena_007.jpg",
+    "images.jpg",
+    "s-l1600.webp",
+    "s-l1600 (1).webp",
+    "s-l1600 (2).webp",
+  ],
+  "oneplus-nord-ce-6-5g": [
+    "oneplus-nord-ce6.webp",
+    "gsmarena_001.jpg",
+    "images.jpg",
+    "images (1).jpg",
+    "s-l1600.webp",
+    "s-l1600 (1).webp",
+    "s-l1600 (2).webp",
+  ],
+  "realme-p4-power": [
+    "41ouGJSztZL.jpg",
+    "61Hv0HrdhML._SX679_.jpg",
+    "61IgSiPcGPL._SX679_.jpg",
+    "f1294f77-2706-4c59-aaea-cb1288c6a86e.avif",
+    "s-l1600.webp",
+    "s-l1600 (1).webp",
+    "s-l1600 (2).webp",
+    "s-l1600 (3).webp",
+    "s-l1600 (4).webp",
+    "s-l1600 (5).webp",
+  ],
+  "iqoo-z11x": [
+    "Vivo-iQOO-Z11x.jpg",
+    "images.jpg",
+    "images (2).jpg",
+    "iqoo-z11x-sale-india-1773631047.webp",
+    "images (1).jpg",
+    "s-l1600.webp",
+    "s-l1600 (1).webp",
+    "s-l1600 (2).webp",
+    "s-l1600 (3).webp",
+    "s-l1600 (8).webp",
+    "z11x-leak-price.jpg",
+    "Vivo-iQOO-Z11x (1).jpg",
+  ],
+  "lava-agni-4": [
+    "Lava-Agni-4.webp",
+    "gsmarena_001.jpg",
+    "feature-image.jpg",
+    "lava-agni4-5.jpg",
+    "61sEMzIF9tL._AC_UF1000,1000_QL80_.jpg",
+    "lavaagni44-1762770368.jpeg",
+    "images (1).jpg",
+    "images (3).jpg",
+    "images.jpg",
+  ],
+  "oppo-k13-turbo-5g": [
+    "s-l1600.webp",
+    "s-l1600 (1).webp",
+    "s-l1600 (2).webp",
+    "s-l1600 (3).webp",
+    "s-l1600 (4).webp",
+    "s-l1600 (5).webp",
+    "s-l1600 (6).webp",
+    "s-l1600 (7).webp",
+    "s-l1600 (8).webp",
+    "s-l1600 (9).webp",
+    "s-l1600 (10).webp",
+  ],
+  "iqoo-15r": [
+    "s-l1600.webp",
+    "s-l1600 (1).webp",
+    "s-l1600 (2).webp",
+    "s-l1600 (3).webp",
+    "s-l1600 (4).webp",
+    "s-l1600 (5).webp",
+    "s-l1600 (6).webp",
+    "s-l1600 (7).webp",
+  ],
+  "oneplus-nord-6": [
+    "s-l1600.webp",
+    "s-l1600 (1).webp",
+    "s-l1600 (2).webp",
+    "s-l1600 (3).webp",
+    "s-l1600 (7).webp",
+  ],
+  "vivo-v70-elite": [
+    "s-l1600.webp",
+    "s-l1600 (1).webp",
+    "s-l1600 (2).webp",
+    "s-l1600 (3).webp",
+    "s-l1600 (4).webp",
+    "s-l1600 (5).webp",
+    "s-l1600 (6).webp",
+    "s-l1600 (7).webp",
+    "s-l1600 (8).webp",
+    "s-l1600 (9).webp",
+    "s-l1600 (10).webp",
+    "s-l1600 (11).webp",
+    "s-l1600 (12).webp",
+  ],
+  "motorola-edge-70-pro-plus": [
+    "s-l1600.webp",
+    "s-l1600 (1).webp",
+    "s-l1600 (2).webp",
+    "s-l1600 (3).webp",
+    "s-l1600 (4).webp",
+    "s-l1600 (5).webp",
+    "s-l1600 (6).webp",
+    "motorola-edge-70-pro-plus.webp",
+    "images.jpg",
+    "images (1).jpg",
+  ],
+  "poco-x8-pro-max": [
+    "s-l1600.webp",
+    "2a46c91b2268f3f89375129bc7009d20.webp",
+    "3b1b70d484b0f190ab3a05a058df4c9a.webp",
+    "5aabcec3d67a9c31f4e9d10c3442fbb5.webp",
+    "24b23d5bb6401ea16bc2ebabc08f031a.webp",
+    "41eaf747a516e2ae49c8c39dd3a6eacc.webp",
+    "062df0808cc2817784f38e855f319606.webp",
+    "4124de5a363095608fd9dd215652f0cd.webp",
+    "9694b3605a10ac7787a39b2f9182ab56.webp",
+    "96945a9c10191a73d6b9a9b636a932c2.webp",
+    "aff449519b5b1404e450c70342de4dd9 (1).webp",
+    "aff449519b5b1404e450c70342de4dd9.webp",
+    "fb1c42a2d12cc384f33db8901e8dd0b6.webp",
+    "s-l1600 (1).webp",
+    "s-l1600 (11).webp",
+  ],
+  "apple-iphone-17-pro": [
+    "iphone-1.jpg",
+    "iphone-17-pro-finish-select-202509-6-3inch-cosmicorange_AV1.webp",
+    "iphone-17-pro-finish-select-202509-6-3inch-cosmicorange_AV3.webp",
+    "iphone-17-pro-finish-select-202509-6-3inch-cosmicorange.webp",
+    "iphone-17-pro-model-unselect-gallery-1-202509.webp",
+    "iphone-17-pro-model-unselect-gallery-2-202509_GEO_AE.webp",
+    "Screenshot-2025-09-24-at-12.20.51---PM-1.png",
+  ],
+  "apple-iphone-air": [
+    "hero_design__capuizdf0uuu_large_2x.jpg",
+    "camera__gl56mvovq6qi_large_2x.jpg",
+    "iPhone_Air_Sky_Blue_PDP_Image_Position_1__en-AE.webp",
+    "iPhone_Air_Sky_Blue_PDP_Image_Position_3__en-AE.webp",
+    "iPhone_Air_Sky_Blue_PDP_Image_Position_4__en-AE.webp",
+    "iPhone_Air_Sky_Blue_PDP_Image_Position_7__en-AE.webp",
+    "iPhone_Air_Sky_Blue_PDP_Image_Position_8__en-AE.webp",
+  ],
 };
+
 
 export const LOCAL_PRODUCTS: Product[] = [
   {
@@ -565,7 +752,106 @@ export const LOCAL_PRODUCTS: Product[] = [
     category: "phones",
   },
   {
+    ...EDGE_70_FUSION_PRODUCT,
+    id: "prod-motorola-edge-70-fusion",
+    name: "Motorola Edge 70 Fusion",
+    slug: "motorola-edge-70-fusion",
+    category: "phones",
+  },
+  {
+    ...EDGE_70_PRODUCT,
+    id: "prod-motorola-edge-70",
+    name: "Motorola Edge 70",
+    slug: "motorola-edge-70",
+    category: "phones",
+  },
+  {
+    ...NORD_CE6_PRODUCT,
+    id: "prod-oneplus-nord-ce-6-5g",
+    name: "OnePlus Nord CE 6 5G",
+    slug: "oneplus-nord-ce-6-5g",
+    category: "phones",
+  },
+  {
+    ...P4POWER_PRODUCT,
+    id: "prod-realme-p4-power",
+    name: "realme P4 Power",
+    slug: "realme-p4-power",
+    category: "phones",
+  },
+  {
+    ...IQOO_Z11X_PRODUCT,
+    id: "prod-iqoo-z11x",
+    name: "iQOO Z11x",
+    slug: "iqoo-z11x",
+    category: "phones",
+  },
+  {
+    ...LAVA_AGNI_4_PRODUCT,
+    id: "prod-lava-agni-4",
+    name: "Lava Agni 4",
+    slug: "lava-agni-4",
+    category: "phones",
+  },
+  {
+    ...OPPO_K13_TURBO_5G_PRODUCT,
+    id: "prod-oppo-k13-turbo-5g",
+    name: "OPPO K13 Turbo 5G",
+    slug: "oppo-k13-turbo-5g",
+    category: "phones",
+  },
+  {
+    ...IQOO_15R_PRODUCT,
+    id: "prod-iqoo-15r",
+    name: "iQOO 15R",
+    slug: "iqoo-15r",
+    category: "phones",
+  },
+  {
+    ...NORD_6_PRODUCT,
+    id: "prod-oneplus-nord-6",
+    name: "OnePlus Nord 6",
+    slug: "oneplus-nord-6",
+    category: "phones",
+  },
+  {
+    ...VIVO_V70_ELITE_PRODUCT,
+    id: "prod-vivo-v70-elite",
+    name: "vivo V70 Elite",
+    slug: "vivo-v70-elite",
+    category: "phones",
+  },
+  {
+    ...EDGE_70_PRO_PLUS_PRODUCT,
+    id: "prod-motorola-edge-70-pro-plus",
+    name: "Motorola Edge 70 Pro+ 5G",
+    slug: "motorola-edge-70-pro-plus",
+    category: "phones",
+  },
+  {
+    ...POCO_X8_PRO_MAX_PRODUCT,
+    id: "prod-poco-x8-pro-max",
+    name: "POCO X8 Pro Max",
+    slug: "poco-x8-pro-max",
+    category: "phones",
+  },
+  {
+    ...APPLE_IPHONE_17_PRO_PRODUCT,
+    id: "prod-apple-iphone-17-pro",
+    name: "Apple iPhone 17 Pro",
+    slug: "apple-iphone-17-pro",
+    category: "phones",
+  },
+  {
+    ...APPLE_IPHONE_AIR_PRODUCT,
+    id: "prod-apple-iphone-air",
+    name: "Apple iPhone Air",
+    slug: "apple-iphone-air",
+    category: "phones",
+  },
+  {
     id: "prod-messi-argentina-2026-jersey",
+
     name: "Messi Argentina 2026 Men's Local Jersey",
     slug: "messi-argentina-2026-jersey",
     description:

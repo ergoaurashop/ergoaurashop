@@ -34,3 +34,30 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# junk / experimental scratch files (never commit)
+/L.push(s)
+/m\[1\])
+/expA.txt
+/expC.txt
+/expFinal.ts
+/expNode1.txt
+/expNode3.ts
+/expPct.txt
+/expPs1.ps1
+/expTS.txt
+/t-emoji.txt
+/t-lines.txt
+/t4.txt
+/test-approach.txt
+/test-emoji.txt
+/test-fix.txt
+/test-q1.txt
+/test-q2.txt
+/test-quote.txt
+/test-unicode.txt
+
+# non-website files: planning docs, dev scaffolding scripts, source image assets
+/plans/
+/scripts/*.ps1
+/images/products/New product images and details/
