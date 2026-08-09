@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { DbOrder } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
 import Button from "@/components/ui/Button";
@@ -36,22 +36,17 @@ export default function AdminDashboardPage() {
   const [searchField, setSearchField] = useState<SearchField>("customer_name");
   const [searchValue, setSearchValue] = useState("");
 
-  // ── Login: validate credentials server-side & fetch orders ────────
+  // ── Login: validate credentials once & fetch orders ───────────────
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
-      const res = await fetch("/api/admin/orders", {
+      const res = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username,
-          password,
-          searchField,
-          searchValue: searchValue.trim() || undefined,
-        }),
+        body: JSON.stringify({ username, password }),
       });
 
       const json = await res.json();
@@ -62,7 +57,7 @@ export default function AdminDashboardPage() {
       }
 
       setAuthenticated(true);
-      setOrders(json.orders || []);
+      await fetchOrders();
     } catch {
       setError("Connection error. Please try again.");
     } finally {
@@ -70,9 +65,8 @@ export default function AdminDashboardPage() {
     }
   };
 
-  // ── Search / refresh orders (used after login) ────────────────────
+  // ── Search / refresh orders (session cookie authenticates) ─────────
   const fetchOrders = useCallback(async () => {
-    if (!authenticated) return;
     setLoading(true);
 
     try {
@@ -80,8 +74,6 @@ export default function AdminDashboardPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          username,
-          password,
           searchField,
           searchValue: searchValue.trim() || undefined,
         }),
@@ -89,18 +81,49 @@ export default function AdminDashboardPage() {
 
       const json = await res.json();
 
-      if (!res.ok) {
-        console.error("[AdminPage] API error:", json.error);
+      if (res.status === 401) {
+        // Session missing or expired → return to the login form
+        setAuthenticated(false);
+        setOrders([]);
         return;
       }
 
+      if (!res.ok) {
+        setError(json.error || "Failed to fetch orders");
+        return;
+      }
+
+      setAuthenticated(true);
       setOrders(json.orders || []);
     } catch (err) {
       console.error("[AdminPage] Fetch error:", err);
+      setError("Connection error. Please try again.");
     } finally {
       setLoading(false);
     }
-  }, [authenticated, username, password, searchField, searchValue]);
+  }, [searchField, searchValue]);
+
+  // ── Logout: clear the server session cookie ──────────────────────
+  const handleLogout = useCallback(async () => {
+    try {
+      await fetch("/api/admin/logout", { method: "POST" });
+    } catch (err) {
+      console.error("[AdminPage] Logout error:", err);
+    }
+    setAuthenticated(false);
+    setOrders([]);
+    setSearchValue("");
+    setError("");
+  }, []);
+
+  // ── Restore session on first mount (cookie may still be valid) ───
+  const isFirstRender = useRef(true);
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      fetchOrders();
+    }
+  }, [fetchOrders]);
 
   // ── Status badge variant helper ──────────────────────────────────
   const statusVariant = (status: string) => {
@@ -185,7 +208,7 @@ export default function AdminDashboardPage() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setAuthenticated(false)}
+            onClick={handleLogout}
           >
             Logout
           </Button>
@@ -266,6 +289,7 @@ export default function AdminDashboardPage() {
                   <th className="text-left px-6 py-3 font-medium">Order ID</th>
                   <th className="text-left px-6 py-3 font-medium">Track ID</th>
                   <th className="text-left px-6 py-3 font-medium">Customer</th>
+                  <th className="text-left px-6 py-3 font-medium">Products</th>
                   <th className="text-left px-6 py-3 font-medium">Phone</th>
                   <th className="text-left px-6 py-3 font-medium">Status</th>
                   <th className="text-left px-6 py-3 font-medium">Payment</th>
@@ -277,7 +301,7 @@ export default function AdminDashboardPage() {
                 {loading ? (
                   <tr>
                     <td
-                      colSpan={8}
+                      colSpan={9}
                       className="px-6 py-12 text-center text-apple-text-secondary"
                     >
                       Loading...
@@ -286,7 +310,7 @@ export default function AdminDashboardPage() {
                 ) : orders.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={8}
+                      colSpan={9}
                       className="px-6 py-12 text-center text-apple-text-secondary"
                     >
                       {searchValue.trim()
@@ -311,6 +335,26 @@ export default function AdminDashboardPage() {
                         <p className="text-xs text-apple-text-secondary">
                           {order.customer_email}
                         </p>
+                      </td>
+                      <td className="px-6 py-4">
+                        {Array.isArray(order.products) &&
+                        order.products.length > 0 ? (
+                          <ul className="space-y-1 min-w-40">
+                            {order.products.map((p, i) => (
+                              <li key={i} className="text-xs leading-snug">
+                                <span className="font-medium">{p.name}</span>
+                                <span className="text-apple-text-secondary">
+                                  {" "}
+                                  × {p.quantity}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <span className="text-xs text-apple-text-secondary">
+                            —
+                          </span>
+                        )}
                       </td>
                       <td className="px-6 py-4 text-xs">
                         {order.customer_phone}

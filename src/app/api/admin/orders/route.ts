@@ -1,31 +1,26 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/admin";
-import { ADMIN_USERNAME, ADMIN_PASSWORD } from "@/lib/constants";
+import {
+  ADMIN_SESSION_COOKIE,
+  verifyAdminSession,
+} from "@/lib/admin-session";
 
 /**
  * POST /api/admin/orders
  *
- * Securely fetch orders from Supabase using the service-role key (server-side only).
- * The client must provide admin credentials in the request body for authorization.
+ * Fetch orders from Supabase using the service-role key (server-side only).
+ * Authorization is the httpOnly `admin_session` cookie — the client never
+ * sends the admin password to this endpoint.
  */
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { username, password, searchField, searchValue } = body;
+    const { searchField, searchValue } = body;
 
-    // ── Validate admin credentials against server-side env vars ────
-    if (!username || !password) {
-      return NextResponse.json(
-        { error: "Admin credentials are required" },
-        { status: 401 },
-      );
-    }
-
-    if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
-      return NextResponse.json(
-        { error: "Invalid admin credentials" },
-        { status: 401 },
-      );
+    // ── Verify admin session cookie ────────────────────────────────
+    const sessionToken = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
+    if (!verifyAdminSession(sessionToken)) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // ── Fetch all orders (server-side, service role bypasses RLS) ──
