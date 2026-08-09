@@ -22,10 +22,10 @@ export default function AppleIphoneAirDealBanner() {
         <LightningBoltIcon />
         <span className="appleiphoneair-deal-banner-label">🔥 Limited Stock</span>
         Apple iPhone Air at{" "}
-        <span className="appleiphoneair-deal-banner-highlight">₹65,920</span> only
+        <span className="appleiphoneair-deal-banner-highlight">₹95,920</span> only
         &mdash; Save{" "}
-        <span className="appleiphoneair-deal-banner-highlight">₹53,980</span>
-        <span className="appleiphoneair-deal-banner-label">45% OFF</span>
+        <span className="appleiphoneair-deal-banner-highlight">₹23,980</span>
+        <span className="appleiphoneair-deal-banner-label">20% OFF</span>
         <LightningBoltIcon />
         <span>Free Shipping</span>
         <LightningBoltIcon />

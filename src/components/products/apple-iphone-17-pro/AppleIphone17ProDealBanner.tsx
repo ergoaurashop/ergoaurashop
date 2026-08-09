@@ -22,10 +22,10 @@ export default function AppleIphone17ProDealBanner() {
         <LightningBoltIcon />
         <span className="appleiphone17pro-deal-banner-label">🔥 Limited Stock</span>
         Apple iPhone 17 Pro at{" "}
-        <span className="appleiphone17pro-deal-banner-highlight">₹89,920</span> only
+        <span className="appleiphone17pro-deal-banner-highlight">₹1,14,665</span> only
         &mdash; Save{" "}
-        <span className="appleiphone17pro-deal-banner-highlight">₹44,980</span>
-        <span className="appleiphone17pro-deal-banner-label">33% OFF</span>
+        <span className="appleiphone17pro-deal-banner-highlight">₹20,235</span>
+        <span className="appleiphone17pro-deal-banner-label">15% OFF</span>
         <LightningBoltIcon />
         <span>Free Shipping</span>
         <LightningBoltIcon />

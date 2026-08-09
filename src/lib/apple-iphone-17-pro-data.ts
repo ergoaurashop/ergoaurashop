@@ -43,9 +43,9 @@ export const APPLE_IPHONE_17_PRO_PRODUCT: Product = {
   slug: "apple-iphone-17-pro",
   description:
     "The pinnacle of Apple's 2025/2026 lineup featuring a 6.3-inch LTPO OLED screen, the hyper-efficient A19 Pro chip, and a revolutionary triple 48MP camera system.",
-  price: 89920,
+  price: 114665,
   original_price: 134900,
-  discount_percentage: 33,
+  discount_percentage: 15,
   category: "phones",
   images: [],
   stock: 9,
@@ -156,7 +156,7 @@ export const APPLE_IPHONE_17_PRO_REVIEWS: ProductReviewDetail[] = [
     city: "Chennai, Tamil Nadu",
     rating: 5,
     title: "Best value iPhone deal I've found",
-    text: "Genuine, factory-sealed iPhone 17 Pro at ₹89,920 is unbeatable. Battery easily lasts a full day, USB-C is fast, and the dual eSIM setup is perfect for travel. With an effective 33% saving off the MRP, this was a no-brainer purchase.",
+    text: "Genuine, factory-sealed iPhone 17 Pro at ₹1,14,665 is unbeatable. Battery easily lasts a full day, USB-C is fast, and the dual eSIM setup is perfect for travel. With an effective 15% saving off the MRP, this was a no-brainer purchase.",
     date: "2026-06-24",
     isVerified: true,
     helpfulCount: 25,
@@ -221,7 +221,7 @@ export const APPLE_IPHONE_17_PRO_FAQS = [
   {
     question: "Why is the price so low? Is this a scam?",
     answer:
-      "This is genuine clearance pricing — we secured a limited batch through direct high-volume procurement, which lets us offer the iPhone 17 Pro at an effective 33% OFF the ₹1,34,900 launch MRP. We've sold hundreds of devices with a 4.6★ average rating. You're fully protected by our return policy and secure payment gateway (Razorpay).",
+      "This is genuine clearance pricing — we secured a limited batch through direct high-volume procurement, which lets us offer the iPhone 17 Pro at an effective 15% OFF the ₹1,34,900 launch MRP. We've sold hundreds of devices with a 4.6★ average rating. You're fully protected by our return policy and secure payment gateway (Razorpay).",
   },
   {
     question: "Does it support dual SIM?",
@@ -318,11 +318,11 @@ export const APPLE_IPHONE_17_PRO_CAMERA_CONTENT = {
 export const APPLE_IPHONE_17_PRO_STORY = {
   title: "The Pinnacle of iPhone",
   subtitle:
-    "A19 Pro, triple 48MP cameras, and titanium — at an exceptional ₹89,920",
+    "A19 Pro, triple 48MP cameras, and titanium — at an exceptional ₹1,14,665",
   paragraphs: [
     "The iPhone 17 Pro represents a massive leap in Apple's photography hardware, moving to a unified 48MP sensor array across all three rear lenses for the first time. It's constructed with aerospace-grade titanium and an upgraded Ceramic Shield 2 glass that is vastly more scratch-resistant.",
     "Powered by the A19 Pro chip on an industry-leading 3nm process, it delivers unrivaled gaming and AI performance while the adaptive 120Hz ProMotion display keeps everything buttery smooth and battery efficient.",
     "Deeply integrated Apple Intelligence across iOS 26 automates tasks and enhances creativity, while the USB-C Gen 2 port brings universal high-speed connectivity to the entire ecosystem.",
-    "Procured directly through high-volume supply chains, we're offering an exceptional effective 33% saving on the ₹1,34,900 launch MRP — just ₹89,920. With only 9 units available at this price, it will not stay in stock for long.",
+    "Procured directly through high-volume supply chains, we're offering an exceptional effective 15% saving on the ₹1,34,900 launch MRP — just ₹1,14,665. With only 9 units available at this price, it will not stay in stock for long.",
   ],
 };

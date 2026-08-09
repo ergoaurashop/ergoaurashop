@@ -1,0 +1,723 @@
+/* =====================================================================
+   Independence Day Offer Week — Scoped Styles
+   ErgoAura "Desert Luxury" theme adapted for the Indian tricolor campaign.
+   Imported ONLY by src/components/campaigns/IndependenceDayHero.tsx.
+   All selectors are scoped under .id-hero / .id-shelf-* to prevent any
+   bleed-through into the global Desert Luxury (gold/sand) theme.
+
+   Flag = pure SVG (filter primitives) — no picture, no video.
+   Animation = CSS transforms/opacity + SMIL only (GPU-friendly).
+
+   ── Palette ──
+   ink          #1A1614  (hero bg — ErgoAura ink)
+   gold         #C9A962  (brand gold)
+   gold-light   #DFC48A
+   ivory        #F5F1EB  (text)
+   ivory-dim    #C9BEAE  (muted text)
+   saffron      #FF9933  (Indian flag top band)
+   green        #138808  (Indian flag bottom band)
+   chakra       #17348C  (Ashoka Chakra navy)
+   ===================================================================== */
+
+.id-hero,
+.id-hero *,
+.id-hero *::before,
+.id-hero *::after,
+.id-shelf-wrap,
+.id-shelf-wrap *,
+.id-shelf-wrap *::before,
+.id-shelf-wrap *::after {
+  box-sizing: border-box;
+}
+
+.id-hero {
+  --id-ink: #1a1614;
+  --id-ink-soft: #2a241f;
+  --id-gold: #c9a962;
+  --id-gold-light: #dfc48a;
+  --id-ivory: #f5f1eb;
+  --id-ivory-dim: #c9beae;
+  --id-saffron: #ff9933;
+  --id-green: #138808;
+  --id-chakra: #17348c;
+
+  position: relative;
+  overflow: hidden;
+  min-height: 700px;
+  display: flex;
+  flex-direction: column;
+  color: var(--id-ivory);
+  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  background:
+    radial-gradient(120% 90% at 82% 8%, rgba(201, 169, 98, 0.16) 0%, transparent 55%),
+    radial-gradient(110% 85% at 8% 92%, rgba(19, 136, 8, 0.12) 0%, transparent 55%),
+    radial-gradient(70% 60% at 50% 0%, rgba(255, 153, 51, 0.08) 0%, transparent 60%),
+    var(--id-ink);
+}
+
+/* ── Flag background (pure SVG) ─────────────────────────────────── */
+.id-flag-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: block;
+}
+
+.id-flag-bg .id-flagGroup {
+  filter: url(#flagFilterFull);
+}
+
+/* slow, majestic chakra spin (pure CSS — GPU transform) */
+.id-flag-bg .id-chakra {
+  transform-origin: 800px 360px;
+  animation: idChakraSpin 90s linear infinite;
+}
+
+@keyframes idChakraSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Scrim for text legibility ──────────────────────────────────── */
+.id-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(26, 22, 20, 0.55) 0%, rgba(26, 22, 20, 0.15) 32%, rgba(26, 22, 20, 0.25) 62%, rgba(26, 22, 20, 0.92) 100%),
+    linear-gradient(90deg, rgba(26, 22, 20, 0.82) 0%, rgba(26, 22, 20, 0.35) 55%, rgba(26, 22, 20, 0.15) 100%);
+}
+
+/* ── Ambient tricolor particles ─────────────────────────────────── */
+.id-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.id-particle {
+  position: absolute;
+  bottom: -14px;
+  border-radius: 50%;
+  filter: blur(1px);
+  will-change: transform, opacity;
+  animation: idFloat var(--dur, 13s) linear infinite;
+  animation-delay: var(--delay, 0s);
+  opacity: 0;
+}
+
+@keyframes idFloat {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0;
+  }
+  12% {
+    opacity: var(--max-opacity, 0.55);
+  }
+  88% {
+    opacity: var(--max-opacity, 0.55);
+  }
+  100% {
+    transform: translate3d(var(--drift, 24px), -112vh, 0) scale(1.15);
+    opacity: 0;
+  }
+}
+
+/* ── Foreground content ─────────────────────────────────────────── */
+.id-hero-inner {
+  position: relative;
+  z-index: 3;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 128px 24px 170px;
+}
+
+.id-content-panel {
+  max-width: 620px;
+  padding: 2rem 2.1rem;
+  border-radius: 1.6rem;
+  background: rgba(26, 22, 20, 0.5);
+  border: 1px solid rgba(201, 169, 98, 0.32);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 30px 70px -30px rgba(0, 0, 0, 0.75),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* eyebrow with gold line-draw */
+.id-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--id-gold-light);
+}
+
+.id-eyebrow::before,
+.id-eyebrow::after {
+  content: "";
+  height: 1px;
+  width: 2.2rem;
+  background: linear-gradient(90deg, transparent, var(--id-gold));
+}
+
+.id-eyebrow::after {
+  background: linear-gradient(90deg, var(--id-gold), transparent);
+}
+
+/* headline — Playfair Display, large */
+.id-headline {
+  margin: 0 0 1rem;
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.012em;
+  font-size: clamp(2.35rem, 5.6vw, 4.15rem);
+  color: var(--id-ivory);
+}
+
+.id-headline .id-lede {
+  display: block;
+  color: var(--id-ivory);
+}
+
+.id-headline .id-accent {
+  display: inline-block;
+  background: linear-gradient(100deg, var(--id-gold) 18%, #fff4d8 38%, var(--id-gold-light) 50%, #fff8e6 60%, var(--id-gold) 82%);
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: idShimmer 5.5s linear infinite;
+}
+
+@keyframes idShimmer {
+  to {
+    background-position: 220% center;
+  }
+}
+
+/* "This 15th August" — animated flag-tricolor gradient */
+.id-headline .id-tricolor {
+  display: inline-block;
+  background: linear-gradient(
+    100deg,
+    var(--id-saffron) 0%,
+    #ffffff 40%,
+    var(--id-green) 70%,
+    var(--id-saffron) 100%
+  );
+  background-size: 240% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: idTricolorFlow 3.2s linear infinite;
+}
+
+@keyframes idTricolorFlow {
+  to {
+    background-position: 240% center;
+  }
+}
+
+/* subhead */
+.id-subhead {
+  margin: 0 0 1.5rem;
+  font-size: clamp(0.95rem, 1.6vw, 1.08rem);
+  line-height: 1.65;
+  color: var(--id-ivory-dim);
+  max-width: 46ch;
+}
+
+/* CTA row */
+.id-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1.6rem;
+}
+
+.id-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.62rem 1.15rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: var(--id-ink);
+  background: linear-gradient(120deg, var(--id-saffron) 0%, #ffb15e 46%, var(--id-gold) 100%);
+  box-shadow: 0 12px 30px -12px rgba(255, 153, 51, 0.6);
+  animation: idPillPulse 2.6s ease-in-out infinite;
+}
+
+@keyframes idPillPulse {
+  0%,
+  100% {
+    transform: translateY(0);
+    box-shadow: 0 12px 30px -12px rgba(255, 153, 51, 0.55);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 18px 40px -12px rgba(255, 153, 51, 0.8);
+  }
+}
+
+.id-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.8rem 1.5rem;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--id-ink);
+  background: linear-gradient(120deg, var(--id-gold-light) 0%, var(--id-gold) 100%);
+  box-shadow: 0 14px 32px -14px rgba(201, 169, 98, 0.75);
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+}
+
+.id-btn svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  transition: transform 0.25s ease;
+}
+
+.id-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 20px 42px -14px rgba(201, 169, 98, 0.9);
+}
+
+.id-btn:hover svg {
+  transform: translateX(4px);
+}
+
+.id-btn:focus-visible,
+.id-pill:focus-visible {
+  outline: 2px solid var(--id-gold-light);
+  outline-offset: 3px;
+}
+
+/* ── Countdown ──────────────────────────────────────────────────── */
+.id-countdown-label {
+  display: block;
+  margin: 0 0 0.55rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--id-ivory-dim);
+}
+
+.id-countdown-units {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.id-unit {
+  min-width: 3.6rem;
+  text-align: center;
+  padding: 0.55rem 0.5rem 0.5rem;
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.id-unit .num {
+  display: block;
+  font-weight: 700;
+  font-size: 1.4rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--id-ivory);
+  animation: idCountPop 0.45s ease;
+}
+
+.id-unit .lbl {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--id-ivory-dim);
+}
+
+@keyframes idCountPop {
+  0% {
+    transform: scale(1.32);
+    opacity: 0.35;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ── Trust row ──────────────────────────────────────────────────── */
+.id-trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.05rem;
+  margin-top: 1.4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.id-trust-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  color: var(--id-ivory-dim);
+}
+
+.id-trust-item svg {
+  width: 1rem;
+  height: 1rem;
+  color: var(--id-gold-light);
+  flex-shrink: 0;
+}
+
+/* ── Scroll cue ─────────────────────────────────────────────────── */
+.id-scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 1.4rem;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--id-ivory-dim);
+  font-size: 0.62rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.id-scroll-cue svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  animation: idBounce 2s ease-in-out infinite;
+}
+
+@keyframes idBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+/* ── Floating deals shelf (overlaps hero bottom edge) ───────────── */
+.id-shelf-wrap {
+  position: relative;
+  z-index: 20;
+  margin-top: -128px;
+  padding: 0 1.25rem 2.75rem;
+}
+
+.id-shelf-panel {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.3rem 1.3rem 1.15rem;
+  border-radius: 1.4rem;
+  background: rgba(26, 22, 20, 0.74);
+  border: 1px solid rgba(201, 169, 98, 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 34px 70px -24px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+}
+
+.id-shelf-title {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0 0 1rem;
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: var(--id-gold-light);
+}
+
+.id-shelf-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(201, 169, 98, 0.5), transparent);
+}
+
+.id-shelf-title .id-shelf-flag {
+  width: 1.35rem;
+  height: 0.9rem;
+  border-radius: 0.15rem;
+  flex-shrink: 0;
+  background:
+    linear-gradient(180deg, var(--id-saffron) 0 33.3%, #ffffff 33.3% 66.6%, var(--id-green) 66.6% 100%);
+  box-shadow: 0 0 12px rgba(255, 153, 51, 0.45);
+}
+
+/* marquee rows */
+.id-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.id-marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: idMarquee var(--speed, 34s) linear infinite;
+}
+
+/* spacing lives on the cards so each duplicated set is exactly half the
+   track width → translateX(-50%) loops seamlessly with no seam jump */
+.id-marquee-track .id-p-card {
+  margin-right: 0.9rem;
+}
+
+.id-marquee--reverse .id-marquee-track {
+  animation-direction: reverse;
+}
+
+.id-marquee:hover .id-marquee-track,
+.id-marquee:focus-within .id-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes idMarquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* product card */
+.id-p-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-width: 268px;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  text-decoration: none;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.id-p-card:hover,
+.id-p-card:focus-visible {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(201, 169, 98, 0.55);
+  box-shadow: 0 18px 38px -16px rgba(0, 0, 0, 0.7);
+  outline: none;
+}
+
+.id-p-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 2;
+  padding: 0.22rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--id-ink);
+  background: linear-gradient(120deg, var(--id-saffron), var(--id-gold));
+  box-shadow: 0 4px 12px -4px rgba(255, 153, 51, 0.6);
+}
+
+.id-p-visual {
+  position: relative;
+  flex-shrink: 0;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.id-p-visual img {
+  object-fit: cover;
+}
+
+.id-p-visual svg {
+  width: 1.7rem;
+  height: 1.7rem;
+}
+
+.id-p-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  min-width: 0;
+}
+
+.id-p-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--id-ivory);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.id-p-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.id-p-now {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--id-gold-light);
+}
+
+.id-p-was {
+  font-size: 0.72rem;
+  color: var(--id-ivory-dim);
+  text-decoration: line-through;
+}
+
+.id-p-coming {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--id-gold-light);
+}
+
+.id-p-coming svg {
+  width: 0.85rem;
+  height: 0.85rem;
+  animation: idBounce 1.8s ease-in-out infinite;
+}
+
+/* ── Responsive (< 700px) ───────────────────────────────────────── */
+@media (max-width: 699px) {
+  .id-hero {
+    min-height: 640px;
+  }
+
+  /* cheap single-turbulence filter on mobile */
+  .id-flag-bg .id-flagGroup {
+    filter: url(#flagFilterLite);
+  }
+
+  .id-flag-bg .id-chakra {
+    transform-origin: 800px 360px;
+  }
+
+  .id-hero-inner {
+    align-items: flex-start;
+    padding: 116px 16px 190px;
+  }
+
+  .id-content-panel {
+    padding: 1.4rem 1.25rem;
+    border-radius: 1.3rem;
+    max-width: 100%;
+  }
+
+  .id-headline {
+    font-size: clamp(2rem, 8.5vw, 2.7rem);
+  }
+
+  .id-cta-row {
+    gap: 0.7rem;
+  }
+
+  .id-unit {
+    min-width: 3.1rem;
+  }
+
+  .id-unit .num {
+    font-size: 1.2rem;
+  }
+
+  .id-trust-row {
+    gap: 0.8rem;
+  }
+
+  .id-trust-item:nth-child(n + 3) {
+    display: none;
+  }
+
+  .id-scroll-cue {
+    display: none;
+  }
+
+  .id-shelf-wrap {
+    margin-top: -110px;
+    padding: 0 0.75rem 2rem;
+  }
+
+  .id-shelf-panel {
+    padding: 1rem 0.9rem 0.95rem;
+    border-radius: 1.1rem;
+  }
+
+  .id-p-card {
+    min-width: 244px;
+    padding: 0.6rem 0.8rem;
+  }
+}
+
+/* ── Reduced motion: freeze everything decorative ───────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .id-flag-bg .id-chakra,
+  .id-particle,
+  .id-pill,
+  .id-headline .id-accent,
+  .id-headline .id-tricolor,
+  .id-scroll-cue svg,
+  .id-marquee-track,
+  .id-p-coming svg,
+  .id-unit .num {
+    animation: none !important;
+  }
+
+  .id-btn,
+  .id-btn svg,
+  .id-p-card {
+    transition: none !important;
+  }
+}

@@ -15,9 +15,9 @@ export const APPLE_IPHONE_AIR_FOLDER = "iPhone Air";
 // Hero slider images (3 images, auto-fade)
 // -------------------------------------------------------------------
 export const APPLE_IPHONE_AIR_HERO_IMAGES = [
+  "iPhone_Air_Sky_Blue_PDP_Image_Position_1__en-AE.webp",
   "hero_design__capuizdf0uuu_large_2x.jpg",
   "camera__gl56mvovq6qi_large_2x.jpg",
-  "iPhone_Air_Sky_Blue_PDP_Image_Position_1__en-AE.webp",
 ];
 
 // -------------------------------------------------------------------
@@ -43,9 +43,9 @@ export const APPLE_IPHONE_AIR_PRODUCT: Product = {
   slug: "apple-iphone-air",
   description:
     "An ultra-thin, revolutionary redesign of the iPhone featuring a stunning 6.6-inch OLED display, a single high-power 48MP camera, and a profile that redefines pocketability.",
-  price: 65920,
+  price: 95920,
   original_price: 119900,
-  discount_percentage: 45,
+  discount_percentage: 20,
   category: "phones",
   images: [],
   stock: 12,
@@ -157,7 +157,7 @@ export const APPLE_IPHONE_AIR_REVIEWS: ProductReviewDetail[] = [
     city: "Hyderabad, Telangana",
     rating: 5,
     title: "Best Apple deal I've bought",
-    text: "Genuine, factory-sealed iPhone Air at ₹65,920 is an absolute steal — an effective 45% off the ₹1,19,900 MRP. Battery is solid, the display is bright and vivid, and it's the lightest iPhone I've ever held. Fast delivery and sealed packaging, as promised.",
+    text: "Genuine, factory-sealed iPhone Air at ₹95,920 is an absolute steal — an effective 20% off the ₹1,19,900 MRP. Battery is solid, the display is bright and vivid, and it's the lightest iPhone I've ever held. Fast delivery and sealed packaging, as promised.",
     date: "2026-06-25",
     isVerified: true,
     helpfulCount: 24,
@@ -222,7 +222,7 @@ export const APPLE_IPHONE_AIR_FAQS = [
   {
     question: "Why is the price so low? Is this a scam?",
     answer:
-      "This is genuine clearance pricing — we secured a limited batch through direct high-volume procurement, which lets us offer the iPhone Air at an effective 45% OFF the ₹1,19,900 launch MRP. We've sold hundreds of devices with a 4.6★ average rating. You're fully protected by our return policy and secure payment gateway (Razorpay).",
+      "This is genuine clearance pricing — we secured a limited batch through direct high-volume procurement, which lets us offer the iPhone Air at an effective 20% OFF the ₹1,19,900 launch MRP. We've sold hundreds of devices with a 4.6★ average rating. You're fully protected by our return policy and secure payment gateway (Razorpay).",
   },
   {
     question: "Does it support dual SIM?",
@@ -319,11 +319,11 @@ export const APPLE_IPHONE_AIR_CAMERA_CONTENT = {
 export const APPLE_IPHONE_AIR_STORY = {
   title: "Radically Thin. Utterly Apple.",
   subtitle:
-    "A 6.6-inch OLED, the A19 chip, and a 48MP Fusion camera — at an exceptional ₹65,920",
+    "A 6.6-inch OLED, the A19 chip, and a 48MP Fusion camera — at an exceptional ₹95,920",
   paragraphs: [
     "In 2026 Apple took a bold new direction, dropping the 'Plus' model in favor of the radically thin 'Air,' prioritizing design and weight reduction above all else. Inspired by the iPad Pro M4's ultra-thin architecture, the iPhone Air utilizes cutting-edge internal stacking to compress standard flagship hardware into a mesmerizing form factor.",
     "At roughly 5mm thick and just ~160g, it is the slimmest iPhone ever made — yet it still houses a stunning 6.6-inch Super Retina XDR OLED display, the efficient A19 chip, and a single, highly capable 48MP Fusion camera.",
     "Advanced thermal management keeps the ultra-slim chassis cool under pressure, while iOS 26 with Apple Intelligence makes every interaction feel effortless and intelligent.",
-    "Procured directly through high-volume supply chains, we're offering an exceptional effective 45% saving on the ₹1,19,900 launch MRP — just ₹65,920. With only 12 units available at this price, it will not stay in stock for long.",
+    "Procured directly through high-volume supply chains, we're offering an exceptional effective 20% saving on the ₹1,19,900 launch MRP — just ₹95,920. With only 12 units available at this price, it will not stay in stock for long.",
   ],
 };

@@ -8,6 +8,7 @@ import { getSupabaseClient } from "@/lib/supabase/client";
 import type { Product } from "@/lib/types";
 import ProductGrid from "@/components/products/ProductGrid";
 import HeroProductShowcase from "@/components/products/HeroProductShowcase";
+import IndependenceDayHero from "@/components/campaigns/IndependenceDayHero";
 import IPhoneBanner from "@/components/products/iphone-15-pro-max/IPhoneBanner";
 import S23Banner from "@/components/products/s23/S23Banner";
 import BestChoiceDealsCarousel from "@/components/products/BestChoiceDealsCarousel";
@@ -19,6 +20,10 @@ import { trackViewItemList } from "@/lib/analytics/events";
 import { useScrollDepth } from "@/hooks/useScrollDepth";
 
 export default function HomePage() {
+  // Campaign toggle — Independence Day Offer Week (10–20 Aug 2026).
+  // Set to false after 20 Aug to recall the default Best-Sellers hero.
+  const SHOW_INDEPENDENCE_DAY_HERO = true;
+
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const hasTracked = useRef(false);
@@ -63,8 +68,10 @@ export default function HomePage() {
     <div>
       {/* ============================== */}
       {/* Hero Product Showcase (NEW) */}
+      {/* ────────────────────────────── */}
+      {/* Independence Day campaign hero (temporary): toggle above       */}
       {/* ============================== */}
-      <HeroProductShowcase />
+      {SHOW_INDEPENDENCE_DAY_HERO ? <IndependenceDayHero /> : <HeroProductShowcase />}
 
       {/* ============================== */}
       {/* iPhone 15 Pro Max Promo Banner */}

@@ -576,9 +576,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   /* ── Apple iPhone Air — custom metadata ── */
   if (slug === "apple-iphone-air") {
     const imageUrl = `/images/products/${encodePath(APPLE_IPHONE_AIR_FOLDER)}/${encodeURIComponent(APPLE_IPHONE_AIR_HERO_IMAGES[0])}`;
-    const title = `Apple iPhone Air at ₹65,920 | 45% OFF Mega Deal | ${SITE_METADATA.title}`;
+    const title = `Apple iPhone Air at ₹95,920 | 20% OFF Mega Deal | ${SITE_METADATA.title}`;
     const description =
-      'Apple iPhone Air — 6.6" Super Retina XDR OLED display, Apple A19 chip, 48MP Fusion camera, ultra-thin 5mm design with MagSafe. Get it at 45% OFF — ₹65,920 only! Limited stock clearance.';
+      'Apple iPhone Air — 6.6" Super Retina XDR OLED display, Apple A19 chip, 48MP Fusion camera, ultra-thin 5mm design with MagSafe. Get it at 20% OFF — ₹95,920 only! Limited stock clearance.';
     return {
       title,
       description,
@@ -604,9 +604,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   /* ── Apple iPhone 17 Pro — custom metadata ── */
   if (slug === "apple-iphone-17-pro") {
     const imageUrl = `/images/products/${encodePath(APPLE_IPHONE_17_PRO_FOLDER)}/${encodeURIComponent(APPLE_IPHONE_17_PRO_HERO_IMAGES[0])}`;
-    const title = `Apple iPhone 17 Pro at ₹89,920 | 33% OFF Mega Deal | ${SITE_METADATA.title}`;
+    const title = `Apple iPhone 17 Pro at ₹1,14,665 | 15% OFF Mega Deal | ${SITE_METADATA.title}`;
     const description =
-      'Apple iPhone 17 Pro — 6.3" 120Hz ProMotion OLED display, A19 Pro (3nm), triple 48MP camera array, titanium design with Ceramic Shield 2. Get it at 33% OFF — ₹89,920 only! Limited stock clearance.';
+      'Apple iPhone 17 Pro — 6.3" 120Hz ProMotion OLED display, A19 Pro (3nm), triple 48MP camera array, titanium design with Ceramic Shield 2. Get it at 15% OFF — ₹1,14,665 only! Limited stock clearance.';
     return {
       title,
       description,
