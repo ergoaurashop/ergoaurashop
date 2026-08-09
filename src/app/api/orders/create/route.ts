@@ -68,6 +68,9 @@ export async function POST(request: Request) {
 
     // ── Verify Razorpay payment signature ─────────────────────────
     // This prevents fake orders where the caller fabricates a payment_id.
+    // NOTE: order creation stays TOLERANT (a real customer is never blocked);
+    // the signature result only gates the Meta Purchase event below.
+    let signatureVerified = false;
     if (payment_id && razorpay_order_id && razorpay_signature) {
       const expectedSignature = crypto
         .createHmac("sha256", RAZORPAY_KEY_SECRET)
@@ -81,10 +84,11 @@ export async function POST(request: Request) {
           { status: 403 },
         );
       }
+      signatureVerified = true;
     }
 
     // ── Insert order using service role (bypasses RLS) ────────────
-    const { data, error } = await supabaseAdmin
+    let { data, error } = await supabaseAdmin
       .from("orders")
       .insert({
         user_id: user_id || null,
@@ -107,6 +111,23 @@ export async function POST(request: Request) {
       })
       .select()
       .single();
+
+    // Duplicate payment_id (browser handler racing the webhook) — return the
+    // existing order instead of failing, so the customer flow is never broken.
+    if (error && error.code === "23505" && payment_id) {
+      console.warn(
+        `[Order Create] Duplicate payment_id ${payment_id}, fetching existing order`,
+      );
+      const { data: existing } = await supabaseAdmin
+        .from("orders")
+        .select("*")
+        .eq("payment_id", payment_id)
+        .maybeSingle();
+      if (existing) {
+        data = existing;
+        error = null;
+      }
+    }
 
     if (error) {
       console.error("Order insert error:", error);
@@ -156,10 +177,20 @@ export async function POST(request: Request) {
     })();
 
     // ── Fire Meta CAPI Purchase event (fire-and-forget) ────────────
-    if (capi_event_id && process.env.META_CAPI_ENABLED === "true") {
+    // Only fire for a server-verified, actually-paid payment. This prevents
+    // fake/unverifiable calls from minting a Meta Purchase. If the send is
+    // skipped here (e.g. signature missing), the webhook payment.captured
+    // path re-fires it idempotently as a safety net.
+    const purchaseEligible =
+      signatureVerified &&
+      payment_status === "paid" &&
+      capi_event_id &&
+      process.env.META_CAPI_ENABLED === "true";
+
+    if (purchaseEligible) {
       (async () => {
         try {
-          await sendCAPIEvent({
+          const result = await sendCAPIEvent({
             eventName: "Purchase",
             eventId: capi_event_id,
             userData: {
@@ -187,6 +218,19 @@ export async function POST(request: Request) {
             },
             eventSourceUrl: "https://ergoaurashop.com/checkout",
           });
+          if (result) {
+            // Record that a Purchase was fired so the failure handler can
+            // send a corrective Refund event later (and to avoid duplicates).
+            const { error: flagError } = await supabaseAdmin
+              .from("orders")
+              .update({ meta_purchase_fired_at: new Date().toISOString() })
+              .eq("id", data.id);
+            if (flagError) {
+              console.error(
+                `[OrderCreate] Failed to mark meta_purchase_fired_at: ${flagError.message}`,
+              );
+            }
+          }
           console.log(
             `[OrderCreate] ✅ Meta Purchase event sent for order ${data.order_id}`,
           );

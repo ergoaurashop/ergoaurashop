@@ -68,6 +68,9 @@ CREATE TABLE IF NOT EXISTS orders (
   order_status        TEXT NOT NULL DEFAULT 'placed'
                         CHECK (order_status IN ('placed','confirmed','shipped','out_for_delivery','delivered','cancelled')),
   notes               TEXT,
+  -- Meta CAPI reconciliation tracking (see meta-purchase-reconciliation-migration.sql)
+  meta_purchase_fired_at TIMESTAMPTZ,
+  meta_refund_fired_at   TIMESTAMPTZ,
   placed_at           TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   confirmed_at        TIMESTAMPTZ,
   shipped_at          TIMESTAMPTZ,
@@ -277,6 +280,12 @@ CREATE INDEX IF NOT EXISTS idx_orders_user_id          ON orders(user_id);
 CREATE INDEX IF NOT EXISTS idx_orders_payment_status   ON orders(payment_status);
 CREATE INDEX IF NOT EXISTS idx_orders_order_status     ON orders(order_status);
 CREATE INDEX IF NOT EXISTS idx_orders_placed_at        ON orders(placed_at DESC);
+CREATE INDEX IF NOT EXISTS idx_orders_payment_id       ON orders(payment_id);
+-- Unique payment_id — prevents browser-handler vs webhook duplicate orders.
+-- Safe for fresh DBs; for existing DBs run the dedupe steps in the migration file first.
+CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_payment_id_unique
+  ON orders(payment_id)
+  WHERE payment_id IS NOT NULL;
 
 -- order_status_history
 CREATE INDEX IF NOT EXISTS idx_status_history_order ON order_status_history(order_id);

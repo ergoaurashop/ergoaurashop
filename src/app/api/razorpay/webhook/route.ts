@@ -68,6 +68,21 @@ async function createOrderFromRazorpayNotes(
       .single();
 
     if (error) {
+      // Duplicate payment_id (browser handler may have raced us) — fetch the
+      // existing order and return it instead of failing.
+      if (error.code === "23505") {
+        const { data: existing } = await supabaseAdmin
+          .from("orders")
+          .select("*")
+          .eq("payment_id", paymentId)
+          .maybeSingle();
+        if (existing) {
+          console.log(
+            `[Webhook] Payment ${paymentId} already exists — returning existing order`,
+          );
+          return existing;
+        }
+      }
       console.error(
         `[Webhook] Failed to create order from Razorpay notes: ${error.message}`,
       );
@@ -82,6 +97,153 @@ async function createOrderFromRazorpayNotes(
     console.error(
       `[Webhook] Error fetching Razorpay order ${razorpayOrderId} or creating from notes:`,
       err,
+    );
+    return null;
+  }
+}
+
+// Fields the Meta helpers need from an order row
+type MetaOrder = {
+  id: string;
+  capi_event_id?: string | null;
+  meta_purchase_fired_at?: string | null;
+  meta_refund_fired_at?: string | null;
+  customer_name?: string;
+  customer_email?: string;
+  customer_phone?: string;
+  address?: { city?: string; state?: string; pincode?: string };
+  products?: { product_id: string }[] | null;
+  total?: number;
+  fbp?: string | null;
+  fbc?: string | null;
+};
+
+// ── Helper: fire Meta CAPI Purchase for an order (idempotent) ──────────────
+// Used by the webhook as the authoritative source: it fires exactly once per
+// order (guarded by meta_purchase_fired_at). The browser handler may also fire
+// the same event (same event_id) — Meta dedups identical event_ids.
+async function fireMetaPurchaseForOrder(
+  order: MetaOrder,
+  source = "webhook",
+) {
+  if (
+    !order?.capi_event_id ||
+    process.env.META_CAPI_ENABLED !== "true" ||
+    order.meta_purchase_fired_at
+  ) {
+    return null;
+  }
+  try {
+    const address = order.address || {};
+    const result = await sendCAPIEvent({
+      eventName: "Purchase",
+      eventId: order.capi_event_id,
+      userData: {
+        email: order.customer_email,
+        phone: order.customer_phone,
+        firstName: order.customer_name?.split(" ")[0] || "",
+        lastName: order.customer_name?.split(" ").slice(1).join(" ") || "",
+        city: address.city,
+        state: address.state,
+        pincode: address.pincode,
+        fbp: order.fbp || undefined,
+        fbc: order.fbc || undefined,
+      },
+      customData: {
+        value: order.total || 0,
+        currency: "INR",
+        content_ids: ((order.products || []) as { product_id: string }[]).map(
+          (p) => p.product_id,
+        ),
+        content_type: "product",
+      },
+      eventSourceUrl: "https://ergoaurashop.com/checkout",
+    });
+
+    if (result) {
+      const { error: flagError } = await supabaseAdmin
+        .from("orders")
+        .update({ meta_purchase_fired_at: new Date().toISOString() })
+        .eq("id", order.id);
+      if (flagError) {
+        console.error(
+          `[Webhook] Failed to mark meta_purchase_fired_at for order ${order.id}: ${flagError.message}`,
+        );
+      }
+      console.log(
+        `[Webhook] ✅ Meta Purchase event sent (${source}) for order ${order.id}`,
+      );
+    }
+    return result;
+  } catch (err) {
+    console.error(
+      "[Webhook] Meta Purchase event error:",
+      err instanceof Error ? err.message : err,
+    );
+    return null;
+  }
+}
+
+// ── Helper: fire corrective Meta Refund for a previously-purchased order ───
+// When a captured payment is later reversed/failed (UPI bank reversal) or
+// refunded, Meta is told via a Refund event so its revenue data reconciles
+// with our order DB. Uses a NEW event_id (never the Purchase event_id, which
+// Meta would dedup away).
+async function fireMetaRefundForOrder(order: MetaOrder, source = "webhook") {
+  if (
+    !order?.capi_event_id ||
+    !order.meta_purchase_fired_at ||
+    order.meta_refund_fired_at ||
+    process.env.META_CAPI_ENABLED !== "true"
+  ) {
+    return null;
+  }
+  try {
+    const address = order.address || {};
+    const result = await sendCAPIEvent({
+      eventName: "Refund",
+      eventId: `${order.capi_event_id}:refund`,
+      userData: {
+        email: order.customer_email,
+        phone: order.customer_phone,
+        firstName: order.customer_name?.split(" ")[0] || "",
+        lastName: order.customer_name?.split(" ").slice(1).join(" ") || "",
+        city: address.city,
+        state: address.state,
+        pincode: address.pincode,
+        fbp: order.fbp || undefined,
+        fbc: order.fbc || undefined,
+      },
+      customData: {
+        value: order.total || 0,
+        currency: "INR",
+        content_ids: ((order.products || []) as { product_id: string }[]).map(
+          (p) => p.product_id,
+        ),
+        content_type: "product",
+      },
+      eventSourceUrl: "https://ergoaurashop.com/track-order",
+    });
+
+    if (result) {
+      const { error: flagError } = await supabaseAdmin
+        .from("orders")
+        .update({ meta_refund_fired_at: new Date().toISOString() })
+        .eq("id", order.id);
+      if (flagError) {
+        console.error(
+          `[Webhook] Failed to mark meta_refund_fired_at for order ${order.id}: ${flagError.message}`,
+        );
+      }
+      console.log(
+        `[Webhook] ✅ Meta Refund event sent (${source}) for order ${order.id}`,
+      );
+    }
+    return result;
+  } catch (err) {
+    console.error(
+      "[Webhook] Meta Refund event error:",
+      err instanceof Error ? err.message : err,
     );
     return null;
   }
@@ -139,7 +301,9 @@ export async function POST(request: Request) {
         // Check if an order with this payment_id already exists
         const { data: existingOrder } = await supabaseAdmin
           .from("orders")
-          .select("id, order_status")
+          .select(
+            "id, order_status, payment_status, capi_event_id, meta_purchase_fired_at, meta_refund_fired_at, customer_name, customer_email, customer_phone, address, products, total, fbp, fbc",
+          )
           .eq("payment_id", razorpayPaymentId)
           .maybeSingle();
 
@@ -147,6 +311,20 @@ export async function POST(request: Request) {
           console.log(
             `[Webhook] Order already exists for payment ${razorpayPaymentId}, status: ${existingOrder.order_status}`,
           );
+          // Reconcile: the browser handler usually creates the order as "paid",
+          // but ensure it is marked paid here too (belt-and-braces), then fire
+          // the idempotent Purchase event as a safety net (the helper is
+          // guarded by meta_purchase_fired_at, so it fires at most once).
+          if (existingOrder.payment_status !== "paid") {
+            await supabaseAdmin
+              .from("orders")
+              .update({ payment_status: "paid" })
+              .eq("payment_id", razorpayPaymentId);
+            console.log(
+              `[Webhook] Reconciled order ${existingOrder.id} payment_status to paid`,
+            );
+          }
+          fireMetaPurchaseForOrder(existingOrder, "webhook-existing");
           return NextResponse.json({ status: "already_exists" });
         }
 
@@ -193,50 +371,8 @@ export async function POST(request: Request) {
           })();
 
           // ── Fire-and-forget: send Meta CAPI Purchase event ──
-          if (
-            newOrder.capi_event_id &&
-            process.env.META_CAPI_ENABLED === "true"
-          ) {
-            (async () => {
-              try {
-                const address = newOrder.address || {};
-                await sendCAPIEvent({
-                  eventName: "Purchase",
-                  eventId: newOrder.capi_event_id,
-                  userData: {
-                    email: newOrder.customer_email,
-                    phone: newOrder.customer_phone,
-                    firstName: newOrder.customer_name?.split(" ")[0] || "",
-                    lastName:
-                      newOrder.customer_name?.split(" ").slice(1).join(" ") ||
-                      "",
-                    city: address.city,
-                    state: address.state,
-                    pincode: address.pincode,
-                    fbp: newOrder.fbp || undefined,
-                    fbc: newOrder.fbc || undefined,
-                  },
-                  customData: {
-                    value: newOrder.total || 0,
-                    currency: "INR",
-                    content_ids: (
-                      (newOrder.products || []) as { product_id: string }[]
-                    ).map((p) => p.product_id),
-                    content_type: "product",
-                  },
-                  eventSourceUrl: "https://ergoaurashop.com/checkout",
-                });
-                console.log(
-                  `[Webhook] ✅ Meta Purchase event sent for webhook-created order ${newOrder.order_id}`,
-                );
-              } catch (err) {
-                console.error(
-                  "[Webhook] Meta Purchase event error:",
-                  err instanceof Error ? err.message : err,
-                );
-              }
-            })();
-          }
+          // Uses the shared idempotent helper (guarded by meta_purchase_fired_at).
+          fireMetaPurchaseForOrder(newOrder, "webhook-new");
 
           return NextResponse.json({
             status: "created",
@@ -266,7 +402,9 @@ export async function POST(request: Request) {
         // Try to update existing order's payment_status to "failed"
         const { data: existingOrder } = await supabaseAdmin
           .from("orders")
-          .select("id")
+          .select(
+            "id, capi_event_id, meta_purchase_fired_at, meta_refund_fired_at, customer_name, customer_email, customer_phone, address, products, total, fbp, fbc",
+          )
           .eq("payment_id", razorpayPaymentId)
           .maybeSingle();
 
@@ -278,6 +416,12 @@ export async function POST(request: Request) {
           console.log(
             `[Webhook] Updated order ${existingOrder.id} payment_status to failed`,
           );
+
+          // If a Purchase was already reported to Meta for this order (e.g. the
+          // payment was captured then later reversed — the UPI bank-reversal
+          // case), send a corrective Meta Refund event so Meta's revenue data
+          // reconciles with our DB.
+          fireMetaRefundForOrder(existingOrder, "payment-failed");
 
           // ── Fire-and-forget: send payment-failed recovery email ──
           (async () => {
@@ -427,6 +571,9 @@ export async function POST(request: Request) {
             );
           }
         })();
+
+        // Fire corrective Meta Refund event so Meta reconciles with our DB.
+        fireMetaRefundForOrder(order, "refund-processed");
 
         return NextResponse.json({ status: "refunded" });
       }
