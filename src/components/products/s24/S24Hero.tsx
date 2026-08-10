@@ -3,7 +3,11 @@
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { S24_FOLDER, S24_PRODUCT } from "@/lib/s24-ultra-data";
+import {
+  S24_FOLDER,
+  S24_HERO_IMAGES,
+  S24_PRODUCT,
+} from "@/lib/s24-ultra-data";
 import { formatPrice } from "@/lib/utils";
 import { useCartStore } from "@/store/cartStore";
 
@@ -21,10 +25,10 @@ export default function S24Hero() {
 
   return (
     <section className="s24-hero" id="s24-hero">
-      {/* Hero background image (S Pen highlight shot) */}
+      {/* Hero background image (primary hero visual from data file) */}
       <Image
-        src={getImagePath("galaxy-s24-ultra-highlights-s-pen.jpg")}
-        alt="Samsung Galaxy S24 Ultra with S Pen"
+        src={getImagePath(S24_HERO_IMAGES[0])}
+        alt="Samsung Galaxy S24 Ultra"
         fill
         priority
         unoptimized

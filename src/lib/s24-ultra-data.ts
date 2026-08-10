@@ -12,10 +12,10 @@ import type { Product, ProductReviewDetail } from "@/lib/types";
 export const S24_FOLDER = "Part-2/Samsung S24 Ultra";
 
 // -------------------------------------------------------------------
-// Hero images (primary hero visual = S Pen image per spec)
+// Hero images (primary hero visual = official product shot)
 // -------------------------------------------------------------------
 export const S24_HERO_IMAGES = [
-  "galaxy-s24-ultra-highlights-s-pen.jpg",
+  "c2a21ecef9fb94c208496b6909ec75503e695fb1_629810.jpg",
   "galaxy-s24-ultra-highlights-kv.jpg",
   "galaxy-s24-ultra-highlights-high-resolution.jpg",
 ];

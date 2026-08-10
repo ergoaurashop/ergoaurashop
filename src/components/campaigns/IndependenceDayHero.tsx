@@ -6,6 +6,7 @@ import type { CSSProperties, ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { S24_FOLDER, S24_HERO_IMAGES } from "@/lib/s24-ultra-data";
 
 /* =====================================================================
    Independence Day Offer Week — Homepage Hero
@@ -27,6 +28,11 @@ const IPHONE_17_PRO_IMG = `/images/products/${encodeURIComponent(
 const IPHONE_AIR_IMG = `/images/products/${encodeURIComponent(
   "iPhone Air",
 )}/${encodeURIComponent("hero_design__capuizdf0uuu_large_2x.jpg")}`;
+
+/* S24 Ultra — primary hero visual pulled from data file (auto-syncs) */
+const S24_ULTRA_IMG = `/images/products/${S24_FOLDER.split("/")
+  .map(encodeURIComponent)
+  .join("/")}/${encodeURIComponent(S24_HERO_IMAGES[0])}`;
 
 /* Precomputed 24 Ashoka Chakra spokes (static → zero runtime plotting) */
 const CHAKRA_SPOKES = Array.from({ length: 24 }, (_, i) => {
@@ -121,12 +127,13 @@ const CARDS: DealCardData[] = [
     was: "₹1,19,900",
   },
   {
-    name: "Samsung Galaxy S25 Ultra",
-    href: "/products/samsung-galaxy-s25-ultra",
-    badge: "Coming Soon",
+    name: "Samsung Galaxy S24 Ultra",
+    href: "/products/samsung-galaxy-s24-ultra",
+    badge: "62% OFF",
     color: "#17348C",
-    iconKey: "phone",
-    comingSoon: true,
+    image: S24_ULTRA_IMG,
+    now: "₹43,990",
+    was: "₹1,16,299",
   },
   {
     name: "TWS Earbuds Pro",
