@@ -20,6 +20,7 @@ import { EDGE_70_PRO_PLUS_PRODUCT } from "@/lib/motorola-edge-70-pro-plus-data";
 import { POCO_X8_PRO_MAX_PRODUCT } from "@/lib/poco-x8-pro-max-data";
 import { APPLE_IPHONE_17_PRO_PRODUCT } from "@/lib/apple-iphone-17-pro-data";
 import { APPLE_IPHONE_AIR_PRODUCT } from "@/lib/apple-iphone-air-data";
+import { S24_PRODUCT } from "@/lib/s24-ultra-data";
 
 
 /**
@@ -40,6 +41,7 @@ export const SLUG_TO_FOLDER: Record<string, string> = {
   "waterproof-shoe-covers": "Waterproof shoe covers",
   "samsung-galaxy-s23-ultra":
     "Part-2/Samsung Galaxy S23 Ultra Dual SIM Smartphone 12GB RAM 512GB Storage - Internationa Version",
+  "samsung-galaxy-s24-ultra": "Part-2/Samsung S24 Ultra",
   "iphone-15-pro-max-512gb":
     "Part-2/iPhone-15-Pro-Max-512GB-Smart-Phone-Mega-Deal-Offer",
   "messi-argentina-2026-jersey":
@@ -182,6 +184,18 @@ export const SLUG_TO_IMAGES: Record<string, string[]> = {
     "galaxy-s23-ultra-highlights-one-ui-1.jpg",
     "galaxy-s23-ultra-highlights-wallet-1.jpg",
     "galaxy-s23-ultra-detail-press.jpg",
+  ],
+  "samsung-galaxy-s24-ultra": [
+    "galaxy-s24-ultra-highlights-s-pen.jpg",
+    "galaxy-s24-ultra-highlights-kv.jpg",
+    "galaxy-s24-ultra-highlights-high-resolution.jpg",
+    "galaxy-s24-ultra-highlights-high-resolution-zoom.jpg",
+    "galaxy-s24-ultra-highlights-titanium.jpg",
+    "galaxy-s24-ultra-highlights-color-carousel-exclusive.jpg",
+    "galaxy-s24-ultra-highlights-color-carousel-global.jpg",
+    "2143977_main.avif",
+    "527b8ee771cf84e0b795ea25de69b655.jpg",
+    "c2a21ecef9fb94c208496b6909ec75503e695fb1_629810.jpg",
   ],
   "iphone-15-pro-max-512gb": [
     "Apple-iPhone-15-Pro-lineup-hero-230912_Full-Bleed-Image.jpg.xlarge_2x.jpg",
@@ -743,6 +757,13 @@ export const LOCAL_PRODUCTS: Product[] = [
     is_active: true,
     created_at: "2025-12-01T00:00:00Z",
     updated_at: "2025-12-01T00:00:00Z",
+  },
+  {
+    ...S24_PRODUCT,
+    id: "prod-samsung-galaxy-s24-ultra",
+    name: "Samsung Galaxy S24 Ultra",
+    slug: "samsung-galaxy-s24-ultra",
+    category: "phones",
   },
   {
     ...IPHONE_PRODUCT,

@@ -23,6 +23,12 @@ const S23SamsungGalaxySection = dynamic(
   { ssr: false },
 );
 
+/* Lazy-load S24 section — only loaded when slug matches */
+const S24SamsungGalaxySection = dynamic(
+  () => import("@/components/products/s24/S24SamsungGalaxySection"),
+  { ssr: false },
+);
+
 /* Lazy-load iPhone 15 Pro Max section — only loaded when slug matches */
 const IPhone15ProMaxSection = dynamic(
   () => import("@/components/products/iphone-15-pro-max/IPhone15ProMaxSection"),
@@ -459,6 +465,11 @@ export default function ProductDetailClient() {
   /* ── S23 Ultra — fully self-contained page (hooks above are called unconditionally) ── */
   if (slug === "samsung-galaxy-s23-ultra") {
     return <S23SamsungGalaxySection />;
+  }
+
+  /* ── S24 Ultra — fully self-contained page (hooks above are called unconditionally) ── */
+  if (slug === "samsung-galaxy-s24-ultra") {
+    return <S24SamsungGalaxySection />;
   }
 
   /* ── ErgoSlug Test — payment check page ── */

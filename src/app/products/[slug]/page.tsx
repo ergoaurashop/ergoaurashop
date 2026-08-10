@@ -13,6 +13,14 @@ import {
   S23_HERO_IMAGES,
 } from "@/lib/s23-ultra-data";
 import {
+  S24_PRODUCT,
+  S24_REVIEWS,
+  S24_REVIEW_SUMMARY,
+  S24_FAQS,
+  S24_FOLDER,
+  S24_HERO_IMAGES,
+} from "@/lib/s24-ultra-data";
+import {
   IPHONE_PRODUCT,
   IPHONE_REVIEWS,
   IPHONE_REVIEW_SUMMARY,
@@ -183,6 +191,7 @@ export async function generateStaticParams() {
   const regularSlugs = LOCAL_PRODUCTS.map((p) => p.slug);
   const specialSlugs = [
     "samsung-galaxy-s23-ultra",
+    "samsung-galaxy-s24-ultra",
     "iphone-15-pro-max-512gb",
     "messi-argentina-2026-jersey",
     "motorola-edge-70-fusion",
@@ -231,6 +240,34 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             width: 1200,
             height: 1200,
             alt: "Samsung Galaxy S23 Ultra",
+          },
+        ],
+      },
+    };
+  }
+
+  /* ── S24 Ultra — custom metadata ── */
+  if (slug === "samsung-galaxy-s24-ultra") {
+    const imageUrl = `/images/products/${encodePath(S24_FOLDER)}/${encodeURIComponent(S24_HERO_IMAGES[0])}`;
+    const title = `Samsung Galaxy S24 Ultra at ₹43,990/- | 62% OFF Mega Deal | ${SITE_METADATA.title}`;
+    const description =
+      "Samsung Galaxy S24 Ultra — 200MP Camera, S Pen, Snapdragon 8 Gen 3, 12GB RAM, 512GB Storage. International Version. Get it at 62% OFF — ₹43,990/- only! Limited stock clearance.";
+    return {
+      title,
+      description,
+      alternates: {
+        canonical: `${SITE_URL}/products/samsung-galaxy-s24-ultra`,
+      },
+      openGraph: {
+        title,
+        description,
+        url: `${SITE_URL}/products/samsung-galaxy-s24-ultra`,
+        images: [
+          {
+            url: imageUrl,
+            width: 1200,
+            height: 1200,
+            alt: "Samsung Galaxy S24 Ultra",
           },
         ],
       },
@@ -821,6 +858,106 @@ export default async function Page({ params }: Props) {
                       </h3>
                       <ul className="space-y-2">
                         {S23_PRODUCT.features.map((feature, i) => (
+                          <li
+                            key={i}
+                            className="flex items-start gap-3 text-sm text-apple-text-primary"
+                          >
+                            <svg
+                              className="w-4 h-4 text-apple-success mt-0.5 shrink-0"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                            >
+                              <path d="M20 6L9 17l-5-5" />
+                            </svg>
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ProductDetailClient />
+      </>
+    );
+  }
+
+  /* ── S24 Ultra — standalone page with JSON-LD ── */
+  if (slug === "samsung-galaxy-s24-ultra") {
+    const breadcrumbItems = [
+      { name: "Home", url: SITE_URL },
+      { name: "Products", url: `${SITE_URL}/products` },
+      {
+        name: "Samsung Galaxy S24 Ultra",
+        url: `${SITE_URL}/products/samsung-galaxy-s24-ultra`,
+      },
+    ];
+
+    return (
+      <>
+        <ProductSchema
+          product={S24_PRODUCT}
+          aggregateRating={{
+            ratingValue: S24_REVIEW_SUMMARY.averageRating,
+            reviewCount: S24_REVIEW_SUMMARY.totalReviews,
+          }}
+          reviews={S24_REVIEWS.slice(0, 10).map((r) => ({
+            name: r.name,
+            rating: r.rating,
+            text: r.text,
+            date: r.date,
+          }))}
+        />
+        <BreadcrumbSchema items={breadcrumbItems} />
+        {S24_FAQS.length > 0 && <FaqSchema faqs={S24_FAQS} />}
+        {/* Server-rendered content for Googlebot — visible until JS hydrates */}
+        <div id="ssr-product-root" data-slug="samsung-galaxy-s24-ultra">
+          <div className="pt-28 sm:pt-32 pb-16 lg:pb-24">
+            <div className="section-container">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mb-16">
+                <div className="lg:col-span-2 space-y-4">
+                  <div className="aspect-square bg-apple-bg rounded-apple overflow-hidden">
+                    <img
+                      src={`/images/products/${S24_FOLDER.split("/").map(encodeURIComponent).join("/")}/${encodeURIComponent(S24_HERO_IMAGES[0])}`}
+                      alt="Samsung Galaxy S24 Ultra"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-6">
+                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-apple-text-primary">
+                    {S24_PRODUCT.name}
+                  </h1>
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-3xl font-semibold text-apple-text-primary">
+                      {formatPrice(S24_PRODUCT.price)}
+                    </span>
+                    {S24_PRODUCT.original_price > S24_PRODUCT.price && (
+                      <>
+                        <span className="text-lg text-apple-text-secondary line-through">
+                          {formatPrice(S24_PRODUCT.original_price)}
+                        </span>
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800">
+                          -{S24_PRODUCT.discount_percentage}%
+                        </span>
+                      </>
+                    )}
+                  </div>
+                  <p className="text-apple-text-secondary leading-relaxed">
+                    {S24_PRODUCT.description}
+                  </p>
+                  {S24_PRODUCT.features && S24_PRODUCT.features.length > 0 && (
+                    <div>
+                      <h3 className="text-sm font-semibold uppercase tracking-wider text-apple-text-primary mb-3">
+                        Key Features
+                      </h3>
+                      <ul className="space-y-2">
+                        {S24_PRODUCT.features.map((feature, i) => (
                           <li
                             key={i}
                             className="flex items-start gap-3 text-sm text-apple-text-primary"

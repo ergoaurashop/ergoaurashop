@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prebuild": "node scripts/copy-s23-assets.mjs",
-    "postinstall": "node scripts/copy-s23-assets.mjs"
+    "prebuild": "node scripts/copy-s23-assets.mjs && node scripts/copy-s24-assets.mjs",
+    "postinstall": "node scripts/copy-s23-assets.mjs && node scripts/copy-s24-assets.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
